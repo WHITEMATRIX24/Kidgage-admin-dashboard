@@ -1,0 +1,189 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.settings-container {
+  width: 100%;
+  height: 100vh;
+  padding: 10px;
+}
+
+.settings-heading {
+  margin-top: 2rem;
+  margin-left: 0;
+  font-size: 20px;
+  margin-bottom: 1rem;
+  color: rgba(17, 151, 224, 0.951);
+}
+
+.logout {
+  color: rgba(17, 151, 224, 0.951);
+}
+
+.settings-data-container {
+  background-color: white;
+  margin-top: 2%;
+  margin-left: 0;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 10px;
+  padding: 2.5rem;
+  height: 75vh;
+
+}
+
+.heading-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 25px;
+}
+
+.username,
+.email,
+.password {
+  display: flex;
+  align-items: start;
+  padding: 15px;
+  border-top: 1px solid gray;
+
+}
+
+.uname-data,
+.email-data,
+.pwd-data {
+  width: 100%;
+  /* background-color: aqua; */
+  display: flex;
+}
+
+
+.settings-menu {
+  display: flex;
+  width: 16%;
+  padding: 5px;
+  font-size: 15px;
+  color: gray;
+  justify-content: space-around;
+}
+
+/* General modal overlay styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content container */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Input fields styling */
+/* .modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+} */
+
+/* Submit and cancel button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Primary button (e.g., submit) */
+.first-child {
+  background-color: #4CAF50;
+  color: white;
+
+}
+
+.modal-content button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Message text styling */
+.modal-content p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.passwordchange-input {
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 1px solid #d9dadb;
+  outline: none;
+  margin: 10px 0;
+  background-color: var(--app-backgroundcolor-gray);
+  color: var(--app-text-blueshade);
+  width: 100%;
+}
+
+@media(min-width:2000px) {
+
+  .settings-heading {
+    font-size: 40px;
+  }
+
+  .settings-menu,
+  .heading-container,
+  .username,
+  .email,
+  .password p {
+    font-size: 25px;
+  }
+
+  .modal-content {
+    width: 50%;
+    height: 30%;
+    padding: 50px;
+  }
+
+  .modal-content h3,
+  .modal-content input {
+    font-size: 2.3rem;
+  }
+
+  .modal-content button {
+    font-size: 2.3rem;
+
+  }
+
+  .email-data1 {
+    margin-left: 150px;
+  }
+
+}

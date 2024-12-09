@@ -1,0 +1,87 @@
+.category-editmodal-show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-editmodal-hide {
+  display: none;
+}
+
+.category-editmodal-wrapper {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.category-editmodal-container {
+  background-color: white;
+  width: 30rem;
+  min-height: 30rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  /* gap: 2rem; */
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  align-items: center;
+  position: relative;
+}
+.category-editmodal-container > span {
+  margin-left: auto;
+  cursor: pointer;
+}
+.category-editmodal-form-container {
+  margin-top: 1rem;
+  padding: 1rem 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.category-editmodal-form-image-container {
+  width: 100%;
+  background-color: #eeeeee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.category-editmodal-form-imageuploder-container {
+  width: 100%;
+  cursor: pointer;
+}
+.category-editmodal-form-imageuploder-container img {
+  width: 100%;
+  height: 13rem;
+  object-fit: contain;
+}
+.category-editmodal-form-inputs-container p {
+  padding-left: 8px;
+}
+.category-editmodal-form-inputs-container input {
+  padding: 10px 15px;
+  outline: none;
+  background-color: var(--app-backgroundcolor-gray);
+  border-radius: 20px;
+  border: 1px solid #c7c8c9;
+  font-size: 17px;
+  margin-top: 7px;
+  width: 18rem;
+}
+.category-editmodal-form-container button {
+  padding: 10px 35px;
+  background-color: var(--app-blue-color);
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.category-editmodal-form-container button:hover {
+  background-color: #0466c9;
+}

@@ -1,0 +1,100 @@
+.coursepage-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.coursepage-content-heading {
+    color: black;
+    font-size: 25px;
+    margin-top: 2rem;
+    margin-left: 0;
+    margin-bottom: 1rem;
+
+}
+
+.add_course_btn {
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    font-size: 15px;
+    float: right;
+    padding: 5px;
+}
+
+.coursepage-content-container {
+    padding: 1rem 1.5rem;
+    background-color: white;
+    box-shadow: 10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    height: 75vh;
+    margin-top: 2%;
+    margin-left: 0;
+}
+
+.coursepage-content-header {
+    /* border-bottom: 1px solid gray; */
+    position: sticky;
+    top: 20px;
+    padding-bottom: 35px;
+    z-index: 1000;
+}
+
+.course_tab-button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    /* Default color for non-active tabs */
+    font-size: 18px;
+    /* Default size for h3 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-right: 30px;
+}
+
+.course_tab-button.active {
+    color: #041624;
+    /* Color for active tab */
+}
+
+.course-table-details {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 20px;
+    margin-top: 10px;
+
+}
+
+.banner-img img {
+    width: 180px;
+    height: 150px;
+    background-color: aqua;
+}
+
+.course-icons {
+    justify-content: space-between;
+    display: flex;
+    padding: 5px;
+    margin-right: 30px;
+    font-size: large;
+}
+
+@media(min-width:2000px) {
+    .coursepage-content-heading {
+        font-size: 40px;
+    }
+
+    .add_course_btn {
+        font-size: 25px;
+
+    }
+
+    .course_tab-button {
+        font-size: 35px;
+
+    }
+
+
+}

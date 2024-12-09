@@ -1,0 +1,225 @@
+/* Base reset */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.provider-details {
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+}
+
+.provider-title {
+    margin-top: 2rem;
+    color: black;
+}
+
+.provider-section-title {
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+
+}
+
+.provider-details-content {
+    background-color: white;
+    margin-top: 2%;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    height: 75vh;
+    overflow-y: auto;
+}
+
+.provider-details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.provider-details-table td {
+    padding: 15px;
+    border-bottom: 1px solid gray;
+    vertical-align: top;
+}
+
+.provider-logo-row.no-border td {
+    border-bottom: none;
+}
+
+.provider-description {
+    text-align: justify;
+
+}
+
+.provider-save-button {
+    background-color: black;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    outline: none;
+
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Modal styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal-content button:first-child {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.modal-content button:last-child {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Container styling for logo row */
+/* Adjust logo cell to take up remaining space */
+.provider-logo-cell {
+    padding: 1rem 0;
+    text-align: left;
+    width: 100%;
+    /* Ensures logo cell spans most of the row */
+}
+
+.provider-logo {
+    width: 60px;
+    height: 60px;
+}
+
+.academy-image {
+    width: 200px;
+    height: 150px
+}
+
+/* Icon cell alignment */
+.provider-icon-cell {
+    width: auto;
+    /* Allows icon cell to take only as much space as needed */
+    text-align: right;
+    padding: 1rem;
+}
+
+.edit-icon {
+    font-size: 1.5rem;
+    color: black;
+    cursor: pointer;
+    padding-right: 20px;
+    transition: color 0.3s;
+}
+
+.edit-icon:hover {
+    color: rgb(57, 56, 56);
+}
+
+.provider-details .input-row {
+    display: flex;
+    align-items: center;
+}
+
+.provider-details .label-cell {
+    min-width: 150px;
+    /* Set width for the label */
+    font-weight: bold;
+}
+
+.provider-details .editable-field {
+    flex: 1;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-left: 8px;
+    /* Add some space between label and input */
+}
+
+.provider-save td {
+    border-bottom: none;
+}
+
+
+
+
+/* Responsive adjustments */
+@media(min-width: 2000px) {
+
+    .provider-title {
+        font-size: 45px;
+    }
+
+    .provider-section-title h3,
+    .provider-details-table td {
+        font-size: 25px;
+    }
+
+    .provider-logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .modal-content {
+        width: 50%;
+        height: 30%;
+        padding: 50px;
+    }
+
+    .modal-content h3,
+    .modal-content button {
+        font-size: 2.3rem;
+    }
+
+    .provider-details .label-cell {
+        min-width: 300px;
+
+    }
+
+    .edit-icon {
+        font-size: 2.5rem;
+
+    }
+
+}

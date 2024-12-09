@@ -1,0 +1,901 @@
+/* General styles */
+.add-course-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+    /* Set width to 70% of viewport width */
+    height: 70vh;
+    /* Set height to 70% of viewport height */
+    margin: auto;
+    padding: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 30px;
+    background-color: #ffffffb8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    overflow-y: scroll;
+    /* Allow scrolling if content exceeds container height */
+}
+
+.course-addmodal-container {
+    background-color: white;
+    width: 100%;
+    min-height: 30rem;
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.05); */
+    display: flex;
+    flex-direction: column;
+    /* gap: 2rem; */
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    align-items: center;
+    position: relative;
+    /* margin-top: px; */
+
+}
+
+.add-course-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #9f9e9e91;
+    /* margin-bottom: 20px; */
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+/* .add-course-form-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #2196F3;
+} */
+
+.add-course-form {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+
+}
+
+.loader-container-edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style the loading dots */
+.loading-dots-edit span {
+    display: inline-block;
+    width: 25px;
+    /* Adjust size of the dots */
+    height: 25px;
+    /* Adjust size of the dots */
+    margin: 0 4px;
+    /* Adjust spacing between dots */
+    background-color: black;
+    /* Set the color of the dots to black */
+    border-radius: 50%;
+    /* Make them round */
+    animation: bounce 2.2s infinite alternate;
+}
+
+/* Animation for bouncing dots */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: scale(0);
+    }
+
+    25% {
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(0.5);
+    }
+
+
+}
+
+.add-course-form input,
+.add-course-form textarea {
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: 1px solid #d9dadb;
+    outline: none;
+    background-color: var(--app-backgroundcolor-gray);
+    color: var(--app-text-blueshade);
+
+}
+
+.add-course-form select {
+    width: 100%;
+    max-width: 800px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.add-course-form .fee-structure .currency-symbol {
+    margin-top: -30px;
+}
+
+.add-course-form input:focus,
+.add-course-form select:focus,
+.add-course-form textarea:focus {
+    border: 1px solid #000508;
+    box-shadow: 0 0 5px rgba(176, 168, 164, 0.5);
+}
+
+.add-course-form input:hover,
+.add-course-form select:hover,
+.add-course-form textarea:hover {
+    border: 1px solid #000001;
+}
+
+/* Autofill styles */
+.add-course-form input:-webkit-autofill,
+.add-course-form select:-webkit-autofill,
+.add-course-form textarea:-webkit-autofill {
+    background-color: #f9f9f9 !important;
+}
+
+
+.add-course-form .fee-structure {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-course-form .fee-structure input,
+.add-course-form .fee-structure select {
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 30px;
+}
+
+.add-course-form .fee-structure .currency-symbol {
+    font-size: 16px;
+}
+
+.add-course-form .days-selection {
+    margin-top: -20px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.days-selection .days-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-top: 10px;
+}
+
+.add-course-form .day-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-course-form .day-checkbox input {
+    margin-right: 5px;
+}
+
+.add-course-form .time-slot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.add-course-form .add-time-slot-btn,
+.add-course-form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: transparent;
+    width: 180px;
+    border: none;
+    border-radius: 20px;
+    /* color: var(--app-blue-color); */
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-course-form .add-time-slot-btn:hover,
+.add-course-form .rem-button:hover,
+.add-course-form button[type="submit"]:hover {
+    background-color: transparent;
+    transform: scale(1.05);
+}
+
+.add-course-form .rem-button {
+    color: #000305;
+    background-color: transparent;
+
+}
+
+.add-course-form .rem-button:hover {
+    color: #000000;
+    background-color: transparent;
+}
+
+.add-course-form .search-provider-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.add-course-form .search-provider-group input {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.add-course-form .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.add-course-form .checkbox-label {
+    display: flex;
+    align-items: center;
+}
+
+.add-course-form .checkbox-label input {
+    margin-right: 5px;
+
+}
+
+.add-course-group {
+    display: flex;
+    gap: 10px;
+}
+
+.add-course-label-group {
+    display: flex;
+    gap: 40%;
+}
+
+.add-upload-label-group {
+    display: flex;
+    gap: 45%;
+}
+
+.add-duration-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* Floating button styles */
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #dce7f0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.floating-button:hover {
+    background-color: #000000;
+    transform: scale(1.1);
+}
+
+.form-group .add-duration-group input {
+    padding: 10px;
+}
+
+.add-duration-label-group {
+    display: flex;
+    gap: 42%;
+}
+
+.add-location-label-group {
+    display: flex;
+}
+
+.add-location-label-group :nth-child(1) {
+    margin-right: 5%;
+}
+
+.add-location-label-group :nth-child(2) {
+    margin-right: 20%;
+}
+
+.add-course-form .search-provider-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #387cb8c7;
+    font-size: 1.5em;
+}
+
+
+.add-course-form .search-provider-button:hover {
+    background-color: transparent;
+    color: #265279c7;
+}
+
+.add-days-group {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    gap: 20px;
+    display: flex;
+}
+
+.add-days-group label {
+    color: black;
+}
+
+/* .add-time-slot-btn {
+    margin-left: 69%;
+} */
+.btn-grpp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Ensures vertical alignment */
+    width: 100%;
+    /* Adjust based on the container size */
+    margin-bottom: 15px;
+    /* Optional, for spacing */
+}
+
+.addcourse-submit button {
+    background-color: #000000 !important;
+}
+
+@media (max-width: 1200px) {
+
+    .add-time-slot-btn {
+        margin-left: 15%;
+    }
+}
+
+.form-group label {
+    color: black;
+
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .add-course-form-container {
+        padding: 15px;
+        width: 90%;
+        padding-right: 30px;
+
+    }
+
+    .add-course-form-header {
+        margin: 10px;
+        font-size: .8em;
+    }
+
+    .add-course-form {
+        width: 100%;
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .add-course-form label {
+        color: black;
+    }
+
+    .add-course-form input::placeholder,
+    .add-course-form select,
+    .add-course-form input {
+        font-size: 12px;
+    }
+
+    .add-course-group,
+    .add-duration-group {
+        flex-direction: row;
+    }
+
+    .add-duration-label-group {
+        flex-direction: row;
+        gap: 43%;
+    }
+
+    .fee-structure {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .time-slot {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .add-course-form .add-time-slot-btn {
+        padding: 10px 10px;
+        width: 150px;
+        font-size: 12px;
+    }
+
+    .add-course-form button[type="submit"] {
+        padding: 10px 10px;
+        width: 130px;
+        font-size: 10px;
+    }
+
+}
+
+.side-by-side2 {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+@media (max-width: 480px) {
+    .add-course-form-header h2 {
+        font-size: 1.2em;
+    }
+
+
+
+    .add-course-form input,
+    .add-course-form select,
+    .add-course-form textarea,
+    .add-time-slot-btn,
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .side-by-side2 {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Add to your existing CSS file */
+
+.interest-input-group {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    max-width: 500px;
+    width: 100%;
+}
+
+.interest-input-group input {
+    flex: 1;
+    padding: 1rem;
+}
+
+.interest-input-group .add-interest-btn {
+    color: #000000;
+    /* Change as needed */
+    background-color: transparent;
+    border: none;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.interest-input-group .add-interest-btn:hover {
+    color: #000000;
+    /* Change as needed */
+    background-color: transparent;
+    transform: scale(1.1);
+}
+
+.interest-box {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    min-height: 50px;
+    max-width: 600px;
+    width: 100%;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.interest-item {
+    padding: 0 2rem;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+.interest-item:last-child {
+    border-bottom: none;
+}
+
+.interest-box .remove-interest-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.interest-box .remove-interest-btn:hover {
+    color: darkred;
+    background-color: transparent;
+}
+
+.banner-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.banner-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+}
+
+.banner-box img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+}
+
+.banner-info {
+    margin-top: 10px;
+}
+
+.banner-info h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.view-banner-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-banner-button:hover {
+    background-color: #000000;
+}
+
+.view-banner-button svg {
+    font-size: 1em;
+}
+
+.edit-banner-button,
+.delete-banner-button {
+    background: #2196F3;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1em;
+    margin: 5px;
+    padding: 10px;
+}
+
+.edit-banner-button:hover,
+.delete-banner-button:hover {
+    color: #fff;
+    background: #0c0908;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upload-icon {
+    margin-right: 10px;
+}
+
+.file-name {
+    color: #666;
+}
+
+#students-table {
+    width: 90%;
+    border-collapse: collapse;
+    overflow-x: scroll;
+}
+
+#students-table th,
+#students-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#students-table th {
+    background-color: #f2f2f2;
+}
+
+.back-to-events-button {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border: none;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.back-to-events-button:hover {
+    background-color: #030100;
+}
+
+/* Existing CSS */
+
+.banner-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.banner-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+}
+
+.banner-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 150px;
+    border-bottom: 1px solid #ddd;
+}
+
+.banner-info {
+    margin-top: 10px;
+}
+
+.banner-info h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.edit-banner-button,
+.delete-banner-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000101;
+    font-size: .8em;
+    margin: 5px;
+}
+
+.edit-banner-button:hover,
+.delete-banner-button:hover {
+    color: #000000;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upload-icon {
+    margin-right: 10px;
+}
+
+.file-name {
+    color: #666;
+}
+
+.edit-fields {
+    margin-top: 10px;
+}
+
+.edit-fields input {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.p-student-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.p-student-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    flex: 1;
+    max-width: 800px;
+    min-height: 60px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.p-student-info {
+    flex: 1;
+}
+
+.p-student-actions {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+@media (max-width: 600px) {
+    .p-student-card {
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .p-student-actions {
+        position: relative;
+        top: 0;
+        right: 0;
+    }
+}
+
+/* Optional: Overlay background */
+.label-img-grp {
+    justify-content: space-between;
+    gap: 0px;
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .add-course-form-container {
+        max-width: 1900px;
+    }
+
+    .add-course-form .add-time-slot-btn {
+        padding: 10px 15px;
+        width: 200px;
+        border-radius: 30px;
+        font-size: 20px;
+    }
+
+    .add-course-form button[type="submit"] {
+        padding: 15px 15px;
+        width: 300px;
+        font-size: 20px;
+        border-radius: 30px;
+    }
+
+    .days-selection .days-checkbox {
+        width: 24px;
+        height: 24px;
+        margin-top: 10px;
+        margin-left: 24px;
+    }
+}
+
+
+.add-course-form input::-webkit-file-upload-button {
+    background: transparent;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    width: 150px;
+    padding: 5px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: #9f9e9e91;
+}
+
+.courses-list {
+    margin-top: 20px;
+}
+
+.course-item {
+    display: flex;
+    justify-content: space-between;
+    /* This pushes the button to the right */
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+.course-item p {
+    text-align: right;
+}
+
+.course-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.add-course-form .course-item button {
+    border-radius: 30px;
+    padding: 5px;
+    width: 180px;
+    font-size: smaller;
+    background-color: #000000;
+}
+
+@media (min-width:1500px) {
+    .add-course-form .course-item button {
+        width: 25%;
+    }
+}
+
+/* .add-course-form .course-item:hover,.add .course-item::selection{
+    background-color: #2a5f8e;
+} */
+
+.saved-images-display {
+    margin-top: 20px;
+}
+
+.image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image-container {
+    border: 1px solid #ddd;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.save-btn {
+    align-self: flex-end;
+}
+
+.request-div {
+    font-family: 'Poppins', serif;
+}

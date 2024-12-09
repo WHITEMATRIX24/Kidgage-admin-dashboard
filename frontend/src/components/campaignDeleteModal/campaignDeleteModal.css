@@ -1,0 +1,72 @@
+.campaign-deletemodal-show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.campaign-deletemodal-hide {
+    display: none;
+}
+
+.campaign-deletemodal-wrapper {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.campaign-deletemodal-container {
+    background-color: white;
+    width: 29rem;
+    min-height: 17rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    /* gap: 2rem; */
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    align-items: center;
+    position: relative;
+}
+
+.campaign-deletemodal-container>span {
+    margin-left: auto;
+}
+
+.campaign-deletemodal-container>span:hover {
+    cursor: pointer;
+}
+
+.campaign-deletemodal-container h2 {
+    color: black;
+    padding-bottom: 30px;
+}
+
+.campaign-deletemodal-delete {
+    color: white;
+    font-size: 15px;
+    background-color: #a93526;
+    border-radius: 12px;
+    border: none;
+    padding: 8px 20px;
+}
+
+.campaign-deletemodal-cancel {
+    color: white;
+    background-color: #548e53;
+    font-size: 15px;
+    border-radius: 12px;
+    padding: 8px 20px;
+    border: none;
+}
+
+.modal-actions {
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+}

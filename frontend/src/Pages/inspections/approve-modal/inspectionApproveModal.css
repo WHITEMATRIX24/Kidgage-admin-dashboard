@@ -1,0 +1,93 @@
+.inspection-approve-modal-wrapper {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inspection-approve-modal-container {
+  background-color: white;
+  width: 45rem;
+  height: 30rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem 3rem;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: flex;
+}
+
+.inspection-approve-modal-container>span {
+  margin-left: auto;
+}
+
+.inspection-approve-modal-container>span:hover {
+  cursor: pointer;
+}
+
+.inspection-approve-modal-form {
+  width: 50%;
+}
+
+.inspection-approve-modal-form input {
+  width: 100%;
+  outline: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  border: 2px solid #dedfe1;
+  background-color: var(--app-backgroundcolor-gray);
+}
+
+.inspection-approve-modal-form p {
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
+
+.inspection-approve-modal-form span {
+  display: flex;
+  align-items: center;
+  color: var(--app-blue-color);
+  margin-top: 5px;
+}
+
+.inspection-approve-modal-form span:hover {
+  cursor: pointer;
+}
+
+.inspection-approve-modal-form div:nth-child(2) {
+  margin-top: 1.5rem;
+}
+
+.inspection-approve-modal-btn-container {
+  margin-top: 15px;
+}
+
+.inspection-approve-modal-btn-container button {
+  padding: 12px 50px;
+  border-radius: 20px;
+  background-color: #0576ec;
+  color: white;
+  border: none;
+  outline: none;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.inspection-approve-modal-btn-container button:hover {
+  cursor: pointer;
+}

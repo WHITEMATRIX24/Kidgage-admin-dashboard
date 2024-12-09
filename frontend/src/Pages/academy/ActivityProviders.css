@@ -1,0 +1,190 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.activity-container {
+  width: 100%;
+  height: 80%;
+  padding: 10px;
+}
+
+.activity-heading-h3 {
+  font-size: 25px;
+}
+
+.activity-table-h3 {
+  font-size: 20px;
+  padding-top: 20px;
+}
+
+.activity-table-container {
+  background-color: white;
+  margin-top: 2%;
+
+  margin-left: 0;
+  width: 100%;
+  padding: 0px 15px;
+  /* height: 500px; */
+  border-radius: 15px;
+  box-shadow: 10px;
+  /* padding: 1.5rem 1.5rem; */
+  height: 80vh;
+  overflow-y: scroll;
+
+}
+
+.activity-btn-edit {
+  font-size: 15px;
+  margin-left: 45px;
+}
+
+.activity-details {
+  border-collapse: collapse;
+  width: 97%;
+  align-self: center;
+  margin-left: 10px;
+
+}
+
+thead,
+td,
+th {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+
+  /* white-space: wrap;
+    width: 30px; */
+
+}
+
+.activity-img img {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(202, 245, 245);
+  border-radius: 5px;
+  margin: 3px;
+  /* padding-right: 3px; */
+
+}
+
+.activity-icon {
+  color: #acc9e0;
+  font-size: 20px;
+  margin-right: 20px;
+
+}
+
+.activity-profile-container {
+  display: flex;
+}
+
+td {
+  font-size: small;
+  color: var(--app-text-blueshade);
+  font-weight: 600;
+}
+
+.activity-table-head {
+  color: gray;
+  position: sticky;
+  top: 0px;
+  background-color: white;
+
+
+}
+
+#activity-profile-name {
+  border-bottom: none;
+  overflow-wrap: break-word;
+
+}
+
+.activity-heading {
+  margin-top: 1.5rem;
+  margin-left: 0;
+  position: sticky;
+  color: rgba(17, 151, 224, 0.951);
+}
+
+.activity-address {
+  overflow-wrap: break-word;
+  width: 10px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.01);
+  /* 50% opacity black */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Ensure it sits on top of other content */
+}
+
+.popup-overlay .requests-popup {
+  z-index: 1001;
+  /* Bring the popup content above the overlay background */
+}
+
+@media (min-width: 2000px) {
+  .activity-heading-h3 {
+    font-size: 45px;
+    padding-top: 3rem;
+
+  }
+
+  .activity-table-h3 {
+    font-size: 35px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+
+  table td {
+    font-size: 25px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: var(--app-text-blueshade);
+  }
+
+  table th {
+    font-size: 30px;
+    padding-left: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .activity-img img {
+    width: 60px;
+    height: 60px;
+    margin-top: 20px;
+    /* padding-right: 3px; */
+
+  }
+
+  .activity-details {
+
+    margin-left: 30px;
+  }
+
+  .activity-icon {
+
+    font-size: 35px;
+
+
+  }
+
+}

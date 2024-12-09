@@ -1,0 +1,139 @@
+.enquiriesPage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 10px;
+  height: 100%;
+  overflow-x: scroll;
+}
+
+.enquiriesPage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-left: 15PX;
+  height: 100%;
+}
+
+.enquiriesPage-content-h3 {
+  color: var(--app-grey-color);
+  font-size: 25px;
+  /* padding-left: 10px; */
+}
+
+.enquiriesPage-table-h3 {
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+.enquiriesPage-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: white;
+  padding: 2rem 1.5rem;
+  border-radius: 15px;
+}
+
+
+
+.enquiriesPage-table-wrapper {
+  height: 65vh;
+  overflow-y: scroll;
+}
+
+/* Table */
+.enquiriesPage-content-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 20px;
+}
+
+.enquiriesPage-content-table thead tr th {
+  text-align: start;
+  color: var(--app-text-graycolor);
+  font-weight: 400;
+  background-color: white;
+}
+
+.enquiriesPage-content-table thead tr {
+  border-bottom: 1px solid #77838f49;
+
+}
+
+.enquiriesPage-content-table thead th {
+  padding: 15px 15px;
+}
+
+.enquiriesPage-content-table tbody tr {
+  border-bottom: 5px solid white;
+}
+
+.enquiriesPage-content-table tbody tr td {
+  padding: 15px 15px;
+  color: var(--app-text-blueshade);
+}
+
+.enquiriesPage-content-table-academytitle {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.enquiriesPage-content-table-academytitle img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  background-color: var(--app-blue-lowopacity);
+  border-radius: 10px;
+  outline: none;
+}
+
+
+/* media Query */
+@media (min-width: 2000px) {
+  .enquiriesPage-content-h3 {
+    font-size: 45px;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-weight: 200px;
+  }
+
+  .enquiriesPage-table-h3 {
+    font-size: 35px;
+    padding: 20px;
+    margin-left: 20px;
+  }
+
+  .enquiriesPage-content-table thead tr th {
+    font-size: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+  }
+
+  .enquiriesPage-content-table tbody tr td {
+    font-size: 25px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+  }
+
+  .enquiriesPage-content-table-actions {
+    gap: 30px;
+  }
+
+  .enquiriesPage-content-table-actions button {
+    height: 40px;
+  }
+
+  .enquiriesPage-table-wrapper {
+    height: 65vh;
+    overflow-y: scroll;
+  }
+
+  .enquiriesPage-content-table {
+
+    margin-left: 30px;
+  }
+}

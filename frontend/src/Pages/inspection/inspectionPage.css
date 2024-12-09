@@ -1,0 +1,155 @@
+.inspectinPage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 10px;
+  height: 100%;
+  overflow-x: scroll;
+}
+
+.inspectionPage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.inspectionPage-content-h3 {
+  color: var(--app-blue-color);
+  font-size: 25px;
+  /* padding-left: 10px; */
+}
+
+.inspectionPage-table-h3 {
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+.inspectionPage-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: white;
+  padding: 2rem 1.5rem;
+  border-radius: 15px;
+}
+
+/* .inspectionPage-content-container>h3 {
+  font-size: medium;
+  margin-left: 10px;
+} */
+
+.inspectionPage-table-wrapper {
+  height: 65vh;
+  overflow-y: scroll;
+}
+
+/* Table */
+.inspectionPage-content-table {
+  border-collapse: collapse;
+  width: 97%;
+  margin-left: 10px;
+}
+
+.inspectionPage-content-table thead tr th {
+  text-align: start;
+  color: var(--app-text-graycolor);
+  font-weight: 400;
+  background-color: white;
+}
+
+.inspectionPage-content-table thead tr {
+  border-bottom: 1px solid #77838f49;
+}
+
+.inspectionPage-content-table thead th {
+  padding: 10px 0px;
+}
+
+.inspectionPage-content-table tbody tr {
+  border-bottom: 1px solid #77838f49;
+}
+
+.inspectionPage-content-table tbody tr td {
+  padding: 15px 0px;
+  color: var(--app-text-blueshade);
+}
+
+.inspectionPage-content-table-academytitle {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.inspectionPage-content-table-academytitle img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  background-color: var(--app-blue-lowopacity);
+  border-radius: 10px;
+  outline: none;
+}
+
+.inspectionPage-content-table-actions {
+  display: flex;
+  gap: 18px;
+}
+
+.inspectionPage-content-table-actions button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  height: 20px;
+}
+
+.inspectionPage-content-table-actions button:hover {
+  cursor: pointer;
+}
+
+/* media Query */
+@media (min-width: 2000px) {
+  .inspectionPage-content-h3 {
+    font-size: 45px;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-weight: 200px;
+  }
+
+  .inspectionPage-table-h3 {
+    font-size: 35px;
+    padding: 20px;
+    margin-left: 20px;
+  }
+
+  .inspectionPage-content-table thead tr th {
+    font-size: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+  }
+
+  .inspectionPage-content-table tbody tr td {
+    font-size: 25px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+  }
+
+  .inspectionPage-content-table-actions {
+    gap: 30px;
+  }
+
+  .inspectionPage-content-table-actions button {
+    height: 40px;
+  }
+
+  .inspectionPage-table-wrapper {
+    height: 65vh;
+    overflow-y: scroll;
+  }
+
+  .inspectionPage-content-table {
+
+    margin-left: 30px;
+  }
+}

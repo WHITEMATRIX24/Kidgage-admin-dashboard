@@ -1,0 +1,138 @@
+.dashboard-sidebar {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  z-index: 8;
+  background-color: white;
+  flex-direction: column;
+  gap: .5rem;
+  /* box-shadow: 6px 0px 12px rgba(0, 0, 0, 0.95); */
+
+}
+
+.sidebar-logo-image-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.sidebar-logo-img {
+  max-width: 70%;
+  height: 40px;
+}
+
+/* menus */
+.sidebar-nav-menus {
+  margin-top: 35%;
+}
+
+.sidebar-nav-menus ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0px 0px;
+}
+
+.sidebar-nav-menus ul a li {
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: .5rem;
+}
+
+.sidebar-nav-menus ul a {
+  color: var(--app-text-graycolor);
+  text-decoration: none;
+}
+
+.sidebar-nav-menus .sidebar-icon {
+  padding: 10px 10px;
+  background-color: var(--app-blue-lowopacity);
+  border-radius: 7px;
+  color: var(--app-blue-color);
+}
+
+.sidebar-logout-btn {
+  margin: 0px 15px;
+  margin-top: 3rem;
+  padding: 5px 0px;
+  border: none;
+  background-color: transparent;
+  color: grey;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.sidebar-logout-icon {
+  background-color: var(--app-blue-lowopacity);
+  padding: 10px 10px;
+  border-radius: 7px;
+  color: var(--app-blue-color);
+}
+
+/* active class */
+.sidebar-nav-menus .active {
+  border: 7px;
+  border-style: outset;
+  border-left-color: var(--app-blue-color);
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  background-color: var(--app-backgroundcolor-gray);
+}
+
+.sidebar-nav-menus .active .activeIcon {
+  color: white;
+  background-color: var(--app-blue-color);
+  padding: 10px 10px;
+  border-radius: 7px;
+}
+
+.sidebar-nav-menus .active {
+  color: var(--app-blue-color);
+}
+
+/* media query */
+@media (min-width: 2000px) {
+
+  .sidebar-nav-menus li,
+  .sidebar-logout-btn {
+    font-size: 25px;
+
+  }
+
+  .sidebar-nav-menus ul {
+    gap: 1.5rem;
+  }
+
+  .sidebar-logout-btn {
+
+    margin-top: 35%;
+
+    font-size: 25px;
+    gap: 1rem;
+    padding-left: 20px;
+  }
+
+  .sidebar-nav-menus ul a li {
+    padding-left: 30px;
+    font-size: 25px;
+  }
+
+  .sidebar-logo-img {
+    max-width: 80%;
+    height: 60px;
+  }
+
+  .sidebar-logo-image-container {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 2rem;
+    padding-left: 30px;
+  }
+}

@@ -1,0 +1,250 @@
+.add-course-form button[type="submit"] {
+    background-color: var(--app-blue-color);
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    outline: none;
+    width: 10rem;
+    font-size: 15px;
+    border-radius: 20px;
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.add-course-form button[type="submit"]:hover {
+    background-color: #2a5d8a;
+}
+
+.banner-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.banner-box {
+    display: flex;
+    border: 1px solid #ddd;
+    justify-content: space-between;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 0 10px;
+    text-align: center;
+    align-items: center;
+}
+
+.banner-box img {
+    width: auto;
+    height: 80px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.banner-info {
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.banner-info h3 {
+    font-size: 1.2em;
+}
+
+.poster-list {
+    display: flex;
+    /* Corrected */
+    flex-direction: column;
+    /* Assuming posters are laid out horizontally */
+    gap: 8px;
+    flex-wrap: wrap;
+    /* Allows wrapping of items if they exceed the container width */
+}
+
+.poster-box {
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    /* Stack the elements vertically */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 0 10px;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    /* Adjust the width based on your design */
+}
+
+.poster-img-cont {
+    display: flex;
+    gap: 20px;
+}
+
+.poster-box img {
+    width: auto;
+    height: 90px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.poster-info {
+    font-size: 16px;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    /* Makes the info stack vertically */
+    margin: 10px;
+    text-align: left;
+    /* Adjust based on your preference */
+}
+
+.poster-info h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    width: 30%;
+}
+
+.poster-info p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* Limits the number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 4.5em;
+    /* 3 lines of text */
+    line-height: 1.5em;
+    /* Adjust line height for better readability */
+    margin: 0;
+    padding: 0;
+    width: 20%;
+}
+
+.bbutton-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 0px;
+}
+
+.edit-banner-button,
+.delete-banner-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 0.8em;
+    padding: 10px 0;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-banner-button:hover,
+.delete-banner-button:hover {
+    color: #0056b3;
+}
+
+.confirm-popup-overlay {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 990;
+    /* Just below the popup */
+}
+
+.confirm-popup {
+    position: fixed;
+    /* Ensure it stays in place relative to the viewport */
+    top: 50%;
+    /* Center vertically */
+    left: 50%;
+    /* Center horizontally */
+    transform: translate(-50%, -50%);
+    /* Offset by half of its own width and height */
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 991;
+    /* Ensure it's on top of other elements */
+}
+
+
+/* Confirm popup button styles */
+.confirm-popup button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.confirm-popup button:hover {
+    background: #0056b3;
+}
+
+.confirm-popup button:last-of-type {
+    background: #ccc;
+}
+
+.confirm-popup button:last-of-type:hover {
+    background: #999;
+}
+
+@media (max-width: 768px) {
+    .add-course-form-container {
+        padding: 15px;
+        width: 90%;
+        padding-right: 30px;
+        max-width: 900px;
+    }
+
+    .add-course-form {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .add-course-group {
+        flex-direction: column;
+    }
+
+    .banner-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .add-course-form button[type="submit"] {
+        padding: 10px 10px;
+        width: 150px;
+        font-size: 12px;
+
+    }
+}
+
+@media (max-width: 480px) {
+    .add-course-form-header h2 {
+        font-size: 1.2em;
+    }
+
+    .banner-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+
+    .add-course-form button[type="submit"] {
+        padding: 15px 15px;
+        width: 300px;
+        font-size: 20px;
+        border-radius: 30px;
+    }
+}

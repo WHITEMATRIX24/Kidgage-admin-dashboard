@@ -1,0 +1,461 @@
+/* General styles for the dashboard */
+.dashboard-body {
+  /* background-image: url(./assets/images/img1.jpg); */
+  /* background-position: bottom right;
+    background-size: cover;
+    background-repeat: no-repeat; */
+  color: #333;
+  width: 100%;
+  height: 100dvh;
+  overflow-y: scroll;
+}
+
+/* dashboard.css */
+/* ChangePasswordForm.css */
+
+.change-password-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.change-password-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+}
+
+.change-password-container .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.change-password-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Center-aligns the form items */
+}
+
+.change-password-form label {
+  color: #387cb8;
+  margin: 10px;
+}
+
+.change-password-form input {
+  display: block;
+  width: 85%;
+  padding: 0.8rem 0 0.8rem 1.6rem;
+  font-size: 0.8em;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+}
+
+.change-password-form button {
+  padding: 0.4rem 1.6rem;
+  margin-right: 1.6rem;
+  background-color: #387cb8;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  align-self: flex-end;
+  /* Aligns button to the right */
+}
+
+.change-password-container .form-group {
+  width: 100%;
+}
+
+.change-password-form button:hover {
+  background-color: #a74629;
+}
+
+.change-password-form p {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Specific styles for the settings-content container */
+.settings-content {
+  display: flex;
+  flex-direction: row;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  background-color: #ffffffb8;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.pop-success-message {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  background-color: #333333f1;
+  z-index: 1000;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.header-dash h1 {
+  font-size: 1.6em;
+  margin-left: 30px;
+}
+
+.header-dash {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  color: #387cb8;
+  max-width: 1400px;
+  width: 100%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.dash-logo {
+  height: 50px;
+  gap: 0;
+  align-self: flex-end;
+  margin-top: 20px;
+  margin-right: 30px;
+}
+
+/* Dashboard Card */
+.dashboard-card {
+  position: relative;
+  display: flex;
+  height: 100dvh;
+  /* margin-top: 100px; */
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  overflow: hidden;
+  /* background-color: transparent;
+    border-radius: 20px;
+    border: 3px solid #90411c1d;
+    border-right: none;
+    overflow: hidden; */
+}
+
+/* Profile section styles */
+.profile-section {
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* Profile image */
+.profile-section img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+/* Profile info */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #000;
+}
+
+.profile-info p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #000;
+}
+
+/* Confirm popup button styles */
+.confirm-popup button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.confirm-popup button:hover {
+  background: #0056b3;
+}
+
+.confirm-popup button:last-of-type {
+  background: #ccc;
+}
+
+.confirm-popup button:last-of-type:hover {
+  background: #999;
+}
+
+/* Content styles */
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: hidden;
+  /* Hide scrollbar initially */
+  scrollbar-width: none;
+  /* Firefox */
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-content.expanded {
+  margin-left: 0;
+}
+
+.db-sections::-webkit-scrollbar {
+  width: 0;
+  /* Chrome, Safari */
+  height: 0;
+  /* Chrome, Safari */
+}
+
+/* Show scrollbar on hover */
+
+.db-section::-webkit-scrollbar,
+.sections::-webkit-scrollbar {
+  width: 12px;
+  /* Show scrollbar width */
+}
+
+.db-section::-webkit-scrollbar-track,
+.sections::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+.db-section::-webkit-scrollbar-thumb,
+.sections::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* Section styles */
+.db-section {
+  /* margin-bottom: 10px; */
+  /* padding: 20px; */
+  /* background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px); 
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); */
+  height: 105%;
+  overflow-y: scroll;
+}
+
+/* .db-section h1 {
+  margin-bottom: 40px;
+} */
+
+/* AddCourseForm styles */
+.add-course-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-course-form label {
+  margin-bottom: 10px;
+  color: #387cb8c7;
+}
+
+.add-course-form input,
+.add-course-form textarea,
+.add-course-form select {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.add-course-form button {
+  padding: 10px 20px;
+  background-color: #387cb8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-course-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.hamburger-menu span {
+  width: 100%;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .header-dash h1 {
+    font-size: 1.2em;
+    margin-left: 30px;
+  }
+
+  .header-dash {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    color: #387cb8;
+    max-width: 1400px;
+    width: 100%;
+    margin: auto;
+    margin-top: 0px;
+  }
+
+  .dash-logo {
+    height: 30px;
+    gap: 0;
+    align-self: flex-end;
+    margin-top: 20px;
+    margin-right: 30px;
+  }
+
+  .dashboard-card {
+    width: 95%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .db-section {
+    width: 105%;
+    margin-left: -18px;
+  }
+
+  .dashboard-content {
+    margin-left: 0;
+    width: 90%;
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .settings-content {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+  .header-dash {
+    max-width: 1900px;
+  }
+
+  .header-dash h1 {
+    font-size: 32px;
+  }
+
+  .dash-logo {
+    height: 80px;
+  }
+
+  .profile-info {
+    font-size: 24px;
+  }
+
+  .profile-section img {
+    height: 100px;
+    width: auto;
+  }
+
+  .settings-content {
+    max-width: 1900px;
+    margin-left: 200px;
+  }
+
+
+}
+
+/* Overlay for the popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  z-index: 999;
+}
+
+.su-loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  z-index: 99999;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.msuccess-message {
+  position: fixed;
+  top: 50%;
+  left: 40vw;
+  z-index: 1000;
+  background-color: #333333b4;
+  padding: 10px;
+  border-radius: 5px;
+  color: #fff;
+}
