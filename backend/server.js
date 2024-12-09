@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes"); // Existing routes for busine
 const personalRoutes = require("./routes/personalRoutes"); // New routes for personal sign-up
 const courseCategoryRoutes = require("./routes/courseCategoryRoutes"); // New routes for course category
 const courseRoutes = require("./routes/course"); // New routes for courses
+const enquiriesRoutes = require("./routes/enquiriesRouter")//New routes for enquiries
 const studentRoutes = require("./routes/studentRoutes");
 const bannerRoutes = require("./routes/bannerRoutes"); // New routes for banners
 const posterRoutes = require("./routes/posterRoutes");
@@ -38,6 +39,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/personal", personalRoutes); // Add the personal routes here
 app.use("/api/course-category", courseCategoryRoutes); // Add the course category routes here
 app.use("/api/courses", courseRoutes);
+app.use("/api/enquiries", enquiriesRoutes)
 app.use("/api/student", studentRoutes);
 app.use("/api/banners", bannerRoutes); // Add the banner routes here
 app.use("/api/posters", posterRoutes);

@@ -3,55 +3,82 @@ import axios from "axios";
 
 import "./Enquiries.css";
 import Appbar from "../../components/common/appbar/Appbar";
-import {
-  toRedableDate,
-  toRedableDateAndTime,
-} from "../../components/utils/redableDate";
 
 const Enquiries = () => {
- 
+  const [enquiryData, setEnquiryData] = useState([]);
+  const [error, setError] = useState(null);
+  const [provider, setProvider] = useState(null);
+
+  const fetchProviderAndEnquiry = async () => {
+    setError(null);
+
+    const userId = sessionStorage.getItem("userid");
+    if (!userId) {
+      setError("No user ID found in session storage.");
+      return;
+    }
+
+    try {
+      const providerResponse = await axios.get(
+        `https://admin.kidgage.com/api/users/user/${userId}`
+      );
+      setProvider(providerResponse.data);
+
+      const enquiryResponse = await axios.get(
+        `https://admin.kidgage.com/api/enquiries/enquiry-by-providers`,
+        {
+          params: { providerIds: [userId] },
+        }
+      );
+      setEnquiryData(enquiryResponse.data);
+    } catch (error) {
+      console.log(`Error fetching courses: ${error}`);
+      setError("Error fetching courses");
+    }
+  };
+
+  useEffect(() => {
+    fetchProviderAndEnquiry();
+  }, []);
+  console.log(enquiryData);
+  console.log(provider);
+
   return (
     <div className="enquiriesPage-container">
       <Appbar />
       <div className="enquiriesPage-content">
-        <h1 className="enquiriesPage-content-h3">Enquiries </h1>
+        <h3 className="enquiriesPage-content-h3">Enquiries </h3>
         <div className="enquiriesPage-content-container">
           <div className="enquiriesPage-table-wrapper">
             <table className="enquiriesPage-content-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Date of Birth</th>
-                  <th>Gender</th>
-                  <th>Father's Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
+                  <th>Parent Name</th>
+                  <th>Child's Age</th>
+                  <th>Parent Phone</th>
+                  <th>Parent Email</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                    <td>Ahmed Mubashir</td>
-                    <td>21/02/2024</td>
-                    <td>Male</td>
-                    <td>Arif Abdullah</td>
-                    <td>+91 8956124568</td>
-                    <td>ahmedmubashir@gmail.com</td>
-                </tr>
-                <tr>
-                    <td>Ahmed Mubashir</td>
-                    <td>21/02/2024</td>
-                    <td>Male</td>
-                    <td>Arif Abdullah</td>
-                    <td>+91 8956124568</td>
-                    <td>ahmedmubashir@gmail.com</td>
-                </tr>
+                {error ? (
+                  <tr>
+                    <td colSpan="6">{error}</td>
+                  </tr>
+                ) : (
+                  enquiryData.map((item) => (
+                    <tr key={item._id}>
+                      <td>{item.parentDetails.name}</td>
+                      <td>{item.childDetails.age}</td>
+                      <td>{item.parentDetails.phone}</td>
+                      <td>{item.parentDetails.email}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
-              
             </table>
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

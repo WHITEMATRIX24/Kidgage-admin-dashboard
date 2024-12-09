@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
+import adminImage from "../../assets/images/admin-photo.jpeg";
 
 const Appbar = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -128,7 +129,9 @@ const Appbar = () => {
           {role === "provider" && providerLogo ? (
             <img src={providerLogo} alt="Provider Logo" className="avatar" />
           ) : (
-            <div className="avatar"></div>
+            <div className="avatar">
+              <img src={adminImage} alt="Provider Logo" className="avatar" />
+            </div>
           )}
           <div className="profile-info">
             <h1>{name || "User Name"}</h1>

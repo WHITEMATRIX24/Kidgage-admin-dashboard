@@ -6,8 +6,10 @@ import Appbar from "../../components/common/appbar/Appbar";
 
 const Providerdashboard = () => {
   const [courseData, setCourseData] = useState([]);
+  const [courseCategory, setCourseCategory] = useState([]);
   const [error, setError] = useState(null);
   const [provider, setProvider] = useState(null);
+  const [enquiryData, setEnquiryData] = useState([]);
   const fetchProviderAndCourses = async () => {
     setError(null);
 
@@ -18,6 +20,11 @@ const Providerdashboard = () => {
     }
 
     try {
+      const coursecategories = await axios.get(
+        `https://admin.kidgage.com/api/course-category/categories`
+      );
+      setCourseCategory(coursecategories.data);
+
       const providerResponse = await axios.get(
         `https://admin.kidgage.com/api/users/user/${userId}`
       );
@@ -30,12 +37,25 @@ const Providerdashboard = () => {
         }
       );
       setCourseData(coursesResponse.data);
+
+      const enquiryResponse = await axios.get(
+        `https://admin.kidgage.com/api/enquiries/enquiry-by-providers`,
+        {
+          params: { providerIds: [userId] },
+        }
+      );
+      setEnquiryData(enquiryResponse.data);
+
       console.log(courseData);
     } catch (error) {
       console.log(`Error fetching courses: ${error}`);
       setError("Error fetching courses");
     }
   };
+
+  // console.log(enquiryData);
+  // console.log(courseCategory);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -55,15 +75,21 @@ const Providerdashboard = () => {
         <h3 className="provider-dashboard-content-h3">Dashboard</h3>
         <div className="provider-dashboardpage-tiles-container">
           <div className="provider-dashboardpage-tiles">
-            <h2 className="provider-dashboardpage-textcolor">67</h2>
+            <h2 className="provider-dashboardpage-textcolor">
+              {enquiryData.length}
+            </h2>
             <h1 className="provider-dashboard-tile-text">Enquiries</h1>
           </div>
           <div className="provider-dashboardpage-tiles">
-            <h2 className="provider-dashboardpage-textcolor">38</h2>
+            <h2 className="provider-dashboardpage-textcolor">
+              {courseCategory.length}
+            </h2>
             <h1 className="provider-dashboard-tile-text">Categories</h1>
           </div>
           <div className="provider-dashboardpage-tiles">
-            <h2 className="provider-dashboardpage-textcolor">52</h2>
+            <h2 className="provider-dashboardpage-textcolor">
+              {courseData.length}
+            </h2>
             <h1 className="provider-dashboard-tile-text">Courses</h1>
           </div>
         </div>
@@ -115,16 +141,14 @@ const Providerdashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Ahmed Mubashir</td>
-                    <td>21/02/2024</td>
-                    <td>+971 89561245</td>
-                  </tr>
-                  <tr>
-                    <td>Anwar Sadath</td>
-                    <td>21/02/2020</td>
-                    <td>+971 89561243</td>
-                  </tr>
+                  {enquiryData &&
+                    enquiryData.map((item) => (
+                      <tr key={item._id}>
+                        <td>{item.parentDetails.name}</td>
+                        <td>{item.childDetails.age}</td>
+                        <td>{item.parentDetails.phone}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
