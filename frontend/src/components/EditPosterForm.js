@@ -22,7 +22,7 @@ const EditPosterForm = ({ onDelete }) => {
   const fetchPosters = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://kidgage-dashboar-newui.onrender.com/api/posters");
+      const response = await axios.get("https://admin.kidgage.com/api/posters");
       setPosters(response.data);
       setLoading(false);
     } catch (error) {
@@ -106,7 +106,7 @@ const EditPosterForm = ({ onDelete }) => {
 
     try {
       await axios.put(
-        `https://kidgage-dashboar-newui.onrender.com/api/posters/${selectedPoster._id}`,
+        `https://admin.kidgage.com/api/posters/${selectedPoster._id}`,
         formData
       );
       setEditMode(false);

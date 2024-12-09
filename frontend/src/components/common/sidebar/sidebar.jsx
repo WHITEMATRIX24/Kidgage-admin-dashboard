@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import {
   faBook,
   faSchool,
@@ -21,7 +21,8 @@ import {
   faBell,
   faFile,
   faImage,
-  faUser, faMessage
+  faUser,
+  faMessage,
 } from "@fortawesome/free-regular-svg-icons";
 
 const Sidebar = ({
@@ -44,7 +45,7 @@ const Sidebar = ({
   const handleLogout = () => {
     sessionStorage.clear();
     setTimeout(() => {
-      navigate('/');
+      navigate("/");
     }, 2000);
   };
   useEffect(() => {
@@ -66,7 +67,7 @@ const Sidebar = ({
       const userId = sessionStorage.getItem("userid");
       try {
         const response = await fetch(
-          `https://kidgage-dashboar-newui.onrender.com/api/users/user/${userId}`
+          `https://admin.kidgage.com/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -172,30 +173,34 @@ const Sidebar = ({
   };
   useEffect(() => {
     if (adminRole === "Provider") {
-      setActiveItem('dashboard')
-      document.getElementsByClassName("sidebar-logout-icon")[0].style.color = "white"
-      document.getElementsByClassName("sidebar-logout-icon")[0].style.backgroundColor = "#b3aea6"
-      document.getElementsByClassName("sidebar-logout-btn")[0].style.color = "grey"
+      setActiveItem("dashboard");
+      document.getElementsByClassName("sidebar-logout-icon")[0].style.color =
+        "white";
+      document.getElementsByClassName(
+        "sidebar-logout-icon"
+      )[0].style.backgroundColor = "#b3aea6";
+      document.getElementsByClassName("sidebar-logout-btn")[0].style.color =
+        "grey";
     }
-  }, [adminRole])
+  }, [adminRole]);
   useEffect(() => {
     if (adminRole == "Provider") {
-      document.getElementsByClassName("active")[0].style.color = "black"
-      document.getElementsByClassName("active")[0].style.borderLeftColor = "#b3aea6"
-      document.getElementsByClassName("activeIcon")[0].style.backgroundColor = "black"
-      const notActiveElement = document.getElementsByClassName("notActive")
+      document.getElementsByClassName("active")[0].style.color = "black";
+      document.getElementsByClassName("active")[0].style.borderLeftColor =
+        "#b3aea6";
+      document.getElementsByClassName("activeIcon")[0].style.backgroundColor =
+        "black";
+      const notActiveElement = document.getElementsByClassName("notActive");
       for (var i = 0; i < notActiveElement.length; i++) {
         notActiveElement[i].style.color = "grey";
       }
-      const sidebarIcons = document.getElementsByClassName("sidebar-icon")
+      const sidebarIcons = document.getElementsByClassName("sidebar-icon");
       for (var i = 0; i < sidebarIcons.length; i++) {
         sidebarIcons[i].style.color = "white";
-        sidebarIcons[i].style.backgroundColor = "#b3aea6"
+        sidebarIcons[i].style.backgroundColor = "#b3aea6";
       }
     }
-
-  }, [adminRole, activeItem])
-
+  }, [adminRole, activeItem]);
 
   const allowedSectionsByRole = {
     admin: [
@@ -232,7 +237,9 @@ const Sidebar = ({
               >
                 <FontAwesomeIcon
                   icon={icons[section]}
-                  className={activeItem === section ? "activeIcon" : "sidebar-icon"}
+                  className={
+                    activeItem === section ? "activeIcon" : "sidebar-icon"
+                  }
                 />
                 {section.charAt(0).toUpperCase() +
                   section.slice(1).replace("-", " ")}

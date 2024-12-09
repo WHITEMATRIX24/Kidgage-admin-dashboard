@@ -19,19 +19,18 @@ const Providerdashboard = () => {
 
     try {
       const providerResponse = await axios.get(
-        `https://kidgage-dashboar-newui.onrender.com/api/users/user/${userId}`
+        `https://admin.kidgage.com/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `https://kidgage-dashboar-newui.onrender.com/api/courses/by-providers`,
+        `https://admin.kidgage.com/api/courses/by-providers`,
         {
           params: { providerIds: [userId] },
         }
       );
       setCourseData(coursesResponse.data);
       console.log(courseData);
-
     } catch (error) {
       console.log(`Error fetching courses: ${error}`);
       setError("Error fetching courses");
@@ -39,8 +38,8 @@ const Providerdashboard = () => {
   };
   function formatDate(dateString) {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
   }
@@ -89,13 +88,11 @@ const Providerdashboard = () => {
                     courseData.map((courses) => (
                       <tr key={courses._id}>
                         <td>{courses.name}</td>
+                        <td>{courses.courseType}</td>
                         <td>
-                          {courses.courseType}
+                          {formatDate(courses.startDate)} to{" "}
+                          {formatDate(courses.endDate)}
                         </td>
-                        <td>
-                          {formatDate(courses.startDate)} to {formatDate(courses.endDate)}
-                        </td>
-
                       </tr>
                     ))}
                 </tbody>

@@ -37,7 +37,7 @@ function AddCourseForm({ providerId }) {
     const fetchCourseTypes = async () => {
       try {
         const response = await axios.get(
-          "https://kidgage-dashboar-newui.onrender.com/api/course-category/categories"
+          "https://admin.kidgage.com/api/course-category/categories"
         );
         setCourseTypes(response.data);
       } catch (error) {
@@ -189,7 +189,7 @@ function AddCourseForm({ providerId }) {
       });
 
       const response = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/courses/addcourse",
+        "https://admin.kidgage.com/api/courses/addcourse",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -228,7 +228,7 @@ function AddCourseForm({ providerId }) {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `https://kidgage-dashboar-newui.onrender.com/api/users/search?query=${searchQuery}`
+        `https://admin.kidgage.com/api/users/search?query=${searchQuery}`
       );
       setSearchResult(response.data);
       setSearchError("");
@@ -244,11 +244,11 @@ function AddCourseForm({ providerId }) {
   };
 
   return (
-
     <div className="course-addmodal-container">
-
       <form className="add-course-form" onSubmit={handleSubmit}>
-        <label htmlFor="name" style={{ color: "black" }}>Course Name</label>
+        <label htmlFor="name" style={{ color: "black" }}>
+          Course Name
+        </label>
         <input
           type="text"
           id="name"
@@ -381,7 +381,9 @@ function AddCourseForm({ providerId }) {
             </select>
           </div>
         </div>
-        <label className="" style={{ color: 'black' }}>Select Days:</label>
+        <label className="" style={{ color: "black" }}>
+          Select Days:
+        </label>
         <div className="form-group add-days-group">
           <div className="days-selection">
             {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
@@ -611,7 +613,11 @@ function AddCourseForm({ providerId }) {
           ))}
         </div>
 
-        <button style={{ backgroundColor: 'black' }} type="submit" className="addcourse-submit">
+        <button
+          style={{ backgroundColor: "black" }}
+          type="submit"
+          className="addcourse-submit"
+        >
           Submit
         </button>
         {error && <p className="error-message">{error}</p>}
@@ -630,7 +636,6 @@ function AddCourseForm({ providerId }) {
         </div>
       )}
     </div>
-
   );
 }
 

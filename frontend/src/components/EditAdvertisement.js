@@ -23,7 +23,7 @@ const EditAdvertisementForm = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/advertisement"
+        "https://admin.kidgage.com/api/advertisement"
       );
       setAdvertisements(response.data);
       if (response.data.length > 0) {
@@ -80,7 +80,7 @@ const EditAdvertisementForm = () => {
       }
 
       await axios.put(
-        `https://kidgage-dashboar-newui.onrender.com/api/advertisement/${editingAdvertisement._id}`,
+        `https://admin.kidgage.com/api/advertisement/${editingAdvertisement._id}`,
         formData,
         {
           headers: {
@@ -105,7 +105,7 @@ const EditAdvertisementForm = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://kidgage-dashboar-newui.onrender.com/api/advertisement/${deletingAdvertisementId}`
+        `https://admin.kidgage.com/api/advertisement/${deletingAdvertisementId}`
       );
       fetchAdvertisements();
       setShowDeleteModal(false);

@@ -51,7 +51,7 @@ const EditCourseForm = ({ id }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://kidgage-dashboar-newui.onrender.com/api/course-category/categories"
+          "https://admin.kidgage.com/api/course-category/categories"
         );
         // Handle categories if needed
       } catch (error) {
@@ -75,7 +75,7 @@ const EditCourseForm = ({ id }) => {
     try {
       // Assuming searchQuery now contains the course ID
       const response = await axios.get(
-        `https://kidgage-dashboar-newui.onrender.com/api/courses/course/${courseId}`
+        `https://admin.kidgage.com/api/courses/course/${courseId}`
       );
       if (response.data) {
         setCourseData(response.data);
@@ -184,7 +184,7 @@ const EditCourseForm = ({ id }) => {
 
       try {
         const response = await axios.put(
-          `https://kidgage-dashboar-newui.onrender.com/api/courses/update/${courseData._id}`,
+          `https://admin.kidgage.com/api/courses/update/${courseData._id}`,
           modifiedData // Send only modified data
         );
         setSuccess("Course updated successfully!");
@@ -212,7 +212,7 @@ const EditCourseForm = ({ id }) => {
     asetLoading(true);
     try {
       await axios.delete(
-        `https://kidgage-dashboar-newui.onrender.com/api/courses/delete/${courseData._id}`
+        `https://admin.kidgage.com/api/courses/delete/${courseData._id}`
       );
       setCourseData(null);
       setFormData({
@@ -256,7 +256,7 @@ const EditCourseForm = ({ id }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://kidgage-dashboar-newui.onrender.com/api/course-category/categories"
+          "https://admin.kidgage.com/api/course-category/categories"
         );
         setCourseTypes(response.data);
       } catch (error) {
@@ -376,10 +376,10 @@ const EditCourseForm = ({ id }) => {
       ageGroup:
         Array.isArray(prev.ageGroup) && prev.ageGroup.length > 0
           ? prev.ageGroup.map((group, index) =>
-            index === 0
-              ? { ...group, [name]: value } // Update the first object in the array
-              : group
-          )
+              index === 0
+                ? { ...group, [name]: value } // Update the first object in the array
+                : group
+            )
           : [{ [name]: value }], // If ageGroup is empty or not an array, initialize it with an object
     }));
   };
@@ -488,8 +488,8 @@ const EditCourseForm = ({ id }) => {
                     value={
                       formData.startDate
                         ? new Date(formData.startDate)
-                          .toISOString()
-                          .split("T")[0]
+                            .toISOString()
+                            .split("T")[0]
                         : ""
                     }
                     onChange={handleChange}
@@ -634,8 +634,8 @@ const EditCourseForm = ({ id }) => {
                     value={
                       formData.ageGroup && formData.ageGroup[0]?.ageStart
                         ? new Date(formData.ageGroup[0].ageStart)
-                          .toISOString()
-                          .split("T")[0]
+                            .toISOString()
+                            .split("T")[0]
                         : ""
                     }
                     onChange={handleAgeGroupChange}
@@ -650,8 +650,8 @@ const EditCourseForm = ({ id }) => {
                     value={
                       formData.ageGroup && formData.ageGroup[0]?.ageEnd
                         ? new Date(formData.ageGroup[0].ageEnd)
-                          .toISOString()
-                          .split("T")[0]
+                            .toISOString()
+                            .split("T")[0]
                         : ""
                     }
                     onChange={handleAgeGroupChange}

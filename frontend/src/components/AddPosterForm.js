@@ -93,7 +93,7 @@ function AddPosterForm() {
 
     try {
       const response = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/posters/add",
+        "https://admin.kidgage.com/api/posters/add",
         formData,
         {
           headers: {

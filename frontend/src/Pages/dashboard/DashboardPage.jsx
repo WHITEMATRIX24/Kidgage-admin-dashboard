@@ -10,12 +10,14 @@ const DashboardPage = () => {
   const [coursesCounts, setCoursesCounts] = useState(0);
   const [leadsGeneratedCount, setLeadsGeneratedCount] = useState(0);
   const [upcommingMeetingsData, setUpcommingMeetingsData] = useState([]);
-  const [upcommingExpiresData, setUpcomingExpiresData] = useState([])
+  const [upcommingExpiresData, setUpcomingExpiresData] = useState([]);
 
   // Activity Provider initial data fetching
   const activityProviderInitialDataHandler = async () => {
     try {
-      const res = await axios.get("https://kidgage-dashboar-newui.onrender.com/api/users/accepted");
+      const res = await axios.get(
+        "https://admin.kidgage.com/api/users/accepted"
+      );
       // setUpcomingExpires(res)
       const count = res.data.length;
       setActiveProviderCounts(count);
@@ -27,7 +29,7 @@ const DashboardPage = () => {
   // Active Campaigns initial Data Handler
   const campaignsInitialDataHandler = async () => {
     try {
-      const res = await axios.get("https://kidgage-dashboar-newui.onrender.com/api/banners");
+      const res = await axios.get("https://admin.kidgage.com/api/banners");
       const count = res.data.length;
       setCampaignsCounts(count);
     } catch (error) {
@@ -39,7 +41,7 @@ const DashboardPage = () => {
   const coursesInitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/courses/get-all-courses"
+        "https://admin.kidgage.com/api/courses/get-all-courses"
       );
       const count = res.data.courseCounts;
       setCoursesCounts(count);
@@ -52,7 +54,7 @@ const DashboardPage = () => {
   const leadsGeneratedinitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/leads/get-all-leads-count"
+        "https://admin.kidgage.com/api/leads/get-all-leads-count"
       );
       const count = res.data.leadsCount;
       setLeadsGeneratedCount(count);
@@ -65,7 +67,7 @@ const DashboardPage = () => {
   const upcommingMeetingsInitialDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/users/meeting-scheduled-users"
+        "https://admin.kidgage.com/api/users/meeting-scheduled-users"
       );
       setUpcommingMeetingsData(response.data);
     } catch (error) {
@@ -80,10 +82,10 @@ const DashboardPage = () => {
   const upcommingExpiresInitialDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/users/accepted"
+        "https://admin.kidgage.com/api/users/accepted"
       );
       // console.log(response);
-      setUpcomingExpiresData(response.data)
+      setUpcomingExpiresData(response.data);
     } catch (error) {
       console.log(
         `error in fetching upcomming meetings data in dashboard error: ${error}`
@@ -121,7 +123,6 @@ const DashboardPage = () => {
 
   // console.log(upcommingExpires);
 
-
   return (
     <div className="dashboardpage-container">
       <Appbar />
@@ -148,8 +149,9 @@ const DashboardPage = () => {
         <div className="dashboardpage-table-container">
           <div className="dashboardpage-tables">
             <div className="dashboardpage-table-header">
-              <h3 className="dashboardpage-table-header-h3">Upcoming Meetings</h3>
-
+              <h3 className="dashboardpage-table-header-h3">
+                Upcoming Meetings
+              </h3>
             </div>
             <div className="dashboardpage-table-wrapper">
               <table className="dashboardpage-table">
@@ -165,9 +167,7 @@ const DashboardPage = () => {
                     upcommingMeetingsData.map((meetings) => (
                       <tr key={meetings._id}>
                         <td>{meetings.fullName}</td>
-                        <td>
-                          {formatDateTime(meetings.meetingScheduleDate)}
-                        </td>
+                        <td>{formatDateTime(meetings.meetingScheduleDate)}</td>
                         <td>{meetings.location}</td>
                       </tr>
                     ))}
@@ -177,8 +177,9 @@ const DashboardPage = () => {
           </div>
           <div className="dashboardpage-tables">
             <div className="dashboardpage-table-header">
-              <h3 className="dashboardpage-table-header-h3">Upcoming Expires</h3>
-
+              <h3 className="dashboardpage-table-header-h3">
+                Upcoming Expires
+              </h3>
             </div>
             <div className="dashboardpage-table-wrapper">
               <table className="dashboardpage-table">
@@ -191,12 +192,13 @@ const DashboardPage = () => {
                 </thead>
                 <tbody>
                   {upcommingExpiresData &&
-                    upcommingExpiresData.map((expires) => (<tr>
-                      <td>{expires.fullName}</td>
-                      <td> {formatDate(expires.expiryDate)}</td>
-                      <td>{expires.location}</td>
-                    </tr>))}
-
+                    upcommingExpiresData.map((expires) => (
+                      <tr>
+                        <td>{expires.fullName}</td>
+                        <td> {formatDate(expires.expiryDate)}</td>
+                        <td>{expires.location}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

@@ -63,7 +63,7 @@ function Campaigns() {
   const fetchBanners = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://kidgage-dashboar-newui.onrender.com/api/banners");
+      const response = await axios.get("https://admin.kidgage.com/api/banners");
       //   console.log(response.data);
       setBanners(response.data);
       setLoading(false);
@@ -76,7 +76,7 @@ function Campaigns() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/desktop-banners/"
+        "https://admin.kidgage.com/api/desktop-banners/"
       );
       console.log(response.data);
       setDesktopBanners(response.data);
@@ -90,7 +90,7 @@ function Campaigns() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/mobile-banners/"
+        "https://admin.kidgage.com/api/mobile-banners/"
       );
       // console.log(response.data);
       setMobileBanners(response.data);
@@ -107,11 +107,11 @@ function Campaigns() {
     const toggleApiBasedOnTab = () => {
       switch (tab) {
         case "home":
-          return `https://kidgage-dashboar-newui.onrender.com/api/banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/banners/update-status/${bannerId}`;
         case "desktop":
-          return `https://kidgage-dashboar-newui.onrender.com/api/desktop-banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/desktop-banners/update-status/${bannerId}`;
         case "mobile":
-          return `https://kidgage-dashboar-newui.onrender.com/api/mobile-banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/mobile-banners/update-status/${bannerId}`;
         default:
           return "";
       }
@@ -304,7 +304,6 @@ function Campaigns() {
                     </div>
                     <div className="grid-item ">
                       <div className="campaign-actions">
-
                         {" "}
                         <label class="switch">
                           <input
@@ -327,11 +326,8 @@ function Campaigns() {
                         <FontAwesomeIcon
                           icon={faTrash}
                           style={{ color: "#d70404", marginLeft: "15px" }}
-                          onClick={() =>
-                            openBannerDeleteModal("desktop", item)
-                          }
+                          onClick={() => openBannerDeleteModal("desktop", item)}
                         />
-
                       </div>
                     </div>
                   </div>

@@ -55,7 +55,7 @@ const CategoryPage = () => {
   const initialCategoryDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/course-category/categories"
+        "https://admin.kidgage.com/api/course-category/categories"
       );
       setCategoryData(res.data);
     } catch (error) {

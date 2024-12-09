@@ -34,7 +34,7 @@ const InspectionPage = () => {
   const meetingScheduledUserDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/users/meeting-scheduled-users"
+        "https://admin.kidgage.com/api/users/meeting-scheduled-users"
       );
       setMeetingScheduledUsrs(response.data);
     } catch (error) {
@@ -117,24 +117,26 @@ const InspectionPage = () => {
         />
       )}
       {/* aprrove modal */}
-      {modalState.open && modalState.type === "approve" && modalState.userData && (
-        <InspectionApproveModal
-          isShow={
-            modalState.open &&
-            modalState.type === "approve" &&
-            modalState.userData
-          }
-          closeHandler={closeModalHandler}
-          providerData={{
-            username: modalState.userData?.licenseNo,
-            phoneNumber: modalState.userData?.phoneNumber,
-            noOfCourses: modalState.userData?.noOfCourses,
-            email: modalState.userData?.email,
-            fullName: modalState.userData?.fullName,
-            userId: modalState.userData?._id,
-          }}
-        />
-      )}
+      {modalState.open &&
+        modalState.type === "approve" &&
+        modalState.userData && (
+          <InspectionApproveModal
+            isShow={
+              modalState.open &&
+              modalState.type === "approve" &&
+              modalState.userData
+            }
+            closeHandler={closeModalHandler}
+            providerData={{
+              username: modalState.userData?.licenseNo,
+              phoneNumber: modalState.userData?.phoneNumber,
+              noOfCourses: modalState.userData?.noOfCourses,
+              email: modalState.userData?.email,
+              fullName: modalState.userData?.fullName,
+              userId: modalState.userData?._id,
+            }}
+          />
+        )}
     </div>
   );
 };

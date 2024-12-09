@@ -24,7 +24,7 @@ const EditParentForm = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/personal/search",
+        "https://admin.kidgage.com/api/personal/search",
         {
           params: { query },
         }
@@ -78,7 +78,7 @@ const EditParentForm = () => {
     if (isEditMode) {
       try {
         const response = await axios.put(
-          `https://kidgage-dashboar-newui.onrender.com/api/personal/parent/${parentData._id}`,
+          `https://admin.kidgage.com/api/personal/parent/${parentData._id}`,
           formData
         );
         setSuccess("Parent updated successfully!");
@@ -116,7 +116,7 @@ const EditParentForm = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://kidgage-dashboar-newui.onrender.com/api/personal/parent/${parentData._id}`
+        `https://admin.kidgage.com/api/personal/parent/${parentData._id}`
       );
       setParentData(null);
       setFormData({

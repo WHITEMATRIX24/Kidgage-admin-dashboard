@@ -43,7 +43,7 @@ function AddCourseCategoryForm() {
 
     try {
       const response = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/course-category/add",
+        "https://admin.kidgage.com/api/course-category/add",
         formData,
         {
           headers: {

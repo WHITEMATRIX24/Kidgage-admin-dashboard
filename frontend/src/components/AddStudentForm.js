@@ -62,7 +62,7 @@ function AddStudentForm() {
 
     try {
       const response = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/student/add",
+        "https://admin.kidgage.com/api/student/add",
         {
           parent: searchResult._id,
           firstName: student.firstName,
@@ -99,7 +99,7 @@ function AddStudentForm() {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        "https://kidgage-dashboar-newui.onrender.com/api/personal/search",
+        "https://admin.kidgage.com/api/personal/search",
         {
           params: { query: student.parent },
         }

@@ -20,11 +20,11 @@ const CampaignAddModal = ({ isShow, closeHandler, tab }) => {
   const apiBasedOnTab = () => {
     switch (tab) {
       case "home":
-        return "https://kidgage-dashboar-newui.onrender.com/api/banners/addbanner";
+        return "https://admin.kidgage.com/api/banners/addbanner";
       case "desktop":
-        return "https://kidgage-dashboar-newui.onrender.com/api/desktop-banners/addbanner";
+        return "https://admin.kidgage.com/api/desktop-banners/addbanner";
       case "mobile":
-        return "https://kidgage-dashboar-newui.onrender.com/api/mobile-banners/addbanner";
+        return "https://admin.kidgage.com/api/mobile-banners/addbanner";
       default:
         return "";
     }
@@ -114,8 +114,9 @@ const CampaignAddModal = ({ isShow, closeHandler, tab }) => {
 
   return (
     <div
-      className={`campaign-addmodal-wrapper ${isShow ? "campaign-addmodal-show" : "campaign-addmodal-hide"
-        }`}
+      className={`campaign-addmodal-wrapper ${
+        isShow ? "campaign-addmodal-show" : "campaign-addmodal-hide"
+      }`}
     >
       <div className="campaign-addmodal-container">
         <span onClick={handleClose}>

@@ -11,7 +11,7 @@ const CategoryDeleteModal = ({ isShow, closeHandler, categoryDeleteId }) => {
       setIsLoading(true);
       try {
         const res = await axios.delete(
-          `https://kidgage-dashboar-newui.onrender.com/api/course-category/delete/${categoryDeleteId}`
+          `https://admin.kidgage.com/api/course-category/delete/${categoryDeleteId}`
         );
 
         if (res.status === 200) {
@@ -29,8 +29,9 @@ const CategoryDeleteModal = ({ isShow, closeHandler, categoryDeleteId }) => {
 
   return (
     <div
-      className={`category-deletemodal-wrapper ${isShow ? "category-deletemodal-show" : "category-deletemodal-hide"
-        }`}
+      className={`category-deletemodal-wrapper ${
+        isShow ? "category-deletemodal-show" : "category-deletemodal-hide"
+      }`}
     >
       <div className="category-deletemodal-container">
         <h2>Delete category</h2>

@@ -51,7 +51,7 @@ function AddAdvertisement() {
 
     try {
       const response = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/advertisement/addadvertisement",
+        "https://admin.kidgage.com/api/advertisement/addadvertisement",
         formData,
         {
           headers: {

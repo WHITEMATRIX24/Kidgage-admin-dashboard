@@ -16,7 +16,7 @@ const Appbar = () => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch(
-          "https://kidgage-dashboar-newui.onrender.com/api/users/pending"
+          "https://admin.kidgage.com/api/users/pending"
         ); // Adjust the URL as needed
         const data = await response.json();
         setPendingRequests(data);
@@ -37,10 +37,10 @@ const Appbar = () => {
 
       try {
         const providerResponse = await axios.get(
-          `https://kidgage-dashboar-newui.onrender.com/api/users/user/${userId}`
+          `https://admin.kidgage.com/api/users/user/${userId}`
         );
         const providerData = providerResponse.data;
-        console.log(providerData)
+        console.log(providerData);
         if (providerData) {
           setProviderLogo(providerData.logo);
         }
@@ -84,7 +84,11 @@ const Appbar = () => {
             className="appbar-notification-icon-container"
             onClick={togglePopup}
           >
-            <FontAwesomeIcon icon={faBell} className="appbar-bellicon" size="xl" />
+            <FontAwesomeIcon
+              icon={faBell}
+              className="appbar-bellicon"
+              size="xl"
+            />
             {pendingRequests.length > 0 && (
               <span className="appbar-notification-count">
                 {pendingRequests.length}
@@ -122,11 +126,7 @@ const Appbar = () => {
         {/* Profile info */}
         <div className="profile">
           {role === "provider" && providerLogo ? (
-            <img
-              src={providerLogo}
-              alt="Provider Logo"
-              className="avatar"
-            />
+            <img src={providerLogo} alt="Provider Logo" className="avatar" />
           ) : (
             <div className="avatar"></div>
           )}

@@ -20,7 +20,7 @@ const EditBannerForm = () => {
   const fetchBanners = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://kidgage-dashboar-newui.onrender.com/api/banners");
+      const response = await axios.get("https://admin.kidgage.com/api/banners");
       setBanners(response.data);
       setLoading(false);
     } catch (error) {
@@ -64,7 +64,7 @@ const EditBannerForm = () => {
       }
 
       await axios.put(
-        `https://kidgage-dashboar-newui.onrender.com/api/banners/${editingBanner._id}`,
+        `https://admin.kidgage.com/api/banners/${editingBanner._id}`,
         formData
       );
       fetchBanners();
@@ -83,7 +83,7 @@ const EditBannerForm = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://kidgage-dashboar-newui.onrender.com/api/banners/${deletingBannerId}`
+        `https://admin.kidgage.com/api/banners/${deletingBannerId}`
       );
       fetchBanners();
       setShowDeleteModal(false);

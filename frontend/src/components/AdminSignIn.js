@@ -31,7 +31,7 @@ const AdminSignIn = () => {
 
     try {
       const response = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/admin/signin",
+        "https://admin.kidgage.com/api/admin/signin",
         formData
       );
       console.log("Sign-in successful:", response.data);

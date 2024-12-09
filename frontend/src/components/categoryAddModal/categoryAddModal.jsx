@@ -29,7 +29,7 @@ const CategoryAddModal = ({ isShow, closeHandler }) => {
 
     try {
       const res = await axios.post(
-        "https://kidgage-dashboar-newui.onrender.com/api/course-category/add",
+        "https://admin.kidgage.com/api/course-category/add",
         newCategoryFormData
       );
 
@@ -59,8 +59,9 @@ const CategoryAddModal = ({ isShow, closeHandler }) => {
 
   return (
     <div
-      className={`category-addmodal-wrapper ${isShow ? "category-addmodal-show" : "category-addmodal-hide"
-        }`}
+      className={`category-addmodal-wrapper ${
+        isShow ? "category-addmodal-show" : "category-addmodal-hide"
+      }`}
     >
       <div className="category-addmodal-container">
         <span onClick={handleClose}>
