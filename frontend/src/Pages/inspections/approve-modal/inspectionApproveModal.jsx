@@ -42,7 +42,7 @@ const InspectionApproveModal = ({ isShow, closeHandler, providerData }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5001/api/users/verify/${providerData.userId}`,
+        `https://admin.kidgage.com/api/users/verify/${providerData.userId}`,
         dataForServer
       );
       if (res.status === 200) {
@@ -70,9 +70,8 @@ const InspectionApproveModal = ({ isShow, closeHandler, providerData }) => {
 
   return (
     <div
-      className={`inspection-approve-modal-wrapper ${
-        isShow ? "show" : "hidden"
-      }`}
+      className={`inspection-approve-modal-wrapper ${isShow ? "show" : "hidden"
+        }`}
     >
       <div className={`inspection-approve-modal-container`}>
         <span onClick={closeHandler}>

@@ -8,43 +8,43 @@ import axios from 'axios';
 
 
 
-function PosterEditModal({ isShow, closeHandler, posterData ,setEditStatus}) {
-    const [newPosterFormData, setNewPosterFormData] = useState({
-        posterName: posterData.name || "",
-        description: posterData.description || "",
-        link: posterData.link || "",
-        startDate: posterData.startDate ? posterData.startDate.split("T")[0] : "",
-        endDate: posterData.endDate ? posterData.endDate.split("T")[0] : "",
-        location:posterData.location || "",
-        imageUploded: posterData.image || null,
-      });
-      const [uploadImageUrl, setUploadImageUrl] = useState();
-      const [isLoading, setIsLoading] = useState(false);
-      const posterAddImageRef = useRef();
+function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
+  const [newPosterFormData, setNewPosterFormData] = useState({
+    posterName: posterData.name || "",
+    description: posterData.description || "",
+    link: posterData.link || "",
+    startDate: posterData.startDate ? posterData.startDate.split("T")[0] : "",
+    endDate: posterData.endDate ? posterData.endDate.split("T")[0] : "",
+    location: posterData.location || "",
+    imageUploded: posterData.image || null,
+  });
+  const [uploadImageUrl, setUploadImageUrl] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const posterAddImageRef = useRef();
 
   // handle publish
   const handlePublish = async (e) => {
     e.preventDefault();
 
     const {
-        link,
-        posterName,
-        description,
-        endDate,
-        imageUploded,
-        location,
-        startDate,
-      } = newPosterFormData;
-    
+      link,
+      posterName,
+      description,
+      endDate,
+      imageUploded,
+      location,
+      startDate,
+    } = newPosterFormData;
+
 
     if (
-        !posterName ||
-        !link ||
-        !description ||
-        !endDate ||
-        !startDate ||
-        !location ||
-        !imageUploded
+      !posterName ||
+      !link ||
+      !description ||
+      !endDate ||
+      !startDate ||
+      !location ||
+      !imageUploded
     ) {
       alert("Fill the form completly");
       return;
@@ -57,15 +57,15 @@ function PosterEditModal({ isShow, closeHandler, posterData ,setEditStatus}) {
 
     const formData = new FormData();
     formData.append("name", posterName);
-  formData.append("description", description);
-  formData.append("location", location);
-  formData.append("startDate", isoStartDate);
-  formData.append("endDate", isoEndDate);
-  formData.append("link", link);
-  formData.append("image", imageUploded);
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("startDate", isoStartDate);
+    formData.append("endDate", isoEndDate);
+    formData.append("link", link);
+    formData.append("image", imageUploded);
 
     try {
-      const res = await axios.put( `http://localhost:5001/api/posters/${posterData._id}`,
+      const res = await axios.put(`https://admin.kidgage.com/api/posters/${posterData._id}`,
         formData);
 
       if (res.status == 200) {
@@ -74,8 +74,8 @@ function PosterEditModal({ isShow, closeHandler, posterData ,setEditStatus}) {
         handleClose();
         return;
       }
-    //   alert(res.data.message);
-    //   handleClose();
+      //   alert(res.data.message);
+      //   handleClose();
     } catch (error) {
       console.log(`error in creating new Campaign error: ${error}`);
     } finally {
@@ -85,23 +85,23 @@ function PosterEditModal({ isShow, closeHandler, posterData ,setEditStatus}) {
 
 
 
-        // image edit upload handler
+  // image edit upload handler
   const imageUploadHandler = (file) => {
     const localUrl = URL.createObjectURL(file);
     setUploadImageUrl(localUrl);
     setNewPosterFormData({ ...newPosterFormData, imageUploded: file });
   };
-// close handler
-const handleClose = () => {
+  // close handler
+  const handleClose = () => {
     posterAddImageRef.current.value = null;
     setNewPosterFormData({
-        posterName: "",
-        description: "",
-        location:"",
-        startDate: "",
-        endDate: "",
-        link: "",
-        imageUploded: null,
+      posterName: "",
+      description: "",
+      location: "",
+      startDate: "",
+      endDate: "",
+      link: "",
+      imageUploded: null,
     });
     closeHandler();
   };
@@ -109,13 +109,12 @@ const handleClose = () => {
 
   return (
     <div
-    className={`poster-editmodal-wrapper ${
-      isShow ? "poster-editmodal-show " : "poster-editmodal-hide "
-    }`}
-  >
+      className={`poster-editmodal-wrapper ${isShow ? "poster-editmodal-show " : "poster-editmodal-hide "
+        }`}
+    >
 
-    <div className='poster-editmodal-container'>
-    <span onClick={handleClose}>
+      <div className='poster-editmodal-container'>
+        <span onClick={handleClose}>
           <FontAwesomeIcon icon={faX} style={{ color: "#ff0000" }} />
         </span>
         <h2>Edit Poster</h2>
@@ -136,7 +135,7 @@ const handleClose = () => {
                 }
               />
             </div>
-            
+
             <div className="campaign-addmodal-form-fieldcontainer">
               <p>Description</p>
               <textarea
@@ -223,7 +222,7 @@ const handleClose = () => {
                   src={
                     uploadImageUrl ||
                     newPosterFormData.imageUploded ||
-                   "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
+                    "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
                   }
                   alt="no image"
                   style={{ objectFit: "contain" }}
@@ -243,14 +242,14 @@ const handleClose = () => {
               onClick={(e) => handlePublish(e)}
               disabled={isLoading}
             >
-                Update
+              Update
               {isLoading ? "please wait" : "Publish"}
             </button>
           </div>
         </form>
-        
-        
-        </div>
+
+
+      </div>
 
     </div>
   )

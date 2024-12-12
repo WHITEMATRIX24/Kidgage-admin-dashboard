@@ -20,12 +20,12 @@ const Enquiries = () => {
 
     try {
       const providerResponse = await axios.get(
-        `http://localhost:5001/api/users/user/${userId}`
+        `https://admin.kidgage.com/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const enquiryResponse = await axios.get(
-        `http://localhost:5001/api/enquiries/enquiry-by-providers`,
+        `https://admin.kidgage.com/api/enquiries/enquiry-by-providers`,
         {
           params: { providerIds: [userId] },
         }

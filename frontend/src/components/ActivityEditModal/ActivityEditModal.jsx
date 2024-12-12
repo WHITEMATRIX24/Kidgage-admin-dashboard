@@ -37,7 +37,7 @@ function ActivityEditModal({
     } else {
       try {
         const res = await axios.put(
-          `http://localhost:5001/api/users/update-activity/${id}`,
+          `https://admin.kidgage.com/api/users/update-activity/${id}`,
           newActivityData
         );
 
@@ -57,9 +57,8 @@ function ActivityEditModal({
 
   return (
     <div
-      className={`category-editmodal-wrapper ${
-        isShow ? "category-editmodal-show" : "category-editmodal-hide"
-      }`}
+      className={`category-editmodal-wrapper ${isShow ? "category-editmodal-show" : "category-editmodal-hide"
+        }`}
     >
       <div className="activity-editmodal-container">
         <span onClick={handleClose}>

@@ -38,12 +38,12 @@ const CoursePage = () => {
 
     try {
       const providerResponse = await axios.get(
-        `http://localhost:5001/api/users/user/${userId}`
+        `https://admin.kidgage.com/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `http://localhost:5001/api/courses/by-providers`,
+        `https://admin.kidgage.com/api/courses/by-providers`,
         {
           params: { providerIds: [userId] },
         }
@@ -69,7 +69,7 @@ const CoursePage = () => {
   const deleteCourse = async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5001/api/courses/delete/${id}`
+        `https://admin.kidgage.com/api/courses/delete/${id}`
       );
       if (res.status === 200) {
         setCourseData((prevData) =>
@@ -133,7 +133,7 @@ const CoursePage = () => {
       const currentStatus = activeStatus === "true" || activeStatus === true;
       const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status
       const res = await axios.put(
-        `http://localhost:5001/api/courses/update-active-status/${id}`,
+        `https://admin.kidgage.com/api/courses/update-active-status/${id}`,
         {
           active: updatedStatus, // Send the updated status
         }
@@ -159,9 +159,8 @@ const CoursePage = () => {
         <div className="coursepage-content-header">
           {/* Tab Button for Programs Offered */}
           <button
-            className={`course_tab-button ${
-              activeTab === "Programs Offered" ? "active" : ""
-            }`}
+            className={`course_tab-button ${activeTab === "Programs Offered" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("Programs Offered")}
           >
             Programs Offered
@@ -169,9 +168,8 @@ const CoursePage = () => {
 
           {/* Tab Button for Add Course */}
           <button
-            className={`add_course_btn ${
-              activeTab === "Add Course" ? "active" : ""
-            }`}
+            className={`add_course_btn ${activeTab === "Add Course" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("Add Course")}
           >
             <FontAwesomeIcon icon={faPlus} style={{ color: "#fcfcfc" }} /> Add

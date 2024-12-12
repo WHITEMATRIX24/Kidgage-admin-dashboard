@@ -21,7 +21,7 @@ const PromoteCourse = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/users/all"
+          "https://admin.kidgage.com/api/users/all"
         ); // Adjust the URL as needed
         setProviders(response.data);
         setLoading(false);
@@ -40,7 +40,7 @@ const PromoteCourse = () => {
       const providerIds = providers.map((provider) => provider._id);
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/courses/by-providers",
+          "https://admin.kidgage.com/api/courses/by-providers",
           {
             params: { providerIds },
           }
@@ -77,7 +77,7 @@ const PromoteCourse = () => {
 
     try {
       await axios.post(
-        `http://localhost:5001/api/promoted/promote/${selectedCourse._id}`,
+        `https://admin.kidgage.com/api/promoted/promote/${selectedCourse._id}`,
         { promote: promoteMode }
       );
       // Refresh the courses list
@@ -142,7 +142,7 @@ const PromoteCourse = () => {
                     ) : (
                       <>
                         {courses[provider._id] &&
-                        courses[provider._id].length > 0 ? (
+                          courses[provider._id].length > 0 ? (
                           courses[provider._id].map((course) => (
                             <div key={course._id} className="course-item">
                               <div

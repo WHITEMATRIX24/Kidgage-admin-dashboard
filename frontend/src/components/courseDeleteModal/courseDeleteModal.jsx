@@ -11,7 +11,7 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
       setIsLoading(true);
       try {
         const res = await axios.delete(
-          `http://localhost:5001/api/course-category/delete/${courseDeleteId}`
+          `https://admin.kidgage.com/api/course-category/delete/${courseDeleteId}`
         );
 
         if (res.status === 200) {
@@ -29,9 +29,8 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
 
   return (
     <div
-      className={`course-deletemodal-wrapper ${
-        isShow ? "course-deletemodal-show" : "course-deletemodal-hide"
-      }`}
+      className={`course-deletemodal-wrapper ${isShow ? "course-deletemodal-show" : "course-deletemodal-hide"
+        }`}
     >
       <div className="course-deletemodal-container">
         <h2>Delete this course</h2>

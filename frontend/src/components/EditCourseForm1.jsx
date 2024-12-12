@@ -62,7 +62,7 @@ function EditCourseForm1({ courseId }) {
     try {
       // Assuming searchQuery now contains the course ID
       const response = await axios.get(
-        `http://localhost:5001/api/courses/course/${courseId}`
+        `https://admin.kidgage.com/api/courses/course/${courseId}`
       );
       if (response.data) {
         setCourseData(response.data);
@@ -173,7 +173,7 @@ function EditCourseForm1({ courseId }) {
 
       try {
         const response = await axios.put(
-          `http://localhost:5001/api/courses/update/${courseData._id}`,
+          `https://admin.kidgage.com/api/courses/update/${courseData._id}`,
           modifiedData // Send only modified data
         );
         setSuccess("Course updated successfully!");
@@ -201,7 +201,7 @@ function EditCourseForm1({ courseId }) {
     asetLoading(true);
     try {
       await axios.delete(
-        `http://localhost:5001/api/courses/delete/${courseData._id}`
+        `https://admin.kidgage.com/api/courses/delete/${courseData._id}`
       );
       setCourseData(null);
       setFormData({
@@ -245,7 +245,7 @@ function EditCourseForm1({ courseId }) {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/course-category/categories"
+          "https://admin.kidgage.com/api/course-category/categories"
         );
         setCourseTypes(response.data);
       } catch (error) {
@@ -366,10 +366,10 @@ function EditCourseForm1({ courseId }) {
       ageGroup:
         Array.isArray(prev.ageGroup) && prev.ageGroup.length > 0
           ? prev.ageGroup.map((group, index) =>
-              index === 0
-                ? { ...group, [name]: value } // Update the first object in the array
-                : group
-            )
+            index === 0
+              ? { ...group, [name]: value } // Update the first object in the array
+              : group
+          )
           : [{ [name]: value }], // If ageGroup is empty or not an array, initialize it with an object
     }));
   };
@@ -478,8 +478,8 @@ function EditCourseForm1({ courseId }) {
                     value={
                       formData.startDate
                         ? new Date(formData.startDate)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : ""
                     }
                     onChange={handleChange}
@@ -628,8 +628,8 @@ function EditCourseForm1({ courseId }) {
                     value={
                       formData.ageGroup && formData.ageGroup[0]?.ageStart
                         ? new Date(formData.ageGroup[0].ageStart)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : ""
                     }
                     onChange={handleAgeGroupChange}
@@ -644,8 +644,8 @@ function EditCourseForm1({ courseId }) {
                     value={
                       formData.ageGroup && formData.ageGroup[0]?.ageEnd
                         ? new Date(formData.ageGroup[0].ageEnd)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : ""
                     }
                     onChange={handleAgeGroupChange}
