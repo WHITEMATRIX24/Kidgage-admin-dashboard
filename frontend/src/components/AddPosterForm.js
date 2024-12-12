@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaChevronDown } from "react-icons/fa";
 import "./AddCourseForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
-function AddPosterForm() {
+
+function AddPosterForm({ isShow, closeHandler }) {
   const [course, setCourse] = useState({
     name: "",
     description: "",
@@ -93,7 +96,7 @@ function AddPosterForm() {
 
     try {
       const response = await axios.post(
-        "https://admin.kidgage.com/api/posters/add",
+        "http://localhost:5001/api/posters/add",
         formData,
         {
           headers: {
@@ -128,8 +131,22 @@ function AddPosterForm() {
     setShowForm(!showForm);
   };
 
+   // close handler
+   const handleClose = () => {
+    
+    closeHandler();
+  };
+
   return (
+    <div
+    className={`category-addmodal-wrapper ${
+      isShow ? "category-addmodal-show" : "category-addmodal-hide"
+    }`}
+  >
     <div className="add-course-form-container">
+    <span onClick={handleClose}>
+          <FontAwesomeIcon icon={faX} style={{ color: "#ff0000" }} />
+        </span>
       <div className="add-course-form-header" onClick={toggleFormVisibility}>
         <h2>Add Poster</h2>
         <FaChevronDown className={`dropdown-icon ${showForm ? "open" : ""}`} />
@@ -237,6 +254,7 @@ function AddPosterForm() {
           <div className="su-loader"></div>
         </div>
       )}
+    </div>
     </div>
   );
 }

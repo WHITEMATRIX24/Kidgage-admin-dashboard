@@ -54,7 +54,7 @@ const EditAcademyForm = ({ id }) => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://admin.kidgage.com/api/users/academy/${user._id}`
+        `http://localhost:5001/api/users/academy/${user._id}`
       );
       setUser(null);
       setFormData({
@@ -108,7 +108,7 @@ const EditAcademyForm = ({ id }) => {
 
       try {
         const response = await fetch(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -180,7 +180,7 @@ const EditAcademyForm = ({ id }) => {
 
     try {
       const response = await fetch(
-        `https://admin.kidgage.com/api/users/edits/${userId}`,
+        `http://localhost:5001/api/users/edits/${userId}`,
         {
           method: "POST",
           body: formDataToSend, // Use FormData for file uploads

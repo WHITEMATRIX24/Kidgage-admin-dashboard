@@ -38,7 +38,7 @@ function EditStudentForm({ onDelete }) {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/personal/search",
+        "http://localhost:5001/api/personal/search",
         {
           params: { query },
         }
@@ -67,7 +67,7 @@ function EditStudentForm({ onDelete }) {
   const fetchStudents = async (parentId) => {
     try {
       const response = await axios.get(
-        `https://admin.kidgage.com/api/student/parent/${parentId}`
+        `http://localhost:5001/api/student/parent/${parentId}`
       );
       if (Array.isArray(response.data)) {
         setStudents(response.data);
@@ -136,7 +136,7 @@ function EditStudentForm({ onDelete }) {
     setIsLoading(true);
     try {
       await axios.put(
-        `https://admin.kidgage.com/api/student/update/${selectedStudent?._id}`,
+        `http://localhost:5001/api/student/update/${selectedStudent?._id}`,
         editStudent
       );
       alert("Student updated successfully!");

@@ -13,7 +13,7 @@ const ChangePasswordForm = ({ adminId }) => {
 
     try {
       const response = await axios.post(
-        `https://admin.kidgage.com/api/admin/change-password/${adminId}`,
+        `http://localhost:5001/api/admin/change-password/${adminId}`,
         {
           currentPassword,
           newPassword,

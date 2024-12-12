@@ -1,23 +1,83 @@
+const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3"); // Import PutObjectCommand from AWS SDK v3
+
 const express = require('express');
 const multer = require('multer');
 const Poster = require('../models/Poster'); // Adjust the path as necessary
-
+const s3 = require("../aws-config"); // AWS S3 v3 config
+const crypto = require("crypto");
+const path = require("path");
+const { promisify } = require("util");
 const router = express.Router();
 
 // Set up multer for file handling
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// Generate a random file name
+const randomBytes = promisify(crypto.randomBytes);
+
+async function uploadImageToS3(file) {
+  try {
+    // Generate a unique name for the image
+    const rawBytes = await randomBytes(16);
+    const imageName =
+      rawBytes.toString("hex") + path.extname(file.originalname);
+
+    const params = {
+      Bucket: "kidgage", // The bucket name from .env
+      Key: imageName, // The unique file name
+      Body: file.buffer, // The file buffer
+      ContentType: "image/jpeg",
+      AWS_REGION: "eu-north-1", // The file type (e.g., image/jpeg)
+      // Set the file to be publicly accessible
+    };
+
+    const command = new PutObjectCommand(params); // Create PutObjectCommand
+    await s3.send(command); // Send the command to S3 to upload the file
+
+    // Construct the public URL of the uploaded image
+    const imageUrl = `https://${params.Bucket}.s3.${params.AWS_REGION}.amazonaws.com/${params.Key}`;
+    return imageUrl; // Return the URL of the uploaded image
+  } catch (error) {
+    console.error("Error uploading image to S3:", error);
+    throw error; // Re-throw the error to be handled by the calling function
+  }
+}
+
+async function deleteImageFromS3(imageUrl) {
+  try {
+    const urlParts = imageUrl.split("/");
+    const key = urlParts[urlParts.length - 1]; // Extract the file name from the URL
+
+    const params = {
+      Bucket: "kidgage",
+      Key: key,
+    };
+
+    const command = new DeleteObjectCommand(params); // Create DeleteObjectCommand
+    await s3.send(command); // Send the command to S3 to delete the file
+  } catch (error) {
+    console.error("Error deleting image from S3:", error);
+    throw error;
+  }
+}
+
 // Route to add a new poster
 router.post('/add', upload.single('image'), async (req, res) => {
-  const { name, description, location, link, startDate, endDate } = req.body;
+  
+  const { name, description, location,link, startDate, endDate } = req.body;
+  const image = await uploadImageToS3(req.file); // Upload image to S3 and get URL
 
-  if (!req.file) {
+  if (!image) {
     return res.status(400).json({ message: 'Image is required' });
   }
 
-  const imageBase64 = req.file.buffer.toString('base64');
+  // // Check if the campaign start date is today or in the past
+  // const today = new Date();
+  // const posterStartDate = new Date(startDate);
+  // const isActive = posterStartDate <= today;
 
+  // Create new poster with the provided data
   try {
     const newPoster = new Poster({
       name,
@@ -26,11 +86,13 @@ router.post('/add', upload.single('image'), async (req, res) => {
       link,
       startDate,
       endDate,
-      image: imageBase64,
+      image,
     });
 
     const savedPoster = await newPoster.save();
     res.status(201).json(savedPoster);
+    console.log(savedPoster);
+    
   } catch (error) {
     console.error('Error saving poster:', error);
     res.status(500).json({ message: 'Internal server error. Please try again later.' });
@@ -61,22 +123,19 @@ router.get('/', async (req, res) => {
 router.put('/:id', upload.single('image'), async (req, res) => {
   const { id } = req.params;
   const { name, description, location, link, startDate, endDate } = req.body;
-  let imageBase64 = null;
+  const updateData = { name, description, location, link, startDate, endDate };
+  // let imageBase64 = null;
 
   if (req.file) {
-    imageBase64 = req.file.buffer.toString('base64');
+    const image = await uploadImageToS3(req.file);
+    updateData.image = image;
   }
-
+  
   try {
-    const updatedPoster = await Poster.findByIdAndUpdate(id, {
-      name,
-      description,
-      location,
-      link,
-      startDate,
-      endDate,
-      image: imageBase64 || undefined, // Only update image if a new file is provided
-    }, { new: true });
+    const updatedPoster = await Poster.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true });
 
     if (!updatedPoster) {
       return res.status(404).json({ message: 'Poster not found' });

@@ -56,7 +56,7 @@ const ManageAcademy = () => {
 
       try {
         const response = await fetch(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -141,7 +141,7 @@ const ManageAcademy = () => {
 
     try {
       const response = await fetch(
-        `https://admin.kidgage.com/api/users/edit/${userId}`,
+        `http://localhost:5001/api/users/edit/${userId}`,
         {
           method: "POST",
           body: formDataToSend, // Use FormData for file uploads
@@ -182,7 +182,7 @@ const ManageAcademy = () => {
 
     try {
       const response = await fetch(
-        `https://admin.kidgage.com/api/users/complete/${userId}`,
+        `http://localhost:5001/api/users/complete/${userId}`,
         {
           method: "POST",
           body: formDataToSend, // Use FormData for file uploads

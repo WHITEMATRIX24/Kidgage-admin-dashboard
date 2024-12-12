@@ -51,7 +51,7 @@ function AddAdvertisement() {
 
     try {
       const response = await axios.post(
-        "https://admin.kidgage.com/api/advertisement/addadvertisement",
+        "http://localhost:5001/api/advertisement/addadvertisement",
         formData,
         {
           headers: {
