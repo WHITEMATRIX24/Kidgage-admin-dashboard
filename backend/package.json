@@ -22,7 +22,7 @@
     "canvas-toBlob": "^1.0.0",
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "html2canvas": "^1.4.1",
     "ics": "^3.8.1",
     "jspdf": "^2.5.1",

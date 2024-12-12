@@ -16,7 +16,7 @@ const DashboardPage = () => {
   const activityProviderInitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/users/accepted"
+        "http://localhost:5001/api/users/accepted"
       );
       // setUpcomingExpires(res)
       const count = res.data.length;
@@ -29,7 +29,7 @@ const DashboardPage = () => {
   // Active Campaigns initial Data Handler
   const campaignsInitialDataHandler = async () => {
     try {
-      const res = await axios.get("https://admin.kidgage.com/api/banners");
+      const res = await axios.get("http://localhost:5001/api/banners");
       const count = res.data.length;
       setCampaignsCounts(count);
     } catch (error) {
@@ -41,7 +41,7 @@ const DashboardPage = () => {
   const coursesInitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/courses/get-all-courses"
+        "http://localhost:5001/api/courses/get-all-courses"
       );
       const count = res.data.courseCounts;
       setCoursesCounts(count);
@@ -54,7 +54,7 @@ const DashboardPage = () => {
   const leadsGeneratedinitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/leads/get-all-leads-count"
+        "http://localhost:5001/api/leads/get-all-leads-count"
       );
       const count = res.data.leadsCount;
       setLeadsGeneratedCount(count);
@@ -67,7 +67,7 @@ const DashboardPage = () => {
   const upcommingMeetingsInitialDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/meeting-scheduled-users"
+        "http://localhost:5001/api/users/meeting-scheduled-users"
       );
       setUpcommingMeetingsData(response.data);
     } catch (error) {
@@ -82,7 +82,7 @@ const DashboardPage = () => {
   const upcommingExpiresInitialDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/accepted"
+        "http://localhost:5001/api/users/accepted"
       );
       // console.log(response);
       setUpcomingExpiresData(response.data);

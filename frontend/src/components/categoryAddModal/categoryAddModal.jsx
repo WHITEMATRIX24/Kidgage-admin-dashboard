@@ -29,7 +29,7 @@ const CategoryAddModal = ({ isShow, closeHandler }) => {
 
     try {
       const res = await axios.post(
-        "https://admin.kidgage.com/api/course-category/add",
+        "http://localhost:5001/api/course-category/add",
         newCategoryFormData
       );
 

@@ -5,6 +5,9 @@ import Dashboard from "./components/dashboard";
 import AdminSignIn from "./components/AdminSignIn";
 import DashboardLayout from "./components/common/DashboardLayout";
 import CalendarComponent from "./components/email";
+import PosterView from "./Pages/poster/PosterView";
+
+
 
 function App() {
   return (

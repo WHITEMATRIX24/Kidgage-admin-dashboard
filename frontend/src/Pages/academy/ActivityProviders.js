@@ -27,7 +27,7 @@ function ActivityProviders() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/allUser",
+        "http://localhost:5001/api/users/allUser",
         {
           params: {
             verificationStatus: "accepted",

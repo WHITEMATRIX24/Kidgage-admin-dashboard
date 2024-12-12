@@ -30,7 +30,7 @@ function InboundRequest() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/pending"
+        "http://localhost:5001/api/users/pending"
       );
       setPendingUsers(response.data);
     } catch (error) {
@@ -71,13 +71,13 @@ function InboundRequest() {
 
     try {
       await axios.post(
-        "https://admin.kidgage.com/api/users/updateVerification",
+        "http://localhost:5001/api/users/updateVerification",
         {
           userId: selectedUser._id,
           date: selectedDate.toISOString(),
         }
       );
-      await axios.post("https://admin.kidgage.com/api/users/send-email", {
+      await axios.post("http://localhost:5001/api/users/send-email", {
         email: selectedUser.email,
         date: selectedDate.toISOString(),
       });

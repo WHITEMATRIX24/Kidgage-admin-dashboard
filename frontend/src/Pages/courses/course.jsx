@@ -38,12 +38,12 @@ const CoursePage = () => {
 
     try {
       const providerResponse = await axios.get(
-        `https://admin.kidgage.com/api/users/user/${userId}`
+        `http://localhost:5001/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `https://admin.kidgage.com/api/courses/by-providers`,
+        `http://localhost:5001/api/courses/by-providers`,
         {
           params: { providerIds: [userId] },
         }
@@ -69,7 +69,7 @@ const CoursePage = () => {
   const deleteCourse = async (id) => {
     try {
       const res = await axios.delete(
-        `https://admin.kidgage.com/api/courses/delete/${id}`
+        `http://localhost:5001/api/courses/delete/${id}`
       );
       if (res.status === 200) {
         setCourseData((prevData) =>
@@ -133,7 +133,7 @@ const CoursePage = () => {
       const currentStatus = activeStatus === "true" || activeStatus === true;
       const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status
       const res = await axios.put(
-        `https://admin.kidgage.com/api/courses/update-active-status/${id}`,
+        `http://localhost:5001/api/courses/update-active-status/${id}`,
         {
           active: updatedStatus, // Send the updated status
         }

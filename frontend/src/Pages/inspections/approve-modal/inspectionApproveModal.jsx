@@ -42,7 +42,7 @@ const InspectionApproveModal = ({ isShow, closeHandler, providerData }) => {
 
     try {
       const res = await axios.post(
-        `https://admin.kidgage.com/api/users/verify/${providerData.userId}`,
+        `http://localhost:5001/api/users/verify/${providerData.userId}`,
         dataForServer
       );
       if (res.status === 200) {
