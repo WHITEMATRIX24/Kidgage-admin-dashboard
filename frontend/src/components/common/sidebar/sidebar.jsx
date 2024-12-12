@@ -67,7 +67,7 @@ const Sidebar = ({
       const userId = sessionStorage.getItem("userid");
       try {
         const response = await fetch(
-          `http://localhost:5001/api/users/user/${userId}`
+          `https://admin.kidgage.com/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -102,7 +102,7 @@ const Sidebar = ({
       "profile",
       // "students",
       "campaigns",
-      "posters",
+      "events",
       // "advertisements",
       "categories",
       // "poster",
@@ -151,7 +151,7 @@ const Sidebar = ({
     profile: faUsers,
     // students: faUserGraduate,
     campaigns: faImage,
-    posters: faImages,
+    events: faImages,
     settings: faCog,
     enquiries: faMessage,
     // advertisements: faAd, // or faBullseye or faMegaphone
@@ -213,10 +213,10 @@ const Sidebar = ({
       // "profile",
       // "students",
       "campaigns",
-     
+
       // "advertisements",
       "categories",
-      "posters",
+      "events",
       // "poster",
       "settings",
     ],

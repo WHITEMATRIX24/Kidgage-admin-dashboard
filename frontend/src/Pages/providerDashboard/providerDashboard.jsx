@@ -21,17 +21,17 @@ const Providerdashboard = () => {
 
     try {
       const coursecategories = await axios.get(
-        `http://localhost:5001/api/course-category/categories`
+        `https://admin.kidgage.com/api/course-category/categories`
       );
       setCourseCategory(coursecategories.data);
 
       const providerResponse = await axios.get(
-        `http://localhost:5001/api/users/user/${userId}`
+        `https://admin.kidgage.com/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `http://localhost:5001/api/courses/by-providers`,
+        `https://admin.kidgage.com/api/courses/by-providers`,
         {
           params: { providerIds: [userId] },
         }
@@ -39,7 +39,7 @@ const Providerdashboard = () => {
       setCourseData(coursesResponse.data);
 
       const enquiryResponse = await axios.get(
-        `http://localhost:5001/api/enquiries/enquiry-by-providers`,
+        `https://admin.kidgage.com/api/enquiries/enquiry-by-providers`,
         {
           params: { providerIds: [userId] },
         }

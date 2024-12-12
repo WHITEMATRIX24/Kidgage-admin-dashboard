@@ -6,11 +6,11 @@ import axios from 'axios';
 
 
 
-function AddPosterModal({ isShow, closeHandler,setAddStatus }) {
+function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
   const [newPosterFormData, setNewPosterFormData] = useState({
     posterName: "",
     description: "",
-    location:"",
+    location: "",
     startDate: "",
     endDate: "",
     link: "",
@@ -19,72 +19,72 @@ function AddPosterModal({ isShow, closeHandler,setAddStatus }) {
   const [isLoading, setIsLoading] = useState(false);
   const posterAddImageRef = useRef();
   console.log(newPosterFormData);
-  
- // handle publish
- const handlePublish = async (e) => {
-  e.preventDefault();
 
-  const {
-    link,
-    posterName,
-    description,
-    endDate,
-    imageUploded,
-    location,
-    startDate,
-  } = newPosterFormData;
+  // handle publish
+  const handlePublish = async (e) => {
+    e.preventDefault();
 
-  if (
-    !posterName ||
-    !link ||
-    !description ||
-    !endDate ||
-    !startDate ||
-    !location ||
-    !imageUploded
-  ) {
-    alert("Fill the form completly");
-    return;
-  }
+    const {
+      link,
+      posterName,
+      description,
+      endDate,
+      imageUploded,
+      location,
+      startDate,
+    } = newPosterFormData;
 
-  setIsLoading(true);
-
-  const isoStartDate = new Date(startDate).toISOString();
-  const isoEndDate = new Date(endDate).toISOString();
-
-  const formData = new FormData();
-  formData.append("name", posterName);
-  formData.append("description", description);
-  formData.append("location", location);
-  formData.append("startDate", isoStartDate);
-  formData.append("endDate", isoEndDate);
-  formData.append("link", link);
-  formData.append("image", imageUploded);
-
-  try {
-    const res = await axios.post(
-      "http://localhost:5001/api/posters/add",
-      formData
-    );
-   
-    if (res.status == 201) {
-      alert("Poster Added successfully");
-      setAddStatus(res.data)
-      handleClose();
+    if (
+      !posterName ||
+      !link ||
+      !description ||
+      !endDate ||
+      !startDate ||
+      !location ||
+      !imageUploded
+    ) {
+      alert("Fill the form completly");
       return;
-
     }
-    // alert(res.data.message);
-  
-  } catch (error) {
-    console.log(`error in creating new poster error: ${error}`);
-  } finally {
-    setIsLoading(false);
-  }
-};
 
-     // close handler
-   const handleClose = () => {
+    setIsLoading(true);
+
+    const isoStartDate = new Date(startDate).toISOString();
+    const isoEndDate = new Date(endDate).toISOString();
+
+    const formData = new FormData();
+    formData.append("name", posterName);
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("startDate", isoStartDate);
+    formData.append("endDate", isoEndDate);
+    formData.append("link", link);
+    formData.append("image", imageUploded);
+
+    try {
+      const res = await axios.post(
+        "https://admin.kidgage.com/api/posters/add",
+        formData
+      );
+
+      if (res.status == 201) {
+        alert("Poster Added successfully");
+        setAddStatus(res.data)
+        handleClose();
+        return;
+
+      }
+      // alert(res.data.message);
+
+    } catch (error) {
+      console.log(`error in creating new poster error: ${error}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // close handler
+  const handleClose = () => {
     posterAddImageRef.current.value = null;
     setNewPosterFormData({
       posterName: "",
@@ -92,19 +92,18 @@ function AddPosterModal({ isShow, closeHandler,setAddStatus }) {
       startDate: "",
       endDate: "",
       description: "",
-      location:"",
+      location: "",
       imageUploded: null,
     });
     closeHandler();
   };
   return (
     <div
-    className={`poster-addmodal-wrapper ${
-      isShow ? "poster-addmodal-show" : "poster-addmodal-hide"
-    }`}
-  >
-    <div className="poster-addmodal-container">
-    <span onClick={handleClose}>
+      className={`poster-addmodal-wrapper ${isShow ? "poster-addmodal-show" : "poster-addmodal-hide"
+        }`}
+    >
+      <div className="poster-addmodal-container">
+        <span onClick={handleClose}>
           <FontAwesomeIcon icon={faX} style={{ color: "#ff0000" }} />
         </span>
         <h2>Add New Poster</h2>
@@ -125,7 +124,7 @@ function AddPosterModal({ isShow, closeHandler,setAddStatus }) {
                 }
               />
             </div>
-            
+
             <div className="campaign-addmodal-form-fieldcontainer">
               <p>Description</p>
               <textarea
@@ -237,13 +236,13 @@ function AddPosterModal({ isShow, closeHandler,setAddStatus }) {
               onClick={(e) => handlePublish(e)}
               disabled={isLoading}
             >
-                Submit
+              Submit
               {isLoading ? "please wait" : "Publish"}
             </button>
           </div>
         </form>
-    </div>
-    
+      </div>
+
     </div>
   )
 }

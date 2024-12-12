@@ -37,7 +37,7 @@ const CategoryEditModal = ({ isShow, closeHandler, categoryData }) => {
 
     try {
       const res = await axios.put(
-        `http://localhost:5001/api/course-category/update/${categoryId}`,
+        `https://admin.kidgage.com/api/course-category/update/${categoryId}`,
         newCategoryFormData
       );
 
@@ -67,9 +67,8 @@ const CategoryEditModal = ({ isShow, closeHandler, categoryData }) => {
 
   return (
     <div
-      className={`category-editmodal-wrapper ${
-        isShow ? "category-editmodal-show" : "category-editmodal-hide"
-      }`}
+      className={`category-editmodal-wrapper ${isShow ? "category-editmodal-show" : "category-editmodal-hide"
+        }`}
     >
       <div className="category-editmodal-container">
         <span onClick={handleClose}>

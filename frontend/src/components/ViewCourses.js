@@ -24,7 +24,7 @@ const ViewCourses = ({ handleSubmit }) => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5001/api/users/all")
+      .get("https://admin.kidgage.com/api/users/all")
       .then((response) => {
         setProviders(response.data);
         setLoading(false);
@@ -41,7 +41,7 @@ const ViewCourses = ({ handleSubmit }) => {
       const providerIds = providers.map((provider) => provider._id);
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/courses/by-providers",
+          "https://admin.kidgage.com/api/courses/by-providers",
           {
             params: { providerIds },
           }

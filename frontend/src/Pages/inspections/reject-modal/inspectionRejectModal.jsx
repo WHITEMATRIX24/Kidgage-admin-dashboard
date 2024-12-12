@@ -19,7 +19,7 @@ const InspectionRejectModal = ({ isShow, closeHandler, userId, emailId }) => {
     setIsLoading(true);
     try {
       const res = await axios.delete(
-        `http://localhost:5001/api/users/academy/${userId}/${emailId}`,
+        `https://admin.kidgage.com/api/users/academy/${userId}/${emailId}`,
         { data: { message: textAreaData } }
       );
 

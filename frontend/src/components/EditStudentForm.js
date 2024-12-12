@@ -38,7 +38,7 @@ function EditStudentForm({ onDelete }) {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5001/api/personal/search",
+        "https://admin.kidgage.com/api/personal/search",
         {
           params: { query },
         }
@@ -67,7 +67,7 @@ function EditStudentForm({ onDelete }) {
   const fetchStudents = async (parentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/student/parent/${parentId}`
+        `https://admin.kidgage.com/api/student/parent/${parentId}`
       );
       if (Array.isArray(response.data)) {
         setStudents(response.data);
@@ -136,7 +136,7 @@ function EditStudentForm({ onDelete }) {
     setIsLoading(true);
     try {
       await axios.put(
-        `http://localhost:5001/api/student/update/${selectedStudent?._id}`,
+        `https://admin.kidgage.com/api/student/update/${selectedStudent?._id}`,
         editStudent
       );
       alert("Student updated successfully!");
@@ -225,7 +225,7 @@ function EditStudentForm({ onDelete }) {
                       </p>
 
                       {selectedStudent &&
-                      selectedStudent._id === student?._id ? (
+                        selectedStudent._id === student?._id ? (
                         <div className="edit-fields">
                           <div className="form-group add-course-label-group">
                             <label htmlFor="firstName"></label>

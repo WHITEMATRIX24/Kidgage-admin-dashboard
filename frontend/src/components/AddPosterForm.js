@@ -96,7 +96,7 @@ function AddPosterForm({ isShow, closeHandler }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/posters/add",
+        "https://admin.kidgage.com/api/posters/add",
         formData,
         {
           headers: {
@@ -131,130 +131,129 @@ function AddPosterForm({ isShow, closeHandler }) {
     setShowForm(!showForm);
   };
 
-   // close handler
-   const handleClose = () => {
-    
+  // close handler
+  const handleClose = () => {
+
     closeHandler();
   };
 
   return (
     <div
-    className={`category-addmodal-wrapper ${
-      isShow ? "category-addmodal-show" : "category-addmodal-hide"
-    }`}
-  >
-    <div className="add-course-form-container">
-    <span onClick={handleClose}>
+      className={`category-addmodal-wrapper ${isShow ? "category-addmodal-show" : "category-addmodal-hide"
+        }`}
+    >
+      <div className="add-course-form-container">
+        <span onClick={handleClose}>
           <FontAwesomeIcon icon={faX} style={{ color: "#ff0000" }} />
         </span>
-      <div className="add-course-form-header" onClick={toggleFormVisibility}>
-        <h2>Add Poster</h2>
-        <FaChevronDown className={`dropdown-icon ${showForm ? "open" : ""}`} />
-      </div>
-      {showForm && (
-        <form className="add-course-form" onSubmit={handleSubmit}>
-          <div className="form-group add-upload-label-group">
-            <label htmlFor="name">Title</label>
-            <label htmlFor="file-upload">
-              Image
-              <span style={{ fontSize: ".8rem", color: "grey" }}>
-                [ size: 1080 X 1080 ]
-              </span>
-            </label>
-          </div>
-          <div className="form-group add-course-group">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter Poster Title"
-              value={course.name}
-              onChange={handleChange}
-            />
-            {errors.name && <p className="error-message">{errors.name}</p>}
-            <input
-              type="file"
-              id="file-upload"
-              name="image"
-              onChange={handleFileChange}
-            />
-            {errors.file && <p className="error-message">{errors.file}</p>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Enter Poster Description"
-              value={course.description}
-              onChange={handleChange}
-            />
-            {errors.description && (
-              <p className="error-message">{errors.description}</p>
-            )}
-            <p className="character-count">Characters: {characterCount}</p>{" "}
-            {/* Display character count */}
-          </div>
-          <div className="form-group">
-            <label htmlFor="link">Link to Register</label>
-            <input
-              type="text"
-              id="link"
-              name="link"
-              placeholder="Enter link to register"
-              value={course.link}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="location">Location</label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              placeholder="Enter Event Location"
-              value={course.location}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group add-course-label-group">
-            <label htmlFor="startDate">Start Date</label>
-            <label htmlFor="endDate">End Date</label>
-          </div>
-          <div className="form-group add-course-group">
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              value={course.startDate}
-              onChange={handleChange}
-            />
-            <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              value={course.endDate}
-              onChange={handleChange}
-            />
-          </div>
-          <button type="submit">Submit</button>
-          {successMessage && (
-            <p className="success-message">{successMessage}</p>
-          )}
-        </form>
-      )}
-      {isLoading && (
-        <div
-          style={{ display: "flex", flexDirection: "column" }}
-          className="confirmation-overlay"
-        >
-          <p style={{ zIndex: "1000", color: "white" }}>
-            Please wait till process is completed
-          </p>
-          <div className="su-loader"></div>
+        <div className="add-course-form-header" onClick={toggleFormVisibility}>
+          <h2>Add Poster</h2>
+          <FaChevronDown className={`dropdown-icon ${showForm ? "open" : ""}`} />
         </div>
-      )}
-    </div>
+        {showForm && (
+          <form className="add-course-form" onSubmit={handleSubmit}>
+            <div className="form-group add-upload-label-group">
+              <label htmlFor="name">Title</label>
+              <label htmlFor="file-upload">
+                Image
+                <span style={{ fontSize: ".8rem", color: "grey" }}>
+                  [ size: 1080 X 1080 ]
+                </span>
+              </label>
+            </div>
+            <div className="form-group add-course-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter Poster Title"
+                value={course.name}
+                onChange={handleChange}
+              />
+              {errors.name && <p className="error-message">{errors.name}</p>}
+              <input
+                type="file"
+                id="file-upload"
+                name="image"
+                onChange={handleFileChange}
+              />
+              {errors.file && <p className="error-message">{errors.file}</p>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Enter Poster Description"
+                value={course.description}
+                onChange={handleChange}
+              />
+              {errors.description && (
+                <p className="error-message">{errors.description}</p>
+              )}
+              <p className="character-count">Characters: {characterCount}</p>{" "}
+              {/* Display character count */}
+            </div>
+            <div className="form-group">
+              <label htmlFor="link">Link to Register</label>
+              <input
+                type="text"
+                id="link"
+                name="link"
+                placeholder="Enter link to register"
+                value={course.link}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="location">Location</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Enter Event Location"
+                value={course.location}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group add-course-label-group">
+              <label htmlFor="startDate">Start Date</label>
+              <label htmlFor="endDate">End Date</label>
+            </div>
+            <div className="form-group add-course-group">
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                value={course.startDate}
+                onChange={handleChange}
+              />
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                value={course.endDate}
+                onChange={handleChange}
+              />
+            </div>
+            <button type="submit">Submit</button>
+            {successMessage && (
+              <p className="success-message">{successMessage}</p>
+            )}
+          </form>
+        )}
+        {isLoading && (
+          <div
+            style={{ display: "flex", flexDirection: "column" }}
+            className="confirmation-overlay"
+          >
+            <p style={{ zIndex: "1000", color: "white" }}>
+              Please wait till process is completed
+            </p>
+            <div className="su-loader"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

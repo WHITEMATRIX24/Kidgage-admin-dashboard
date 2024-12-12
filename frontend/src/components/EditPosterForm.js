@@ -22,7 +22,7 @@ const EditPosterForm = ({ onDelete }) => {
   const fetchPosters = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5001/api/posters");
+      const response = await axios.get("https://admin.kidgage.com/api/posters");
       setPosters(response.data);
       setLoading(false);
     } catch (error) {
@@ -106,7 +106,7 @@ const EditPosterForm = ({ onDelete }) => {
 
     try {
       await axios.put(
-        `http://localhost:5001/api/posters/${selectedPoster._id}`,
+        `https://admin.kidgage.com/api/posters/${selectedPoster._id}`,
         formData
       );
       setEditMode(false);

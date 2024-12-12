@@ -108,7 +108,7 @@ const AddAcademyForm = ({ handleNavigation }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/users/signup",
+        "https://admin.kidgage.com/api/users/signup",
         data
       );
       alert("Academy added Successfully!");

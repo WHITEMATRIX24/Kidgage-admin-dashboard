@@ -11,9 +11,9 @@ import PosterEditModal from '../../components/PosterModal/PosterEditModal';
 
 function PosterView() {
     const [posterDeails, setPosterDetails] = useState([])
-    const [addstatus,setAddStatus]=useState([])
-    const [deleteStatus,setDeleteStatus]=useState([])
-    const [editStatus,setEditStatus]=useState([])
+    const [addstatus, setAddStatus] = useState([])
+    const [deleteStatus, setDeleteStatus] = useState([])
+    const [editStatus, setEditStatus] = useState([])
 
     const [posterEditModalState, setPosterEditModalState] = useState({
         isShow: false,
@@ -25,9 +25,9 @@ function PosterView() {
     });
     const [deletePosterId, setDeletePosterId] = useState(null);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [expandedState, setExpandedState] = useState({}); 
+    const [expandedState, setExpandedState] = useState({});
     const getAllPosterDetails = async () => {
-        const result = await axios.get(`http://localhost:5001/api/posters`
+        const result = await axios.get(`https://admin.kidgage.com/api/posters`
         );
         if (result.status == 200) {
             setPosterDetails(result.data)
@@ -79,13 +79,13 @@ function PosterView() {
             ...prevState,
             [id]: !prevState[id] // Toggle the expansion state of the current poster
         }));
-     
+
     };
 
 
     useEffect(() => {
         getAllPosterDetails();
-    }, [addstatus,deleteStatus,editStatus])
+    }, [addstatus, deleteStatus, editStatus])
     return (
         <div className="posterpage-container">
             <Appbar />
@@ -123,7 +123,7 @@ function PosterView() {
                                 return (<tr>
                                     <td>
                                         <div className="poster-img">
-                                            <img 
+                                            <img
                                                 src={poster.image}
                                                 alt="Banner Img"
                                             />
@@ -131,11 +131,11 @@ function PosterView() {
                                     </td>
                                     <td>{poster.name}</td>
                                     <td className='poster-description'>      <p>
-                                    {expandedState[poster._id] ? poster.description : `${poster.description.substring(0, 100)}...`} 
+                                        {expandedState[poster._id] ? poster.description : `${poster.description.substring(0, 100)}...`}
                                     </p>
                                         {poster.description.length > 100 && (  // Show "Show more" only if the description is long enough
                                             <button className='toggle-button' onClick={() => toggleExpand(poster._id)}>
-                                                 {expandedState[poster._id] ? 'Show less' : 'More...'}
+                                                {expandedState[poster._id] ? 'Show less' : 'More...'}
                                             </button>
                                         )}</td>
                                     <td>
@@ -152,7 +152,7 @@ function PosterView() {
                                             <FontAwesomeIcon
                                                 icon={faPenToSquare}
                                                 style={{ color: "#106cb1", cursor: "pointer" }}
-                                                onClick={() => posterEditModalOpenHandler (poster)}
+                                                onClick={() => posterEditModalOpenHandler(poster)}
                                             />
                                             <FontAwesomeIcon
                                                 icon={faTrash}

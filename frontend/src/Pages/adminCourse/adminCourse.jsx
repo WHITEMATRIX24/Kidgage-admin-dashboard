@@ -20,7 +20,7 @@ const AdminCoursePage = () => {
   const fetchProviders = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5001/api/users/accepted"
+        "https://admin.kidgage.com/api/users/accepted"
       );
       setProviders(response.data);
     } catch (error) {
@@ -32,7 +32,7 @@ const AdminCoursePage = () => {
   const fetchCourses = async (providerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/courses/by-providers`,
+        `https://admin.kidgage.com/api/courses/by-providers`,
         {
           params: { providerIds: [providerId] }, // Pass providerId as an array
         }
@@ -58,7 +58,7 @@ const AdminCoursePage = () => {
   const deleteCourse = async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5001/api/courses/delete/${id}`
+        `https://admin.kidgage.com/api/courses/delete/${id}`
       );
       if (res.status === 200) {
         setCourseData((prevData) =>
@@ -106,17 +106,15 @@ const AdminCoursePage = () => {
         <div className="admin-course-content-header">
           <div className="admin-course-tab-buttons">
             <button
-              className={`tab-button ${
-                activeTab === "Programs Offered" ? "active" : ""
-              }`}
+              className={`tab-button ${activeTab === "Programs Offered" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("Programs Offered")}
             >
               Programs Offered
             </button>
             <button
-              className={`tab-button ${
-                activeTab === "Add Course" ? "active" : ""
-              }`}
+              className={`tab-button ${activeTab === "Add Course" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("Add Course")}
             >
               Add Course
