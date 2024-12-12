@@ -296,7 +296,7 @@ function Campaigns() {
                           <p>
                             Starting Date :{formatDate(item.startDate)}
                           </p>{" "}
-                          <p style={{ marginRight: "150px" }}>
+                          <p style={{ marginRight: "30px" }}>
                             Ending Date :{formatDate(item.endDate)}
                           </p>
                         </div>

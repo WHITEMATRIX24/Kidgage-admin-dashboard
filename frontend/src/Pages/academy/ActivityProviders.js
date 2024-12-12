@@ -18,7 +18,8 @@ function ActivityProviders() {
   const [showRequestPopup, setShowRequestPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [updateStatus, setUpdateStatus] = useState([]);
-  const [activityEditModalState, setCategoryEditModalState] = useState({
+  const [toggleCheckedId, setToggleCheckedId] = useState([]);
+    const [activityEditModalState, setCategoryEditModalState] = useState({
     isShow: false,
     data: null,
   });
@@ -65,8 +66,39 @@ function ActivityProviders() {
       data: null,
     });
 
+
+  //  // toggle handler
+   const toggleHandler = async (providerId, providerStatus) => {
+    if (!providerId) {
+      alert("camapign toggle data missing");
+      return;
+    }
+
+    // restrict continues call
+    if (toggleCheckedId.find((val) => (val === providerId ? true : false))) {
+      return;
+    }
+
+    setToggleCheckedId([...toggleCheckedId, providerId]);
+
+    try {
+      const res = await axios.put(`http://localhost:5001/api/users/update-status/${providerId}`, {providerStatus });
+      if (res.status !== 200) {
+        alert("toggle action not successfull");
+      }
+    } catch (error) {
+      console.log(`error in toggling provided id: ${providerId} error: ${error}`);
+    } finally {
+      setToggleCheckedId((preValue) =>
+        preValue.filter((val) => val !== providerId)
+      );
+    }
+  };
+
+
   useEffect(() => {
     fetchUsers();
+   
   }, [updateStatus]);
 
   return (
@@ -107,6 +139,7 @@ function ActivityProviders() {
                   <th>Location</th>
                   <th>Contact Number</th>
                   <th>No. of Classes</th>
+                  <th>Top Providers</th>
                   <th></th>
                 </tr>
               </thead>
@@ -131,6 +164,22 @@ function ActivityProviders() {
                         icon={faPenToSquare}
                         onClick={() => ActivityClassEditModalOpenHandler(item)}
                       />
+                    </td>
+                    <td>
+                    
+                      <label class="switch">
+                      <input
+                        type="checkbox"
+                        defaultChecked={item.promoted}
+                        onChange={() =>
+                          toggleHandler(item._id, item.promoted)
+                        }
+                        disabled={toggleCheckedId.find((val) =>
+                          val === item._id ? true : false
+                        )}
+                      ></input>
+                      <span class="slider round"></span>
+                    </label>
                     </td>
                     <td>
                       <div
