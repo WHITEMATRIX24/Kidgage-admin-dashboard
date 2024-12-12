@@ -997,8 +997,35 @@ router.put("/update-activity/:id", async (req, res) => {
   }
 });
 
+// provider status updater
+router.put("/update-status/:id", upload.none(), async (req, res) => {
+  const { id } = req.params;
+  const { providerStatus } = req.body;
+  // Check if the id and providerStatus are provided
+  if (!id || providerStatus === undefined) {
+    return res.status(400).json({
+      message: "Bad request",
+      error: "Both provider ID and provider status are required",
+    });
+  }
+
+  try {
+    const updateExistingProvider = await User.findByIdAndUpdate(
+      id,
+      {
+        promoted: !providerStatus,
+      },
+      { new: true }
+    );
+
+    // console.log(updateExistingProvider.promoted);
 
 
+    res.status(200).json({ message: "toggle success" });
+  } catch (error) {
+    res.status(500).json({ message: "server Error", error });
+  }
+});
 
 
 module.exports = router;

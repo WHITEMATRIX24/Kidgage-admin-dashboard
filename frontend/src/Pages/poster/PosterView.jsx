@@ -89,7 +89,7 @@ function PosterView() {
     return (
         <div className="posterpage-container">
             <Appbar />
-            <h3 className="posterpage-content-heading">Posters</h3>
+            <h3 className="posterpage-content-heading"> Event Posters</h3>
             <div className="posterpage-content-container">
                 <div className="poster-button-container">
                     <button
@@ -122,8 +122,8 @@ function PosterView() {
                                 const endDate = new Date(poster.endDate);
                                 return (<tr>
                                     <td>
-                                        <div className="banner-img">
-                                            <img
+                                        <div className="poster-img">
+                                            <img 
                                                 src={poster.image}
                                                 alt="Banner Img"
                                             />
@@ -142,7 +142,7 @@ function PosterView() {
                                         {formatDate(startDate)} to {formatDate(endDate)}
                                     </td>
                                     <td>
-                                        <div className="course-icons">
+                                        <div className="poster-icons">
                                             {/* <FontAwesomeIcon
                                             icon={course.active === "true" ? faEye : faEyeSlash}
                                             style={{ color: "#000205", cursor: "pointer" }}
