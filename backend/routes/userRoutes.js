@@ -290,8 +290,14 @@ router.post("/updateVerification", async (req, res) => {
 });
 
 router.get("/pending", async (req, res) => {
+  const searchKey=req.query.search
+  console.log("searchKey:.....",searchKey);
   try {
-    const pendingUsers = await User.find({ verificationStatus: "pending" });
+    const query ={
+      username:{$regex:searchKey,$options:'i'},
+      verificationStatus: "pending",
+  }
+    const pendingUsers = await User.find(query);
     console.log("Fetched Pending Users:", pendingUsers); // Debugging log
     res.status(200).json(pendingUsers);
   } catch (error) {
@@ -942,10 +948,15 @@ router.post(
   }
 );
 router.get("/meeting-scheduled-users", async (req, res) => {
+
+  const searchKey=req.query.search
+  console.log("searchKey:.....",searchKey);
   try {
-    const meetingScheduledUsers = await User.find({
+    const query ={
+      username:{$regex:searchKey,$options:'i'},
       verificationStatus: "meeting-scheduled",
-    }).sort({ meetingScheduleDate: 1 });
+  }
+    const meetingScheduledUsers = await User.find(query).sort({ meetingScheduleDate: 1 });
     res.status(200).json(meetingScheduledUsers);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
@@ -954,10 +965,12 @@ router.get("/meeting-scheduled-users", async (req, res) => {
 router.get("/allUser", async (req, res) => {
   try {
     const { verificationStatus } = req.query;
-
+    const searchKey = req.query.search;  // Get the search key from the query parameters
+    console.log("searchKey:.....",searchKey);
     // Define a query object that will filter users based on verificationStatus if provided
     let query = {};
     if (verificationStatus) {
+      query.username = { $regex: searchKey, $options: 'i' },
       query.verificationStatus = verificationStatus;
     }
 
@@ -970,6 +983,33 @@ router.get("/allUser", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+// router.get("/allUser", async (req, res) => {
+//   const searchKey = req.query.search;  // Get the search key from the query parameters
+//   const { verificationStatus } = req.query;  // Get the verificationStatus from the query parameters
+
+//   try {
+//     // Define the search query based on the searchKey (case-insensitive)
+//     const query = {
+//       username: { $regex: searchKey, $options: 'i' },
+//       verificationStatus: 'accepted', // Always filter for "accepted" users
+//     };
+
+//     // Fetch users with the "accepted" verification status and matching username
+//     const users = await User.find(query);
+
+//     // Log fetched users for debugging purposes
+//     console.log("Fetched Users with accepted status:", users);
+
+//     // Send the fetched users as the response with status 200 (success)
+//     res.status(200).json(users);
+//   } catch (error) {
+//     // Handle errors and send error message with status 400
+//     console.error("Error fetching users:", error.message);
+//     res.status(400).json({ message: error.message });
+//   }
+// });
+
 
 //updating activiy details-no of classes
 

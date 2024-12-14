@@ -12,23 +12,24 @@ import Appbar from "../../components/common/appbar/Appbar";
 import RequestsPopup from "../../components/RequestsPopup";
 import ActivityEditModal from "../../components/ActivityEditModal/ActivityEditModal";
 
-function ActivityProviders() {
+function ActivityProviders(searchdata) {
   const [Users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showRequestPopup, setShowRequestPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [updateStatus, setUpdateStatus] = useState([]);
   const [toggleCheckedId, setToggleCheckedId] = useState([]);
+   const[searchKey,setSearchKey]=useState("")
     const [activityEditModalState, setCategoryEditModalState] = useState({
     isShow: false,
     data: null,
   });
-
+  
   const fetchUsers = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:5001/api/users/allUser",
+        `http://localhost:5001/api/users/allUser?search=${searchKey}`,
         {
           params: {
             verificationStatus: "accepted",
@@ -95,16 +96,25 @@ function ActivityProviders() {
     }
   };
 
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  };
 
   useEffect(() => {
     fetchUsers();
    
-  }, [updateStatus]);
+  }, [updateStatus,searchKey]);
 
   return (
     <>
       <div className="activity-container">
-        <Appbar />
+      {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
         <div className="activity-heading">
           <h1 className="activity-heading-h3">Activity Providers</h1>
         </div>

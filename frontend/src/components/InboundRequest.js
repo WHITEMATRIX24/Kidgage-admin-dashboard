@@ -14,23 +14,26 @@ import RequestsPopup from "./RequestsPopup";
 import Appbar from "./common/appbar/Appbar";
 import InspectionRejectModal from "../Pages/inspections/reject-modal/inspectionRejectModal";
 
-function InboundRequest() {
+function InboundRequest(searchdata) {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRequestPopup, setShowRequestPopup] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const[searchKey,setSearchKey]=useState("")
   const [showRejectPopupData, setShowRejectPopupData] = useState({
     isShow: false,
     data: null,
   });
 
-  const fetchUsers = async () => {
+console.log(typeof(searchdata));
+
+    const fetchUsers = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:5001/api/users/pending"
+       `http://localhost:5001/api/users/pending?search=${searchKey}` 
       );
       setPendingUsers(response.data);
     } catch (error) {
@@ -39,6 +42,8 @@ function InboundRequest() {
       setLoading(false);
     }
   };
+
+  
 
   const openRequestDetails = (user) => {
     setSelectedUser(user);
@@ -92,13 +97,25 @@ function InboundRequest() {
     }
   };
 
+
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  };
+
+  
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [searchKey]);
 
   return (
     <div className="inbound-container">
-      <Appbar />
+    {
+  !searchdata || 
+  (Array.isArray(searchdata) && searchdata.length === 0) ||
+  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
+    ? <Appbar sendDataToParent={handleChildData} /> 
+    : null
+}
       <div className="inbound-heading">
         <h3>Inbound Requests</h3>
       </div>

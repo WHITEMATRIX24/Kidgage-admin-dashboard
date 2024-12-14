@@ -13,7 +13,7 @@ import HomeCampaignAddModal from "../../components/campaignAddModal/campaignAddM
 import CampaignEditModal from "../../components/campaignEditModal/campaignEditModal";
 import Appbar from "../../components/common/appbar/Appbar";
 import CampaignDeleteModal from "../../components/campaignDeleteModal/campaignDeleteModal";
-function Campaigns() {
+function Campaigns(searchdata) {
   const [showHomeBannerModal, setShowHomeBannerModal] = useState({
     isShow: false,
     tab: null,
@@ -34,7 +34,8 @@ function Campaigns() {
   const [MobileBanners, setMobileBanners] = useState([]);
   const [DesktopBanners, setDesktopBanners] = useState([]);
   const [toggleCheckedId, setToggleCheckedId] = useState([]);
-
+  const[searchKey,setSearchKey]=useState("")
+ 
   // home banner add open modal handler
   const openHomeBannerModalHandler = (tab) =>
     setShowHomeBannerModal({ isShow: true, tab });
@@ -60,10 +61,11 @@ function Campaigns() {
     const date = new Date(dateStr);
     return date.toLocaleDateString("en-GB").replace(/\//g, ".");
   };
-  const fetchBanners = async () => {
+
+  const fetchBanners = async (searchTerm ="") => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5001/api/banners");
+      const response = await axios.get(`http://localhost:5001/api/banners?search=${searchTerm}`);
       //   console.log(response.data);
       setBanners(response.data);
       setLoading(false);
@@ -72,11 +74,11 @@ function Campaigns() {
       setLoading(false);
     }
   };
-  const fetchDesktopBanners = async () => {
+  const fetchDesktopBanners = async (searchTerm="") => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:5001/api/desktop-banners/"
+        `http://localhost:5001/api/desktop-banners/?search=${searchTerm}`
       );
       console.log(response.data);
       setDesktopBanners(response.data);
@@ -86,11 +88,11 @@ function Campaigns() {
       setLoading(false);
     }
   };
-  const fetchMobileBanners = async () => {
+  const fetchMobileBanners = async (searchTerm ="") => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:5001/api/mobile-banners/"
+        `http://localhost:5001/api/mobile-banners/?search=${searchTerm}`
       );
       // console.log(response.data);
       setMobileBanners(response.data);
@@ -102,7 +104,7 @@ function Campaigns() {
   };
 
   // toggle handler
-  const toggleHandler = async (tab, bannerId, bannerStatus) => {
+  const toggleHandler = async (tab,bannerId, bannerStatus) => {
     // toggle api based on tab
     const toggleApiBasedOnTab = () => {
       switch (tab) {
@@ -143,15 +145,43 @@ function Campaigns() {
     }
   };
 
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+    searchBanners(data, selectedTab); // Filter based on selected tab
+  };
+
+  const searchBanners = (searchTerm, selectedTab) => {
+   
+  if(selectedTab === "tab-1")
+  {
+    fetchBanners(searchTerm);
+  }else if(selectedTab === "tab-2")
+  {
+    fetchDesktopBanners(searchTerm);
+  }else if(selectedTab === "tab-3")
+    {
+      fetchMobileBanners(searchTerm);
+    }
+    else{
+      console.log('nothing to display');
+    }
+  };
+
   useEffect(() => {
     fetchBanners();
     fetchMobileBanners();
     fetchDesktopBanners();
-  }, []);
+  }, [searchKey]);
 
   return (
     <div className="campaign-container">
-      <Appbar />
+     {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
       <div className="campaign-heading">
         {" "}
         <h1 className="campaign-heading-h3"> Campaigns</h1>

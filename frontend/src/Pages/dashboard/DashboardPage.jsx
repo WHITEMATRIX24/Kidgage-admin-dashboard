@@ -3,7 +3,13 @@ import "./dashboardPage.css";
 import Appbar from "../../components/common/appbar/Appbar";
 import axios from "axios";
 import { toRedableDateAndTime } from "../../components/utils/redableDate";
-
+import InboundRequest from "../../components/InboundRequest";
+import InspectionPage from "../inspection/InspectionPage";
+import ActivityProviders from "../academy/ActivityProviders";
+import Settings from "../settings/Settings";
+import PosterView from "../poster/PosterView";
+import CategoryPage from "../category/categoryPage";
+import Campaigns from "../campaigns/Campaigns";
 const DashboardPage = () => {
   const [activeProviderCounts, setActiveProviderCounts] = useState(0);
   const [campaignsCounts, setCampaignsCounts] = useState(0);
@@ -11,6 +17,8 @@ const DashboardPage = () => {
   const [leadsGeneratedCount, setLeadsGeneratedCount] = useState(0);
   const [upcommingMeetingsData, setUpcommingMeetingsData] = useState([]);
   const [upcommingExpiresData, setUpcomingExpiresData] = useState([]);
+  const [searchKey, setSearchKey] = useState("")
+  console.log(searchKey);
 
   // Activity Provider initial data fetching
   const activityProviderInitialDataHandler = async () => {
@@ -112,6 +120,18 @@ const DashboardPage = () => {
 
     return `${formattedDate} ${formattedTime}`;
   };
+
+
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  
+  };
+
+  // if(searchKey =="request"){
+  //   <InboundRequest />
+  // }
+
+
   useEffect(() => {
     activityProviderInitialDataHandler();
     campaignsInitialDataHandler();
@@ -119,14 +139,29 @@ const DashboardPage = () => {
     leadsGeneratedinitialDataHandler();
     upcommingMeetingsInitialDataHandler();
     upcommingExpiresInitialDataHandler();
-  }, []);
+  }, [searchKey]);
 
   // console.log(upcommingExpires);
 
   return (
     <div className="dashboardpage-container">
-      <Appbar />
-      <div className="dashboard-content-wrapper">
+      <Appbar sendDataToParent={handleChildData} />
+      {searchKey === "request" ? (
+      <InboundRequest searchdata={searchKey} />
+      ) : searchKey === "inspections" ? (
+      <InspectionPage searchdata={searchKey} />
+      ): searchKey === "academies" ? (
+        <ActivityProviders searchdata={searchKey} />
+      ): searchKey === "campaigns" ? (
+        <Campaigns searchdata={searchKey} />
+      ): searchKey === "categories" ? (
+        <CategoryPage searchdata={searchKey} />
+      ): searchKey === "posters" ? (
+        <PosterView searchdata={searchKey} />
+      ): searchKey === "settings" ? (
+        <Settings searchdata={searchKey} />
+      )
+      :(<div className="dashboard-content-wrapper">
         <h3 className="dashboard-content-h3">Dashboard</h3>
         <div className="dashboardpage-tiles-container">
           <div className="dashboardpage-tiles">
@@ -204,7 +239,7 @@ const DashboardPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };

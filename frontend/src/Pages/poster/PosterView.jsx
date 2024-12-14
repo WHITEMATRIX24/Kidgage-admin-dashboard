@@ -9,12 +9,12 @@ import DeletePosterModal from '../../components/PosterModal/DeletePosterModal';
 import PosterEditModal from '../../components/PosterModal/PosterEditModal';
 
 
-function PosterView() {
+function PosterView(searchdata) {
     const [posterDeails, setPosterDetails] = useState([])
     const [addstatus,setAddStatus]=useState([])
     const [deleteStatus,setDeleteStatus]=useState([])
     const [editStatus,setEditStatus]=useState([])
-
+    const[searchKey,setSearchKey]=useState("")
     const [posterEditModalState, setPosterEditModalState] = useState({
         isShow: false,
         data: null,
@@ -27,13 +27,15 @@ function PosterView() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [expandedState, setExpandedState] = useState({}); 
     const getAllPosterDetails = async () => {
-        const result = await axios.get(`http://localhost:5001/api/posters`
+        const result = await axios.get(`http://localhost:5001/api/posters?search=${searchKey}`
         );
         if (result.status == 200) {
             setPosterDetails(result.data)
         }
     }
 
+    console.log(searchKey);
+    
     // Add poster modal handler
     const posterAddModalOpenHandler = () => setShowAddModal(true);
 
@@ -82,13 +84,23 @@ function PosterView() {
      
     };
 
+    const handleChildData = (data) => {
+        setSearchKey(data); // Set the received data to state
+      };
+
 
     useEffect(() => {
         getAllPosterDetails();
-    }, [addstatus,deleteStatus,editStatus])
+    }, [addstatus,deleteStatus,editStatus,searchKey])
     return (
         <div className="posterpage-container">
-            <Appbar />
+          {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
             <h3 className="posterpage-content-heading"> Event Posters</h3>
             <div className="posterpage-content-container">
                 <div className="poster-button-container">

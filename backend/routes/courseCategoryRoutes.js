@@ -74,8 +74,13 @@ router.post("/add", upload.single("image"), async (req, res) => {
 });
 
 router.get("/categories", async (req, res) => {
+  const searchKey=req.query.search
+  // console.log("searchKey:.....",searchKey);
   try {
-    const categories = await CourseCategory.find();
+    const query ={
+      name:{$regex:searchKey,$options:'i'},
+    }
+    const categories = await CourseCategory.find(query);
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: error.message });

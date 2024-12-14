@@ -56,7 +56,7 @@ const Dashboard = () => {
   const [email, setEmail] = useState("");
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Manage loading state
-
+ 
   useEffect(() => {
     // Retrieve adminId and adminRole from sessionStorage
     const storedId = sessionStorage.getItem("adminId");
@@ -176,6 +176,8 @@ const Dashboard = () => {
       <div className="no-access">You do not have access to the dashboard.</div>
     );
   }
+
+
   return (
     <div className="dashboard-body">
       <div className={`dashboard-card ${sidebarOpen ? "expanded" : ""}`}>

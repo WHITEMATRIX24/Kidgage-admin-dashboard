@@ -62,8 +62,13 @@ async function deleteImageFromS3(imageUrl) {
 }
 // Route to get all banners
 router.get("/", async (req, res) => {
+  const searchKey=req.query.search
+  console.log("searchKey:.....",searchKey);
   try {
-    const banners = await MobileBanner.find();
+    const query ={
+      title:{$regex:searchKey,$options:'i'}
+  }
+    const banners = await MobileBanner.find(query);
     res.json(banners);
   } catch (error) {
     console.error("Error fetching banners:", error);
