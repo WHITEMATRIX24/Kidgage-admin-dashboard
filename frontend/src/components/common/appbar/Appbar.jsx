@@ -6,18 +6,21 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import adminImage from "../../assets/images/admin-photo.jpeg";
 
-const Appbar = () => {
+const Appbar = ({sendDataToParent}) => {
+
   const [pendingRequests, setPendingRequests] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [providerLogo, setProviderLogo] = useState(null);
   const [error, setError] = useState(null);
+  const [data, setData] = useState(""); // Local state to store the input value
+ 
 
   useEffect(() => {
     // Fetch pending requests from the backend
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch(
-          "https://admin.kidgage.com/api/users/pending"
+          "http://localhost:5001/api/users/pending"
         ); // Adjust the URL as needed
         const data = await response.json();
         setPendingRequests(data);
@@ -38,10 +41,10 @@ const Appbar = () => {
 
       try {
         const providerResponse = await axios.get(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         const providerData = providerResponse.data;
-        console.log(providerData);
+        // console.log(providerData);
         if (providerData) {
           setProviderLogo(providerData.logo);
         }
@@ -62,6 +65,13 @@ const Appbar = () => {
     setIsPopupVisible(false);
   };
 
+
+  const handleChange = (event) => {
+    const newData = event.target.value; // Get the current value of the input field
+    setData(newData); // Update local state
+    sendDataToParent(newData); // Send the updated value to the parent
+  };
+
   // Get name, username, and role from session storage
   const name = sessionStorage.getItem("Name");
   const username = sessionStorage.getItem("email");
@@ -75,8 +85,10 @@ const Appbar = () => {
           icon={faMagnifyingGlass}
           className="searchbar-magnifyglass"
         />
-        <input type="search" placeholder="search" className="search-inputbar" />
+        <input type="search" placeholder="search" className="search-inputbar" onChange={handleChange} value={data}/>
       </div>
+     
+    
       {/* profile tab */}
       <div className="profile-container">
         {/* bell icon visible only if role is admin */}

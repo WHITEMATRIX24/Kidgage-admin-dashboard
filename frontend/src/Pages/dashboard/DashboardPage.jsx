@@ -3,7 +3,13 @@ import "./dashboardPage.css";
 import Appbar from "../../components/common/appbar/Appbar";
 import axios from "axios";
 import { toRedableDateAndTime } from "../../components/utils/redableDate";
-
+import InboundRequest from "../../components/InboundRequest";
+import InspectionPage from "../inspection/InspectionPage";
+import ActivityProviders from "../academy/ActivityProviders";
+import Settings from "../settings/Settings";
+import PosterView from "../poster/PosterView";
+import CategoryPage from "../category/categoryPage";
+import Campaigns from "../campaigns/Campaigns";
 const DashboardPage = () => {
   const [activeProviderCounts, setActiveProviderCounts] = useState(0);
   const [campaignsCounts, setCampaignsCounts] = useState(0);
@@ -11,12 +17,14 @@ const DashboardPage = () => {
   const [leadsGeneratedCount, setLeadsGeneratedCount] = useState(0);
   const [upcommingMeetingsData, setUpcommingMeetingsData] = useState([]);
   const [upcommingExpiresData, setUpcomingExpiresData] = useState([]);
+  const [searchKey, setSearchKey] = useState("")
+  // console.log(searchKey);
 
   // Activity Provider initial data fetching
   const activityProviderInitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/users/accepted"
+        "http://localhost:5001/api/users/accepted"
       );
       // setUpcomingExpires(res)
       const count = res.data.length;
@@ -29,7 +37,7 @@ const DashboardPage = () => {
   // Active Campaigns initial Data Handler
   const campaignsInitialDataHandler = async () => {
     try {
-      const res = await axios.get("https://admin.kidgage.com/api/banners");
+      const res = await axios.get("http://localhost:5001/api/banners");
       const count = res.data.length;
       setCampaignsCounts(count);
     } catch (error) {
@@ -41,7 +49,7 @@ const DashboardPage = () => {
   const coursesInitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/courses/get-all-courses"
+        "http://localhost:5001/api/courses/get-all-courses"
       );
       const count = res.data.courseCounts;
       setCoursesCounts(count);
@@ -54,7 +62,7 @@ const DashboardPage = () => {
   const leadsGeneratedinitialDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/leads/get-all-leads-count"
+        "http://localhost:5001/api/leads/get-all-leads-count"
       );
       const count = res.data.leadsCount;
       setLeadsGeneratedCount(count);
@@ -67,7 +75,7 @@ const DashboardPage = () => {
   const upcommingMeetingsInitialDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/meeting-scheduled-users"
+        "http://localhost:5001/api/users/meeting-scheduled-users"
       );
       setUpcommingMeetingsData(response.data);
     } catch (error) {
@@ -82,7 +90,7 @@ const DashboardPage = () => {
   const upcommingExpiresInitialDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/accepted"
+        "http://localhost:5001/api/users/accepted"
       );
       // console.log(response);
       setUpcomingExpiresData(response.data);
@@ -112,6 +120,18 @@ const DashboardPage = () => {
 
     return `${formattedDate} ${formattedTime}`;
   };
+
+
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  
+  };
+
+  // if(searchKey =="request"){
+  //   <InboundRequest />
+  // }
+
+
   useEffect(() => {
     activityProviderInitialDataHandler();
     campaignsInitialDataHandler();
@@ -119,14 +139,29 @@ const DashboardPage = () => {
     leadsGeneratedinitialDataHandler();
     upcommingMeetingsInitialDataHandler();
     upcommingExpiresInitialDataHandler();
-  }, []);
+  }, [searchKey]);
 
   // console.log(upcommingExpires);
 
   return (
     <div className="dashboardpage-container">
-      <Appbar />
-      <div className="dashboard-content-wrapper">
+      <Appbar sendDataToParent={handleChildData} />
+      {searchKey === "req" ? (
+      <InboundRequest searchdata={searchKey} />
+      ) : searchKey === "ins" ? (
+      <InspectionPage searchdata={searchKey} />
+      ): searchKey === "aca" ? (
+        <ActivityProviders searchdata={searchKey} />
+      ): searchKey === "camp" ? (
+        <Campaigns searchdata={searchKey} />
+      ): searchKey === "cate" ? (
+        <CategoryPage searchdata={searchKey} />
+      ): searchKey === "even" ? (
+        <PosterView searchdata={searchKey} />
+      ): searchKey === "sett" ? (
+        <Settings searchdata={searchKey} />
+      )
+      :(<div className="dashboard-content-wrapper">
         <h3 className="dashboard-content-h3">Dashboard</h3>
         <div className="dashboardpage-tiles-container">
           <div className="dashboardpage-tiles">
@@ -204,7 +239,7 @@ const DashboardPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };
