@@ -4,7 +4,7 @@ import "./provider.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
-const ProviderDetails = () => {
+const ProviderDetails = (searchdata) => {
   const [user, setUser] = useState({});
   const [editValues, setEditValues] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -22,7 +22,7 @@ const ProviderDetails = () => {
 
       try {
         const response = await fetch(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -94,7 +94,7 @@ const ProviderDetails = () => {
 
     try {
       const response = await fetch(
-        `https://admin.kidgage.com/api/users/edits/${userId}`,
+        `http://localhost:5001/api/users/edits/${userId}`,
         {
           method: "POST",
           body: formDataToSend,
@@ -117,7 +117,13 @@ const ProviderDetails = () => {
 
   return (
     <div className="provider-details">
-      <Appbar />
+    {
+  !searchdata || 
+  (Array.isArray(searchdata) && searchdata.length === 0) ||
+  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
+    ? <Appbar  /> 
+    : null
+}
       <h1 className="provider-title">Provider Details</h1>
 
       <div className="provider-details-content">

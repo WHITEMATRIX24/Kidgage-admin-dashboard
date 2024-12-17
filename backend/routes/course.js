@@ -245,9 +245,21 @@ router.delete("/delete/:id", async (req, res) => {
 // Route to get courses by provider IDs
 router.get("/by-providers", async (req, res) => {
   const { providerIds } = req.query;
-
+  const searchKey=req.query.search
+  if (searchKey && typeof searchKey !== 'string') {
+    return res.status(400).json({ message: "Search key must be a string" });
+  }
+  console.log("searchKey:.....",searchKey);
   try {
-    const courses = await Course.find({ providerId: { $in: providerIds } });
+    const query = {
+      providerId: { $in: providerIds }
+    };
+
+    // Add the regex part if searchKey is provided
+    if (searchKey) {
+      query.name = { $regex: searchKey, $options: 'i' };
+    }
+    const courses = await Course.find(query);
     res.status(200).json(courses);
   } catch (error) {
     console.error("Error fetching courses:", error);

@@ -4,10 +4,12 @@ import axios from "axios";
 import "./Enquiries.css";
 import Appbar from "../../components/common/appbar/Appbar";
 
-const Enquiries = () => {
+const Enquiries = (searchdata) => {
   const [enquiryData, setEnquiryData] = useState([]);
   const [error, setError] = useState(null);
   const [provider, setProvider] = useState(null);
+   const[searchKey,setSearchKey]=useState("")
+console.log(searchKey);
 
   const fetchProviderAndEnquiry = async () => {
     setError(null);
@@ -20,12 +22,12 @@ const Enquiries = () => {
 
     try {
       const providerResponse = await axios.get(
-        `https://admin.kidgage.com/api/users/user/${userId}`
+        `http://localhost:5001/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const enquiryResponse = await axios.get(
-        `https://admin.kidgage.com/api/enquiries/enquiry-by-providers`,
+        `http://localhost:5001/api/enquiries/enquiry-by-providers?search=${searchKey}`,
         {
           params: { providerIds: [userId] },
         }
@@ -37,15 +39,26 @@ const Enquiries = () => {
     }
   };
 
+
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  };
+
   useEffect(() => {
     fetchProviderAndEnquiry();
-  }, []);
-  console.log(enquiryData);
-  console.log(provider);
+  }, [searchKey]);
+  // console.log(enquiryData);
+  // console.log(provider);
 
   return (
     <div className="enquiriesPage-container">
-      <Appbar />
+     {
+  !searchdata || 
+  (Array.isArray(searchdata) && searchdata.length === 0) ||
+  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
+    ? <Appbar sendDataToParent={handleChildData} /> 
+    : null
+}
       <div className="enquiriesPage-content">
         <h3 className="enquiriesPage-content-h3">Enquiries </h3>
         <div className="enquiriesPage-content-container">

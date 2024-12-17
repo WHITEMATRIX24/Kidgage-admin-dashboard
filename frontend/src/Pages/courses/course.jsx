@@ -15,7 +15,7 @@ import EditCourseForm1 from "../../components/EditCourseForm1";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import CourseExceedModal from "../../components/courseExceedModal/CourseExceedModal";
 
-const CoursePage = () => {
+const CoursePage = (searchdata) => {
   const [courseData, setCourseData] = useState([]);
   const [error, setError] = useState(null);
   const [provider, setProvider] = useState(null);
@@ -25,7 +25,9 @@ const CoursePage = () => {
   const [showCourseExceedModal, setShowCourseExceedModal] = useState(false);
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [courseId, setCourseId] = useState(null); // Store the course id
+   const[searchKey,setSearchKey]=useState("")
   // const [isActive, setIsActive] = useState(null);
+console.log(searchKey);
 
   const fetchProviderAndCourses = async () => {
     setError(null);
@@ -38,12 +40,12 @@ const CoursePage = () => {
 
     try {
       const providerResponse = await axios.get(
-        `https://admin.kidgage.com/api/users/user/${userId}`
+        `http://localhost:5001/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `https://admin.kidgage.com/api/courses/by-providers`,
+        `http://localhost:5001/api/courses/by-providers?search=${searchKey}`,
         {
           params: { providerIds: [userId] },
         }
@@ -69,7 +71,7 @@ const CoursePage = () => {
   const deleteCourse = async (id) => {
     try {
       const res = await axios.delete(
-        `https://admin.kidgage.com/api/courses/delete/${id}`
+        `http://localhost:5001/api/courses/delete/${id}`
       );
       if (res.status === 200) {
         setCourseData((prevData) =>
@@ -92,7 +94,7 @@ const CoursePage = () => {
 
   useEffect(() => {
     fetchProviderAndCourses();
-  }, []);
+  }, [searchKey]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -133,7 +135,7 @@ const CoursePage = () => {
       const currentStatus = activeStatus === "true" || activeStatus === true;
       const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status
       const res = await axios.put(
-        `https://admin.kidgage.com/api/courses/update-active-status/${id}`,
+        `http://localhost:5001/api/courses/update-active-status/${id}`,
         {
           active: updatedStatus, // Send the updated status
         }
@@ -151,16 +153,27 @@ const CoursePage = () => {
     }
   };
 
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  };
+
   return (
     <div className="coursepage-container">
-      <Appbar />
+     {
+  !searchdata || 
+  (Array.isArray(searchdata) && searchdata.length === 0) ||
+  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
+    ? <Appbar sendDataToParent={handleChildData} /> 
+    : null
+}
       <h3 className="coursepage-content-heading">Courses</h3>
       <div className="coursepage-content-container">
         <div className="coursepage-content-header">
           {/* Tab Button for Programs Offered */}
           <button
-            className={`course_tab-button ${activeTab === "Programs Offered" ? "active" : ""
-              }`}
+            className={`course_tab-button ${
+              activeTab === "Programs Offered" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("Programs Offered")}
           >
             Programs Offered
@@ -168,8 +181,9 @@ const CoursePage = () => {
 
           {/* Tab Button for Add Course */}
           <button
-            className={`add_course_btn ${activeTab === "Add Course" ? "active" : ""
-              }`}
+            className={`add_course_btn ${
+              activeTab === "Add Course" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("Add Course")}
           >
             <FontAwesomeIcon icon={faPlus} style={{ color: "#fcfcfc" }} /> Add

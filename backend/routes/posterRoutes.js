@@ -102,13 +102,17 @@ router.post('/add', upload.single('image'), async (req, res) => {
 // Route to fetch all posters or wishlist posters based on query parameter
 router.get('/', async (req, res) => {
   const { wishlist } = req.query;
-
+  const searchKey=req.query.search
+  // console.log("searchKey:.....",searchKey);
   try {
+    const query ={
+      name:{$regex:searchKey,$options:'i'},
+  }
     let posters;
     if (wishlist === 'true') {
       posters = await Poster.find({ wishlist: true });
     } else {
-      posters = await Poster.find();
+      posters = await Poster.find(query);
     }
 
     console.log('Fetched posters:', posters.length); // Logging number of posters fetched

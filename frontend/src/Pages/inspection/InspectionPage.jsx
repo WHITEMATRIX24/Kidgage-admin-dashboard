@@ -13,8 +13,9 @@ import {
   toRedableDateAndTime,
 } from "../../components/utils/redableDate";
 
-const InspectionPage = () => {
+const InspectionPage = (searchdata) => {
   const [meetingScheduledUsers, setMeetingScheduledUsrs] = useState([]);
+  const [searchKey, setSearchKey] = useState("")
   const [modalState, setModalState] = useState({
     open: false,
     type: "",
@@ -30,11 +31,12 @@ const InspectionPage = () => {
     setModalState({ open: false, type: "", userData: null });
   };
 
+  console.log(searchKey);
   // initial scheduled meeting user data handler
   const meetingScheduledUserDataHandler = async () => {
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/users/meeting-scheduled-users"
+        `http://localhost:5001/api/users/meeting-scheduled-users?search=${searchKey}`
       );
       setMeetingScheduledUsrs(response.data);
     } catch (error) {
@@ -44,13 +46,25 @@ const InspectionPage = () => {
     }
   };
 
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  };
+
   useEffect(() => {
     meetingScheduledUserDataHandler();
-  }, []);
+  }, [searchKey]);
 
   return (
     <div className="inspectinPage-container">
-      <Appbar />
+
+      {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
+
       <div className="inspectionPage-content">
         <h1 className="inspectionPage-content-h3">Inspection Schedule</h1>
         <div className="inspectionPage-content-container">

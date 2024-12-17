@@ -6,6 +6,7 @@ const s3 = require("../aws-config"); // AWS S3 v3 config
 const crypto = require("crypto");
 const path = require("path");
 const { promisify } = require("util");
+const { title } = require("process");
 
 // Set up multer for file handling
 const storage = multer.memoryStorage();
@@ -62,8 +63,13 @@ async function deleteImageFromS3(imageUrl) {
 }
 // Route to get all banners
 router.get("/", async (req, res) => {
+  const searchKey=req.query.search
+  console.log("searchKey:.....",searchKey);
   try {
-    const banners = await Banner.find();
+    const query ={
+      title:{$regex:searchKey,$options:'i'}
+  }
+    const banners = await Banner.find(query);
     res.json(banners);
   } catch (error) {
     console.error("Error fetching banners:", error);

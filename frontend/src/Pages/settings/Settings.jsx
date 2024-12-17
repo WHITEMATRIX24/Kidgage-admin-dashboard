@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Appbar from "../../components/common/appbar/Appbar";
 
-function Settings() {
+function Settings(searchdata) {
   const [adminsettings, setAdminSettings] = useState({}); // Initialize as an object
   const [loading, setLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -77,7 +77,13 @@ function Settings() {
     <>
       {Object.keys(adminsettings).length > 0 ? (
         <div className="settings-container">
-          <Appbar />
+         {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar />
+          : null
+      }
           <div className="settings-heading">
             <h3
               style={{

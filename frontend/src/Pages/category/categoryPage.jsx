@@ -9,7 +9,7 @@ import CategoryEditModal from "../../components/categoryEditModal/categoryEditMo
 import CategoryDeleteModal from "../../components/categoryDeleteModal/categoryDeleteModal";
 import Appbar from "../../components/common/appbar/Appbar";
 
-const CategoryPage = () => {
+const CategoryPage = (searchdata) => {
   const [categoryData, setCategoryData] = useState([]);
   const [categoryAddModalState, setCategoryAddModalState] = useState(false);
   const [categoryEditModalState, setCategoryEditModalState] = useState({
@@ -20,6 +20,7 @@ const CategoryPage = () => {
     isShow: false,
     categoryId: null,
   });
+   const[searchKey,setSearchKey]=useState("")
 
   // Add categroy modal handler
   const categoryAddModalOpenHandler = () => setCategoryAddModalState(true);
@@ -51,11 +52,13 @@ const CategoryPage = () => {
     setCategoryDeleteModalState({ isShow: false, categoryId: null });
   };
 
+  console.log(searchKey);
+  
   // initial data handler
   const initialCategoryDataHandler = async () => {
     try {
       const res = await axios.get(
-        "https://admin.kidgage.com/api/course-category/categories"
+        `http://localhost:5001/api/course-category/categories?search=${searchKey}`
       );
       setCategoryData(res.data);
     } catch (error) {
@@ -63,13 +66,23 @@ const CategoryPage = () => {
     }
   };
 
+  const handleChildData = (data) => {
+    setSearchKey(data); // Set the received data to state
+  };
+
   useEffect(() => {
     initialCategoryDataHandler();
-  }, []);
+  }, [searchKey]);
 
   return (
     <div className="categorypage-container">
-      <Appbar />
+     {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
       <h3 className="category-content-h3">Categories</h3>
       <div className="categorypage-content-container">
         <div className="categorypage-content-header">
