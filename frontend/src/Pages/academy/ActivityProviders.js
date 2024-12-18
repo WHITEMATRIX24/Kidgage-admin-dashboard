@@ -29,7 +29,7 @@ function ActivityProviders(searchdata) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:5001/api/users/allUser?search=${searchKey}`,
+        `https://admin.kidgage.com/api/users/allUser?search=${searchKey}`,
         {
           params: {
             verificationStatus: "accepted",
@@ -83,7 +83,7 @@ function ActivityProviders(searchdata) {
     setToggleCheckedId([...toggleCheckedId, providerId]);
 
     try {
-      const res = await axios.put(`http://localhost:5001/api/users/update-status/${providerId}`, {providerStatus });
+      const res = await axios.put(`https://admin.kidgage.com/api/users/update-status/${providerId}`, {providerStatus });
       if (res.status !== 200) {
         alert("toggle action not successfull");
       }

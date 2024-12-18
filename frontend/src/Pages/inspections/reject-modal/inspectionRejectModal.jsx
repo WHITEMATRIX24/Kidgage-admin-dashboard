@@ -4,7 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
-const InspectionRejectModal = ({ isShow, closeHandler, userId, emailId }) => {
+const InspectionRejectModal = ({ isShow, closeHandler, userId, emailId,setRejectionStatus}) => {
   const [textAreaData, setTextAreaData] = useState("");
   const [validateTextAreaData, setValidateTextAreaData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +25,7 @@ const InspectionRejectModal = ({ isShow, closeHandler, userId, emailId }) => {
 
       if (res.status === 200) {
         alert("Successfully rejected");
+        setRejectionStatus(res.data)
         cancelHandler();
       }
     } catch (error) {

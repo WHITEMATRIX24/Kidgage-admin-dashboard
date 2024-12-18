@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CategoryEditModal = ({ isShow, closeHandler, categoryData }) => {
+const CategoryEditModal = ({ isShow, closeHandler, categoryData , setEditStatus}) => {
   const [newCategoryData, setNewCategoryData] = useState({
     title: categoryData.name || "",
     categoryImage: categoryData.image || null,
@@ -47,6 +47,7 @@ const CategoryEditModal = ({ isShow, closeHandler, categoryData }) => {
       }
 
       alert("succesfully updated new category");
+      setEditStatus(res.data)
       handleClose();
     } catch (error) {
       console.log(`error creating new category error: ${error}`);

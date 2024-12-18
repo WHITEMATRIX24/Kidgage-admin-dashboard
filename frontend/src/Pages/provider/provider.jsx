@@ -22,7 +22,7 @@ const ProviderDetails = (searchdata) => {
 
       try {
         const response = await fetch(
-          `http://localhost:5001/api/users/user/${userId}`
+          `https://admin.kidgage.com/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -94,7 +94,7 @@ const ProviderDetails = (searchdata) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/users/edits/${userId}`,
+        `https://admin.kidgage.com/api/users/edits/${userId}`,
         {
           method: "POST",
           body: formDataToSend,

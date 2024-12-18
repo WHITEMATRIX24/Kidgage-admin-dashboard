@@ -43,24 +43,49 @@ async function uploadImageToS3(file) {
     throw error; // Re-throw the error to be handled by the calling function
   }
 }
+// async function deleteImageFromS3(imageUrl) {
+//   try {
+//     const urlParts = imageUrl.split("/");
+//     const key = urlParts[urlParts.length - 1]; // Extract the file name from the URL
+
+//     const params = {
+//       Bucket: "kidgage",
+//       Key: key,
+//     };
+
+//     const command = new DeleteObjectCommand(params); // Create DeleteObjectCommand
+//     await s3.send(command); // Send the command to S3 to delete the file
+//   } catch (error) {
+//     console.error("Error deleting image from S3:", error);
+//     throw error;
+//   }
+// }
+// Route to get all banners
+
 async function deleteImageFromS3(imageUrl) {
   try {
+    console.log("Received image URL:", imageUrl);
+
     const urlParts = imageUrl.split("/");
     const key = urlParts[urlParts.length - 1]; // Extract the file name from the URL
+    console.log("Extracted key for S3:", key);
 
     const params = {
-      Bucket: "kidgage",
-      Key: key,
+      Bucket: "kidgage",  // Ensure that the bucket name is correct
+      Key: key,           // The key should match the image file stored in S3
     };
 
-    const command = new DeleteObjectCommand(params); // Create DeleteObjectCommand
-    await s3.send(command); // Send the command to S3 to delete the file
+    const command = new DeleteObjectCommand(params);  // Create DeleteObjectCommand
+    console.log("Sending delete command to S3:", params);
+    await s3.send(command);  // Send the command to S3 to delete the file
+
+    console.log("Image successfully deleted from S3.");
   } catch (error) {
     console.error("Error deleting image from S3:", error);
-    throw error;
+    throw error; // Rethrow the error for the calling function to handle
   }
 }
-// Route to get all banners
+
 router.get("/", async (req, res) => {
   const searchKey=req.query.search
   console.log("searchKey:.....",searchKey);
@@ -138,28 +163,100 @@ router.put("/:id", upload.single("image"), async (req, res) => {
 });
 
 // Route to delete a banner
+// router.delete("/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // Find the banner to get the image URL
+//     const banner = await MobileBanner.findById(id);
+//     if (!banner) {
+//       return res.status(404).json({ message: "Banner not found" });
+//     }
+
+//     // Delete the image from S3
+//     await deleteImageFromS3(banner.imageUrl);
+
+//     // Delete the banner from the database
+//     await MobileBanner.findByIdAndDelete(id);
+
+//     res.json({ message: "Banner and image deleted successfully" });
+//   } catch (error) {
+//     console.error("Error deleting banner:", error);
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// });
+
+// router.delete("/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     console.log("id:",id);
+    
+//     // Find the banner to get the image URL
+//     const banner = await MobileBanner.findById(id);
+//     if (!banner) {
+//       return res.status(404).json({ message: "Banner not found" });
+//     }
+
+//     // Validate image URL before attempting deletion
+//     console.log(banner.imageUrl);
+    
+//     if (!banner.imageUrl) {
+//       return res.status(400).json({ message: "Banner does not have a valid image URL" });
+//     }
+
+//     // // Delete the image from S3
+//     // try {
+//     //   await deleteImageFromS3(banner.imageUrl);
+//     // } catch (error) {
+//     //   return res.status(500).json({ message: "Error deleting image from S3", error });
+//     // }
+
+//     // Delete the banner from the database
+//     await MobileBanner.findByIdAndDelete(id);
+
+//     res.json({ message: "Banner and image deleted successfully" });
+//   } catch (error) {
+//     console.error("Error deleting banner:", error);
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// });
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("mobile banner id:", id); // Log the ID to ensure it's correct
 
     // Find the banner to get the image URL
     const banner = await MobileBanner.findById(id);
     if (!banner) {
+      console.log("Banner not found");
       return res.status(404).json({ message: "Banner not found" });
     }
 
-    // Delete the image from S3
-    await deleteImageFromS3(banner.imageUrl);
+    console.log("Found banner:", banner);
+
+    // // Delete the image from S3
+    // try {
+    //   await deleteImageFromS3(banner.imageUrl);
+    // } catch (error) {
+    //   return res.status(500).json({ message: "Error deleting image from S3", error });
+    // }
 
     // Delete the banner from the database
-    await MobileBanner.findByIdAndDelete(id);
+    const deletedBanner = await MobileBanner.findByIdAndDelete(id);
+    if (!deletedBanner) {
+      console.log("Failed to delete banner");
+      return res.status(500).json({ message: "Failed to delete banner, please try again" });
+    }
 
+    console.log("Banner deleted:", deletedBanner);
     res.json({ message: "Banner and image deleted successfully" });
   } catch (error) {
     console.error("Error deleting banner:", error);
-    res.status(500).json({ message: "Server error", error });
+    res.status(500).json({ message: "Server error", error: error.stack });
   }
 });
+
 
 // banner status updater
 router.put("/update-status/:id", upload.none(), async (req, res) => {

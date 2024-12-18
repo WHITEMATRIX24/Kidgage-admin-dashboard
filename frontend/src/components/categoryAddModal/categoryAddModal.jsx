@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CategoryAddModal = ({ isShow, closeHandler }) => {
+const CategoryAddModal = ({ isShow, closeHandler, setAddStatus}) => {
   const [newCategoryData, setNewCategoryData] = useState({
     title: "",
     categoryImage: null,
@@ -39,6 +39,7 @@ const CategoryAddModal = ({ isShow, closeHandler }) => {
       }
 
       alert("succesfully created new category");
+      setAddStatus(res.data)
       handleClose();
     } catch (error) {
       console.log(`error creating new category error: ${error}`);

@@ -22,6 +22,7 @@ function InboundRequest(searchdata) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const[searchKey,setSearchKey]=useState("")
+  const[rejectionStatus,setRejectionStatus]=useState([])
   const [showRejectPopupData, setShowRejectPopupData] = useState({
     isShow: false,
     data: null,
@@ -31,7 +32,7 @@ function InboundRequest(searchdata) {
     try {
       setLoading(true);
       const response = await axios.get(
-       `http://localhost:5001/api/users/pending?search=${searchKey}` 
+       `https://admin.kidgage.com/api/users/pending?search=${searchKey}` 
       );
       setPendingUsers(response.data);
     } catch (error) {
@@ -74,13 +75,13 @@ function InboundRequest(searchdata) {
 
     try {
       await axios.post(
-        "http://localhost:5001/api/users/updateVerification",
+        "https://admin.kidgage.com/api/users/updateVerification",
         {
           userId: selectedUser._id,
           date: selectedDate.toISOString(),
         }
       );
-      await axios.post("http://localhost:5001/api/users/send-email", {
+      await axios.post("https://admin.kidgage.com/api/users/send-email", {
         email: selectedUser.email,
         date: selectedDate.toISOString(),
       });
@@ -103,7 +104,7 @@ function InboundRequest(searchdata) {
   
   useEffect(() => {
     fetchUsers();
-  }, [searchKey]);
+  }, [searchKey,rejectionStatus]);
 
   return (
     <div className="inbound-container">
@@ -232,6 +233,7 @@ function InboundRequest(searchdata) {
           closeHandler={handleRejectPopUpCloseHandler}
           userId={showRejectPopupData.data._id}
           emailId={showRejectPopupData.data.email}
+          setRejectionStatus={setRejectionStatus}
         />
       )}
     </div>

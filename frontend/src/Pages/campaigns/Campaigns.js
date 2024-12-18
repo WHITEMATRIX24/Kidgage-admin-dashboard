@@ -34,8 +34,11 @@ function Campaigns(searchdata) {
   const [MobileBanners, setMobileBanners] = useState([]);
   const [DesktopBanners, setDesktopBanners] = useState([]);
   const [toggleCheckedId, setToggleCheckedId] = useState([]);
-  const[searchKey,setSearchKey]=useState("")
- 
+  const [searchKey, setSearchKey] = useState("")
+  const [addstatus, setAddStatus] = useState([]);
+  const [deleteStatus, setDeleteStatus] = useState([]);
+  const [editStatus, setEditStatus] = useState([]);
+
   // home banner add open modal handler
   const openHomeBannerModalHandler = (tab) =>
     setShowHomeBannerModal({ isShow: true, tab });
@@ -62,10 +65,10 @@ function Campaigns(searchdata) {
     return date.toLocaleDateString("en-GB").replace(/\//g, ".");
   };
 
-  const fetchBanners = async (searchTerm ="") => {
+  const fetchBanners = async (searchTerm = "") => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5001/api/banners?search=${searchTerm}`);
+      const response = await axios.get(`https://admin.kidgage.com/api/banners?search=${searchTerm}`);
       //   console.log(response.data);
       setBanners(response.data);
       setLoading(false);
@@ -74,11 +77,11 @@ function Campaigns(searchdata) {
       setLoading(false);
     }
   };
-  const fetchDesktopBanners = async (searchTerm="") => {
+  const fetchDesktopBanners = async (searchTerm = "") => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/desktop-banners/?search=${searchTerm}`
+        `https://admin.kidgage.com/api/desktop-banners/?search=${searchTerm}`
       );
       console.log(response.data);
       setDesktopBanners(response.data);
@@ -88,11 +91,11 @@ function Campaigns(searchdata) {
       setLoading(false);
     }
   };
-  const fetchMobileBanners = async (searchTerm ="") => {
+  const fetchMobileBanners = async (searchTerm = "") => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/mobile-banners/?search=${searchTerm}`
+        `https://admin.kidgage.com/api/mobile-banners/?search=${searchTerm}`
       );
       // console.log(response.data);
       setMobileBanners(response.data);
@@ -104,16 +107,16 @@ function Campaigns(searchdata) {
   };
 
   // toggle handler
-  const toggleHandler = async (tab,bannerId, bannerStatus) => {
+  const toggleHandler = async (tab, bannerId, bannerStatus) => {
     // toggle api based on tab
     const toggleApiBasedOnTab = () => {
       switch (tab) {
         case "home":
-          return `http://localhost:5001/api/banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/banners/update-status/${bannerId}`;
         case "desktop":
-          return `http://localhost:5001/api/desktop-banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/desktop-banners/update-status/${bannerId}`;
         case "mobile":
-          return `http://localhost:5001/api/mobile-banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/mobile-banners/update-status/${bannerId}`;
         default:
           return "";
       }
@@ -151,18 +154,15 @@ function Campaigns(searchdata) {
   };
 
   const searchBanners = (searchTerm, selectedTab) => {
-   
-  if(selectedTab === "tab-1")
-  {
-    fetchBanners(searchTerm);
-  }else if(selectedTab === "tab-2")
-  {
-    fetchDesktopBanners(searchTerm);
-  }else if(selectedTab === "tab-3")
-    {
+
+    if (selectedTab === "tab-1") {
+      fetchBanners(searchTerm);
+    } else if (selectedTab === "tab-2") {
+      fetchDesktopBanners(searchTerm);
+    } else if (selectedTab === "tab-3") {
       fetchMobileBanners(searchTerm);
     }
-    else{
+    else {
       console.log('nothing to display');
     }
   };
@@ -171,11 +171,11 @@ function Campaigns(searchdata) {
     fetchBanners();
     fetchMobileBanners();
     fetchDesktopBanners();
-  }, [searchKey]);
+  }, [searchKey,addstatus,deleteStatus,editStatus]);
 
   return (
     <div className="campaign-container">
-     {
+      {
         !searchdata ||
           (Array.isArray(searchdata) && searchdata.length === 0) ||
           (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
@@ -466,6 +466,7 @@ function Campaigns(searchdata) {
           isShow={showHomeBannerModal.isShow}
           closeHandler={closeHomeBannerModalHandler}
           tab={showHomeBannerModal.tab}
+          setAddStatus={setAddStatus}
         />
       )}
       {/* edit modal */}
@@ -475,6 +476,7 @@ function Campaigns(searchdata) {
           closeHandler={closeBannerEditModal}
           tab={showBannerEditModal.tab}
           modalData={showBannerEditModal.data}
+          setEditStatus={setEditStatus}
         />
       )}
       {showBannerDeleteModal.isShow && (
@@ -483,6 +485,7 @@ function Campaigns(searchdata) {
           closeHandler={closeBannerDeleteModal}
           tab={showBannerDeleteModal.tab}
           modalData={showBannerDeleteModal.data}
+          setDeleteStatus={setDeleteStatus}
         />
       )}
     </div>

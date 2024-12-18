@@ -21,6 +21,7 @@ const InspectionPage = (searchdata) => {
     type: "",
     userData: null,
   });
+  const[rejectionStatus,setRejectionStatus]=useState([])
 
   // modal open handler
   const openModalHandler = (type, userValue) => {
@@ -36,7 +37,7 @@ const InspectionPage = (searchdata) => {
   const meetingScheduledUserDataHandler = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/users/meeting-scheduled-users?search=${searchKey}`
+        `https://admin.kidgage.com/api/users/meeting-scheduled-users?search=${searchKey}`
       );
       setMeetingScheduledUsrs(response.data);
     } catch (error) {
@@ -52,7 +53,7 @@ const InspectionPage = (searchdata) => {
 
   useEffect(() => {
     meetingScheduledUserDataHandler();
-  }, [searchKey]);
+  }, [searchKey,rejectionStatus]);
 
   return (
     <div className="inspectinPage-container">
@@ -128,6 +129,7 @@ const InspectionPage = (searchdata) => {
           closeHandler={closeModalHandler}
           userId={modalState.userData?._id}
           emailId={modalState.userData?.email}
+          setRejectionStatus={setRejectionStatus}
         />
       )}
       {/* aprrove modal */}
