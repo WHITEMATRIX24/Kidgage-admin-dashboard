@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import "./Settings.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Appbar from "../../components/common/appbar/Appbar";
+
 
 function Settings(searchdata) {
   const [adminsettings, setAdminSettings] = useState({}); // Initialize as an object
@@ -16,6 +17,9 @@ function Settings(searchdata) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const location = useLocation();
+  // Access the current pathname (URL path)
+  const currentPath = location.hash;
 
   const navigate = useNavigate();
 
@@ -81,8 +85,8 @@ function Settings(searchdata) {
         !searchdata ||
           (Array.isArray(searchdata) && searchdata.length === 0) ||
           (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-          ? <Appbar />
-          : null
+          ? <Appbar visible={currentPath} />
+          : null 
       }
           <div className="settings-heading">
             <h3

@@ -235,7 +235,7 @@ router.delete("/:id", async (req, res) => {
 
     console.log("Found banner:", banner);
 
-    // // Delete the image from S3
+    // Delete the image from S3
     // try {
     //   await deleteImageFromS3(banner.imageUrl);
     // } catch (error) {

@@ -3,13 +3,16 @@ import Appbar from "../../components/common/appbar/Appbar";
 import "./provider.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-
+import { useLocation } from "react-router-dom";
 const ProviderDetails = (searchdata) => {
   const [user, setUser] = useState({});
   const [editValues, setEditValues] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
+    // Access the current pathname (URL path)
+    const currentPath = location.hash;
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -121,7 +124,7 @@ const ProviderDetails = (searchdata) => {
   !searchdata || 
   (Array.isArray(searchdata) && searchdata.length === 0) ||
   (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
-    ? <Appbar  /> 
+    ? <Appbar visible={currentPath} /> 
     : null
 }
       <h1 className="provider-title">Provider Details</h1>
