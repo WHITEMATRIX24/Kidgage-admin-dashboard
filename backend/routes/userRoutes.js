@@ -966,8 +966,6 @@ router.get("/meeting-scheduled-users", async (req, res) => {
   }
 });
 
-
-
 router.get("/allUser", async (req, res) => {
   try {
     const { verificationStatus } = req.query;
@@ -990,35 +988,7 @@ router.get("/allUser", async (req, res) => {
   }
 });
 
-// router.get("/allUser", async (req, res) => {
-//   const searchKey = req.query.search;  // Get the search key from the query parameters
-//   const { verificationStatus } = req.query;  // Get the verificationStatus from the query parameters
-
-//   try {
-//     // Define the search query based on the searchKey (case-insensitive)
-//     const query = {
-//       username: { $regex: searchKey, $options: 'i' },
-//       verificationStatus: 'accepted', // Always filter for "accepted" users
-//     };
-
-//     // Fetch users with the "accepted" verification status and matching username
-//     const users = await User.find(query);
-
-//     // Log fetched users for debugging purposes
-//     console.log("Fetched Users with accepted status:", users);
-
-//     // Send the fetched users as the response with status 200 (success)
-//     res.status(200).json(users);
-//   } catch (error) {
-//     // Handle errors and send error message with status 400
-//     console.error("Error fetching users:", error.message);
-//     res.status(400).json({ message: error.message });
-//   }
-// });
-
-
 //updating activiy details-no of classes
-
 router.put("/update-activity/:id", async (req, res) => {
   const { id } = req.params;
   const { noOfCourses } = req.body;

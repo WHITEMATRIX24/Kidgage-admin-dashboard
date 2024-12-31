@@ -11,6 +11,9 @@ import Appbar from "../../components/common/appbar/Appbar";
 
 const CategoryPage = (searchdata) => {
   const [categoryData, setCategoryData] = useState([]);
+  const [addstatus, setAddStatus] = useState([]);
+  const [deleteStatus, setDeleteStatus] = useState([]);
+  const [editStatus, setEditStatus] = useState([]);
   const [categoryAddModalState, setCategoryAddModalState] = useState(false);
   const [categoryEditModalState, setCategoryEditModalState] = useState({
     isShow: false,
@@ -20,7 +23,7 @@ const CategoryPage = (searchdata) => {
     isShow: false,
     categoryId: null,
   });
-   const[searchKey,setSearchKey]=useState("")
+  const [searchKey, setSearchKey] = useState("")
 
   // Add categroy modal handler
   const categoryAddModalOpenHandler = () => setCategoryAddModalState(true);
@@ -53,12 +56,12 @@ const CategoryPage = (searchdata) => {
   };
 
   console.log(searchKey);
-  
+
   // initial data handler
   const initialCategoryDataHandler = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/api/course-category/categories?search=${searchKey}`
+        `https://admin.kidgage.com/api/course-category/categories?search=${searchKey}`
       );
       setCategoryData(res.data);
     } catch (error) {
@@ -72,11 +75,11 @@ const CategoryPage = (searchdata) => {
 
   useEffect(() => {
     initialCategoryDataHandler();
-  }, [searchKey]);
+  }, [addstatus, editStatus, deleteStatus, searchKey]);
 
   return (
     <div className="categorypage-container">
-     {
+      {
         !searchdata ||
           (Array.isArray(searchdata) && searchdata.length === 0) ||
           (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
@@ -121,6 +124,7 @@ const CategoryPage = (searchdata) => {
         <CategoryAddModal
           isShow={categoryAddModalState}
           closeHandler={categoryAddModalCloseHandler}
+          setAddStatus={setAddStatus}
         />
       )}
       {/* Edit modal */}
@@ -129,6 +133,7 @@ const CategoryPage = (searchdata) => {
           isShow={categoryEditModalState.isShow}
           closeHandler={categoryEditModalCloseHandler}
           categoryData={categoryEditModalState.data}
+          setEditStatus={setEditStatus}
         />
       )}
       {/* delete modal */}
@@ -137,6 +142,7 @@ const CategoryPage = (searchdata) => {
           isShow={categoryDeleteModalState.isShow}
           closeHandler={deleteCategoryModalCloseHandler}
           categoryDeleteId={categoryDeleteModalState.categoryId}
+          setDeleteStatus={setDeleteStatus}
         />
       )}
     </div>

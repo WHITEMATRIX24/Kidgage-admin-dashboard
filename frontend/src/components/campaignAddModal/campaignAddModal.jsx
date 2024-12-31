@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CampaignAddModal = ({ isShow, closeHandler, tab }) => {
+const CampaignAddModal = ({ isShow, closeHandler, tab, setAddStatus }) => {
   const [newCampaignFormData, setNewCampaignFormData] = useState({
     campaignName: "",
     link: "",
@@ -90,6 +90,7 @@ const CampaignAddModal = ({ isShow, closeHandler, tab }) => {
         return;
       }
       alert(res.data.message);
+      setAddStatus(res.data)
       handleClose();
     } catch (error) {
       console.log(`error in creating new Campaign error: ${error}`);

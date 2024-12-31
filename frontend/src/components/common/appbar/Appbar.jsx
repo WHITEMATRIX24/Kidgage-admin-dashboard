@@ -6,7 +6,9 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import adminImage from "../../assets/images/admin-photo.jpeg";
 
-const Appbar = ({sendDataToParent}) => {
+const Appbar = ({sendDataToParent,visible}) => {
+  console.log("vlaue",visible);
+  
 
   const [pendingRequests, setPendingRequests] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -20,7 +22,7 @@ const Appbar = ({sendDataToParent}) => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5001/api/users/pending"
+          "https://admin.kidgage.com/api/users/pending"
         ); // Adjust the URL as needed
         const data = await response.json();
         setPendingRequests(data);
@@ -41,7 +43,7 @@ const Appbar = ({sendDataToParent}) => {
 
       try {
         const providerResponse = await axios.get(
-          `http://localhost:5001/api/users/user/${userId}`
+          `https://admin.kidgage.com/api/users/user/${userId}`
         );
         const providerData = providerResponse.data;
         // console.log(providerData);
@@ -80,14 +82,14 @@ const Appbar = ({sendDataToParent}) => {
   return (
     <div className="appbar-container">
       {/* search bar */}
-      <div className="appbar-serarch-container">
+     {visible ==='#settings'||visible ==='#profile'?null:<div className="appbar-serarch-container">
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           className="searchbar-magnifyglass"
         />
         <input type="search" placeholder="search" className="search-inputbar" onChange={handleChange} value={data}/>
       </div>
-     
+     } 
     
       {/* profile tab */}
       <div className="profile-container">
