@@ -89,97 +89,97 @@ const Providerdashboard = () => {
       {
         searchKey === "course" ? (
           <CoursePage searchdata={searchKey} />
-        ) :searchKey === "enqu" ? (
-            <Enquiries searchdata={searchKey} />
-          ) : searchKey === "prof" ? (
-            <ProviderDetails searchdata={searchKey} />
-          ) : searchKey === "sett" ? (
-            <Settings searchdata={searchKey} />
-          )
-            : (<div className="provider-dashboard-content-wrapper">
-              <h3 className="provider-dashboard-content-h3">Dashboard</h3>
-              <div className="provider-dashboardpage-tiles-container">
-                <div className="provider-dashboardpage-tiles">
-                  <h2 className="provider-dashboardpage-textcolor">
-                    {enquiryData.length}
-                  </h2>
-                  <h1 className="provider-dashboard-tile-text">Enquiries</h1>
+        ) : searchKey === "enqu" ? (
+          <Enquiries searchdata={searchKey} />
+        ) : searchKey === "prof" ? (
+          <ProviderDetails searchdata={searchKey} />
+        ) : searchKey === "sett" ? (
+          <Settings searchdata={searchKey} />
+        )
+          : (<div className="provider-dashboard-content-wrapper">
+            <h3 className="provider-dashboard-content-h3">Dashboard</h3>
+            <div className="provider-dashboardpage-tiles-container">
+              <div className="provider-dashboardpage-tiles">
+                <h2 className="provider-dashboardpage-textcolor">
+                  {enquiryData.length}
+                </h2>
+                <h1 className="provider-dashboard-tile-text">Enquiries</h1>
+              </div>
+              <div className="provider-dashboardpage-tiles">
+                <h2 className="provider-dashboardpage-textcolor">
+                  {courseCategory.length}
+                </h2>
+                <h1 className="provider-dashboard-tile-text">Categories</h1>
+              </div>
+              <div className="provider-dashboardpage-tiles">
+                <h2 className="provider-dashboardpage-textcolor">
+                  {courseData.length}
+                </h2>
+                <h1 className="provider-dashboard-tile-text">Courses</h1>
+              </div>
+            </div>
+            <div className="provider-dashboardpage-table-container">
+              <div className="provider-dashboardpage-tables">
+                <div className="provider-dashboardpage-table-header">
+                  <h3 className="provider-dashboardpage-table-header-h3">
+                    Courses / Programs
+                  </h3>
                 </div>
-                <div className="provider-dashboardpage-tiles">
-                  <h2 className="provider-dashboardpage-textcolor">
-                    {courseCategory.length}
-                  </h2>
-                  <h1 className="provider-dashboard-tile-text">Categories</h1>
-                </div>
-                <div className="provider-dashboardpage-tiles">
-                  <h2 className="provider-dashboardpage-textcolor">
-                    {courseData.length}
-                  </h2>
-                  <h1 className="provider-dashboard-tile-text">Courses</h1>
+                <div className="provider-dashboardpage-table-wrapper">
+                  <table className="provider-dashboardpage-table">
+                    <thead>
+                      <tr>
+                        <th>Courses</th>
+                        <th>Category</th>
+                        <th>Duration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {courseData &&
+                        courseData.map((courses) => (
+                          <tr key={courses._id}>
+                            <td>{courses.name}</td>
+                            <td>{courses.courseType}</td>
+                            <td>
+                              {formatDate(courses.startDate)} to{" "}
+                              {formatDate(courses.endDate)}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-              <div className="provider-dashboardpage-table-container">
-                <div className="provider-dashboardpage-tables">
-                  <div className="provider-dashboardpage-table-header">
-                    <h3 className="provider-dashboardpage-table-header-h3">
-                      Courses / Programs
-                    </h3>
-                  </div>
-                  <div className="provider-dashboardpage-table-wrapper">
-                    <table className="provider-dashboardpage-table">
-                      <thead>
-                        <tr>
-                          <th>Courses</th>
-                          <th>Category</th>
-                          <th>Duration</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {courseData &&
-                          courseData.map((courses) => (
-                            <tr key={courses._id}>
-                              <td>{courses.name}</td>
-                              <td>{courses.courseType}</td>
-                              <td>
-                                {formatDate(courses.startDate)} to{" "}
-                                {formatDate(courses.endDate)}
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
+              <div className="provider-dashboardpage-tables">
+                <div className="provider-dashboardpage-table-header">
+                  <h3 className="provider-dashboardpage-table-header-h3">
+                    Student Enquires
+                  </h3>
                 </div>
-                <div className="provider-dashboardpage-tables">
-                  <div className="provider-dashboardpage-table-header">
-                    <h3 className="provider-dashboardpage-table-header-h3">
-                      Student Enquires
-                    </h3>
-                  </div>
-                  <div className="provider-dashboardpage-table-wrapper">
-                    <table className="provider-dashboardpage-table">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Date of Birth</th>
-                          <th>Contact</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {enquiryData &&
-                          enquiryData.map((item) => (
-                            <tr key={item._id}>
-                              <td>{item.parentDetails.name}</td>
-                              <td>{item.childDetails.age}</td>
-                              <td>{item.parentDetails.phone}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
+                <div className="provider-dashboardpage-table-wrapper">
+                  <table className="provider-dashboardpage-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th>Contact</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {enquiryData &&
+                        enquiryData.map((item) => (
+                          <tr key={item._id}>
+                            <td>{item.parentDetails.name}</td>
+                            <td>{item.childDetails.age}</td>
+                            <td>{item.parentDetails.phone}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            </div>)
+            </div>
+          </div>)
       }
 
     </div>

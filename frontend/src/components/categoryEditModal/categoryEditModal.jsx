@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CategoryEditModal = ({ isShow, closeHandler, categoryData , setEditStatus}) => {
+const CategoryEditModal = ({ isShow, closeHandler, categoryData, setEditStatus }) => {
   const [newCategoryData, setNewCategoryData] = useState({
     title: categoryData.name || "",
     categoryImage: categoryData.image || null,

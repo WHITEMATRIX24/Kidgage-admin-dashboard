@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CampaignDeleteModal = ({ isShow, closeHandler, tab, modalData , setDeleteStatus}) => {
+const CampaignDeleteModal = ({ isShow, closeHandler, tab, modalData, setDeleteStatus }) => {
   // Function to get the correct API endpoint based on the tab
   const apiBasedOnTab = () => {
     switch (tab) {
@@ -13,7 +13,7 @@ const CampaignDeleteModal = ({ isShow, closeHandler, tab, modalData , setDeleteS
       case "desktop":
         return `https://admin.kidgage.com/api/desktop-banners/${modalData._id}`;
       case "mobile":
-        return `http://localhost:5001/api/mobile-banners/${modalData._id}`;
+        return `https://admin.kidgage.com/api/mobile-banners/${modalData._id}`;
       default:
         return "";
     }
@@ -22,9 +22,9 @@ const CampaignDeleteModal = ({ isShow, closeHandler, tab, modalData , setDeleteS
   // Delete confirmation handler
   const confirmDelete = async () => {
     try {
-      const apiUrl = apiBasedOnTab();  
+      const apiUrl = apiBasedOnTab();
       if (apiUrl) {
-       const res = await axios.delete(apiUrl);
+        const res = await axios.delete(apiUrl);
         alert("Campaign deleted successfully.");
         setDeleteStatus(res.data)
         closeHandler(); // Close the modal

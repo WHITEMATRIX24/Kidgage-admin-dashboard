@@ -21,18 +21,18 @@ function InboundRequest(searchdata) {
   const [showRequestPopup, setShowRequestPopup] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const[searchKey,setSearchKey]=useState("")
-  const[rejectionStatus,setRejectionStatus]=useState([])
+  const [searchKey, setSearchKey] = useState("")
+  const [rejectionStatus, setRejectionStatus] = useState([])
   const [showRejectPopupData, setShowRejectPopupData] = useState({
     isShow: false,
     data: null,
   });
 
-    const fetchUsers = async () => {
+  const fetchUsers = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-       `https://admin.kidgage.com/api/users/pending?search=${searchKey}` 
+        `https://admin.kidgage.com/api/users/pending?search=${searchKey}`
       );
       setPendingUsers(response.data);
     } catch (error) {
@@ -42,7 +42,7 @@ function InboundRequest(searchdata) {
     }
   };
 
-  
+
 
   const openRequestDetails = (user) => {
     setSelectedUser(user);
@@ -101,20 +101,20 @@ function InboundRequest(searchdata) {
     setSearchKey(data); // Set the received data to state
   };
 
-  
+
   useEffect(() => {
     fetchUsers();
-  }, [searchKey,rejectionStatus]);
+  }, [searchKey, rejectionStatus]);
 
   return (
     <div className="inbound-container">
-    {
-  !searchdata || 
-  (Array.isArray(searchdata) && searchdata.length === 0) ||
-  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
-    ? <Appbar sendDataToParent={handleChildData} /> 
-    : null
-}
+      {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
       <div className="inbound-heading">
         <h3>Inbound Requests</h3>
       </div>

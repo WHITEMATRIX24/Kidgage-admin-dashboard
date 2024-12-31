@@ -25,9 +25,9 @@ const CoursePage = (searchdata) => {
   const [showCourseExceedModal, setShowCourseExceedModal] = useState(false);
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [courseId, setCourseId] = useState(null); // Store the course id
-   const[searchKey,setSearchKey]=useState("")
+  const [searchKey, setSearchKey] = useState("")
   // const [isActive, setIsActive] = useState(null);
-console.log(searchKey);
+  console.log(searchKey);
 
   const fetchProviderAndCourses = async () => {
     setError(null);
@@ -159,21 +159,20 @@ console.log(searchKey);
 
   return (
     <div className="coursepage-container">
-     {
-  !searchdata || 
-  (Array.isArray(searchdata) && searchdata.length === 0) ||
-  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
-    ? <Appbar sendDataToParent={handleChildData} /> 
-    : null
-}
+      {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
       <h3 className="coursepage-content-heading">Courses</h3>
       <div className="coursepage-content-container">
         <div className="coursepage-content-header">
           {/* Tab Button for Programs Offered */}
           <button
-            className={`course_tab-button ${
-              activeTab === "Programs Offered" ? "active" : ""
-            }`}
+            className={`course_tab-button ${activeTab === "Programs Offered" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("Programs Offered")}
           >
             Programs Offered
@@ -181,9 +180,8 @@ console.log(searchKey);
 
           {/* Tab Button for Add Course */}
           <button
-            className={`add_course_btn ${
-              activeTab === "Add Course" ? "active" : ""
-            }`}
+            className={`add_course_btn ${activeTab === "Add Course" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("Add Course")}
           >
             <FontAwesomeIcon icon={faPlus} style={{ color: "#fcfcfc" }} /> Add

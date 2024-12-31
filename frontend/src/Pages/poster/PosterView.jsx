@@ -11,10 +11,10 @@ import PosterEditModal from '../../components/PosterModal/PosterEditModal';
 
 function PosterView(searchdata) {
     const [posterDeails, setPosterDetails] = useState([])
-    const [addstatus,setAddStatus]=useState([])
-    const [deleteStatus,setDeleteStatus]=useState([])
-    const [editStatus,setEditStatus]=useState([])
-    const[searchKey,setSearchKey]=useState("")
+    const [addstatus, setAddStatus] = useState([])
+    const [deleteStatus, setDeleteStatus] = useState([])
+    const [editStatus, setEditStatus] = useState([])
+    const [searchKey, setSearchKey] = useState("")
     const [posterEditModalState, setPosterEditModalState] = useState({
         isShow: false,
         data: null,
@@ -25,7 +25,7 @@ function PosterView(searchdata) {
     });
     const [deletePosterId, setDeletePosterId] = useState(null);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [expandedState, setExpandedState] = useState({}); 
+    const [expandedState, setExpandedState] = useState({});
     const getAllPosterDetails = async () => {
         const result = await axios.get(`https://admin.kidgage.com/api/posters?search=${searchKey}`
         );
@@ -35,7 +35,7 @@ function PosterView(searchdata) {
     }
 
     console.log(searchKey);
-    
+
     // Add poster modal handler
     const posterAddModalOpenHandler = () => setShowAddModal(true);
 
@@ -81,26 +81,26 @@ function PosterView(searchdata) {
             ...prevState,
             [id]: !prevState[id] // Toggle the expansion state of the current poster
         }));
-     
+
     };
 
     const handleChildData = (data) => {
         setSearchKey(data); // Set the received data to state
-      };
+    };
 
 
     useEffect(() => {
         getAllPosterDetails();
-    }, [addstatus,deleteStatus,editStatus,searchKey])
+    }, [addstatus, deleteStatus, editStatus, searchKey])
     return (
         <div className="posterpage-container">
-          {
-        !searchdata ||
-          (Array.isArray(searchdata) && searchdata.length === 0) ||
-          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-          ? <Appbar sendDataToParent={handleChildData} />
-          : null
-      }
+            {
+                !searchdata ||
+                    (Array.isArray(searchdata) && searchdata.length === 0) ||
+                    (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+                    ? <Appbar sendDataToParent={handleChildData} />
+                    : null
+            }
             <h3 className="posterpage-content-heading"> Event Posters</h3>
             <div className="posterpage-content-container">
                 <div className="poster-button-container">
@@ -135,7 +135,7 @@ function PosterView(searchdata) {
                                 return (<tr>
                                     <td>
                                         <div className="poster-img">
-                                            <img 
+                                            <img
                                                 src={poster.image}
                                                 alt="Banner Img"
                                             />
@@ -143,11 +143,11 @@ function PosterView(searchdata) {
                                     </td>
                                     <td>{poster.name}</td>
                                     <td className='poster-description'>      <p>
-                                    {expandedState[poster._id] ? poster.description : `${poster.description.substring(0, 100)}...`} 
+                                        {expandedState[poster._id] ? poster.description : `${poster.description.substring(0, 100)}...`}
                                     </p>
                                         {poster.description.length > 100 && (  // Show "Show more" only if the description is long enough
                                             <button className='toggle-button' onClick={() => toggleExpand(poster._id)}>
-                                                 {expandedState[poster._id] ? 'Show less' : 'More...'}
+                                                {expandedState[poster._id] ? 'Show less' : 'More...'}
                                             </button>
                                         )}</td>
                                     <td>
@@ -164,7 +164,7 @@ function PosterView(searchdata) {
                                             <FontAwesomeIcon
                                                 icon={faPenToSquare}
                                                 style={{ color: "#106cb1", cursor: "pointer" }}
-                                                onClick={() => posterEditModalOpenHandler (poster)}
+                                                onClick={() => posterEditModalOpenHandler(poster)}
                                             />
                                             <FontAwesomeIcon
                                                 icon={faTrash}

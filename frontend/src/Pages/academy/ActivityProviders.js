@@ -19,12 +19,12 @@ function ActivityProviders(searchdata) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [updateStatus, setUpdateStatus] = useState([]);
   const [toggleCheckedId, setToggleCheckedId] = useState([]);
-   const[searchKey,setSearchKey]=useState("")
-    const [activityEditModalState, setCategoryEditModalState] = useState({
+  const [searchKey, setSearchKey] = useState("")
+  const [activityEditModalState, setCategoryEditModalState] = useState({
     isShow: false,
     data: null,
   });
-  
+
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -69,7 +69,7 @@ function ActivityProviders(searchdata) {
 
 
   //  // toggle handler
-   const toggleHandler = async (providerId, providerStatus) => {
+  const toggleHandler = async (providerId, providerStatus) => {
     if (!providerId) {
       alert("camapign toggle data missing");
       return;
@@ -83,7 +83,7 @@ function ActivityProviders(searchdata) {
     setToggleCheckedId([...toggleCheckedId, providerId]);
 
     try {
-      const res = await axios.put(`https://admin.kidgage.com/api/users/update-status/${providerId}`, {providerStatus });
+      const res = await axios.put(`https://admin.kidgage.com/api/users/update-status/${providerId}`, { providerStatus });
       if (res.status !== 200) {
         alert("toggle action not successfull");
       }
@@ -102,19 +102,19 @@ function ActivityProviders(searchdata) {
 
   useEffect(() => {
     fetchUsers();
-   
-  }, [updateStatus,searchKey]);
+
+  }, [updateStatus, searchKey]);
 
   return (
     <>
       <div className="activity-container">
-      {
-        !searchdata ||
-          (Array.isArray(searchdata) && searchdata.length === 0) ||
-          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-          ? <Appbar sendDataToParent={handleChildData} />
-          : null
-      }
+        {
+          !searchdata ||
+            (Array.isArray(searchdata) && searchdata.length === 0) ||
+            (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+            ? <Appbar sendDataToParent={handleChildData} />
+            : null
+        }
         <div className="activity-heading">
           <h1 className="activity-heading-h3">Activity Providers</h1>
         </div>
@@ -176,20 +176,20 @@ function ActivityProviders(searchdata) {
                       />
                     </td>
                     <td>
-                    
+
                       <label class="switch">
-                      <input
-                        type="checkbox"
-                        defaultChecked={item.promoted}
-                        onChange={() =>
-                          toggleHandler(item._id, item.promoted)
-                        }
-                        disabled={toggleCheckedId.find((val) =>
-                          val === item._id ? true : false
-                        )}
-                      ></input>
-                      <span class="slider round"></span>
-                    </label>
+                        <input
+                          type="checkbox"
+                          defaultChecked={item.promoted}
+                          onChange={() =>
+                            toggleHandler(item._id, item.promoted)
+                          }
+                          disabled={toggleCheckedId.find((val) =>
+                            val === item._id ? true : false
+                          )}
+                        ></input>
+                        <span class="slider round"></span>
+                      </label>
                     </td>
                     <td>
                       <div

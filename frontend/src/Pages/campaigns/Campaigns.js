@@ -171,7 +171,7 @@ function Campaigns(searchdata) {
     fetchBanners();
     fetchMobileBanners();
     fetchDesktopBanners();
-  }, [searchKey,addstatus,deleteStatus,editStatus]);
+  }, [searchKey, addstatus, deleteStatus, editStatus]);
 
   return (
     <div className="campaign-container">
