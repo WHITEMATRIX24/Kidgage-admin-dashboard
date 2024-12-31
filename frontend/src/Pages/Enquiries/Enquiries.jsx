@@ -8,8 +8,8 @@ const Enquiries = (searchdata) => {
   const [enquiryData, setEnquiryData] = useState([]);
   const [error, setError] = useState(null);
   const [provider, setProvider] = useState(null);
-   const[searchKey,setSearchKey]=useState("")
-console.log(searchKey);
+  const [searchKey, setSearchKey] = useState("")
+  console.log(searchKey);
 
   const fetchProviderAndEnquiry = async () => {
     setError(null);
@@ -52,13 +52,13 @@ console.log(searchKey);
 
   return (
     <div className="enquiriesPage-container">
-     {
-  !searchdata || 
-  (Array.isArray(searchdata) && searchdata.length === 0) ||
-  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
-    ? <Appbar sendDataToParent={handleChildData} /> 
-    : null
-}
+      {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar sendDataToParent={handleChildData} />
+          : null
+      }
       <div className="enquiriesPage-content">
         <h3 className="enquiriesPage-content-h3">Enquiries </h3>
         <div className="enquiriesPage-content-container">

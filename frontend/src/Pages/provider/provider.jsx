@@ -11,8 +11,8 @@ const ProviderDetails = (searchdata) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
-    // Access the current pathname (URL path)
-    const currentPath = location.hash;
+  // Access the current pathname (URL path)
+  const currentPath = location.hash;
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -120,13 +120,13 @@ const ProviderDetails = (searchdata) => {
 
   return (
     <div className="provider-details">
-    {
-  !searchdata || 
-  (Array.isArray(searchdata) && searchdata.length === 0) ||
-  (typeof searchdata === 'object' && Object.keys(searchdata).length === 0) 
-    ? <Appbar visible={currentPath} /> 
-    : null
-}
+      {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar visible={currentPath} />
+          : null
+      }
       <h1 className="provider-title">Provider Details</h1>
 
       <div className="provider-details-content">

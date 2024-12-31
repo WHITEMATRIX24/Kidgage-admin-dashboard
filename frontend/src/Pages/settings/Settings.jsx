@@ -81,13 +81,13 @@ function Settings(searchdata) {
     <>
       {Object.keys(adminsettings).length > 0 ? (
         <div className="settings-container">
-         {
-        !searchdata ||
-          (Array.isArray(searchdata) && searchdata.length === 0) ||
-          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-          ? <Appbar visible={currentPath} />
-          : null 
-      }
+          {
+            !searchdata ||
+              (Array.isArray(searchdata) && searchdata.length === 0) ||
+              (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+              ? <Appbar visible={currentPath} />
+              : null
+          }
           <div className="settings-heading">
             <h3
               style={{

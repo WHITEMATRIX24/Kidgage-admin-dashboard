@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./categoryDeleteModal.css";
 import axios from "axios";
 
-const CategoryDeleteModal = ({ isShow, closeHandler, categoryDeleteId ,setDeleteStatus}) => {
+const CategoryDeleteModal = ({ isShow, closeHandler, categoryDeleteId, setDeleteStatus }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // category delete handler

@@ -21,7 +21,7 @@ const InspectionPage = (searchdata) => {
     type: "",
     userData: null,
   });
-  const[rejectionStatus,setRejectionStatus]=useState([])
+  const [rejectionStatus, setRejectionStatus] = useState([])
 
   // modal open handler
   const openModalHandler = (type, userValue) => {
@@ -53,7 +53,7 @@ const InspectionPage = (searchdata) => {
 
   useEffect(() => {
     meetingScheduledUserDataHandler();
-  }, [searchKey,rejectionStatus]);
+  }, [searchKey, rejectionStatus]);
 
   return (
     <div className="inspectinPage-container">

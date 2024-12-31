@@ -124,7 +124,7 @@ const DashboardPage = () => {
 
   const handleChildData = (data) => {
     setSearchKey(data); // Set the received data to state
-  
+
   };
 
   // if(searchKey =="request"){
@@ -147,99 +147,99 @@ const DashboardPage = () => {
     <div className="dashboardpage-container">
       <Appbar sendDataToParent={handleChildData} />
       {searchKey === "req" ? (
-      <InboundRequest searchdata={searchKey} />
+        <InboundRequest searchdata={searchKey} />
       ) : searchKey === "ins" ? (
-      <InspectionPage searchdata={searchKey} />
-      ): searchKey === "aca" ? (
+        <InspectionPage searchdata={searchKey} />
+      ) : searchKey === "aca" ? (
         <ActivityProviders searchdata={searchKey} />
-      ): searchKey === "camp" ? (
+      ) : searchKey === "camp" ? (
         <Campaigns searchdata={searchKey} />
-      ): searchKey === "cate" ? (
+      ) : searchKey === "cate" ? (
         <CategoryPage searchdata={searchKey} />
-      ): searchKey === "even" ? (
+      ) : searchKey === "even" ? (
         <PosterView searchdata={searchKey} />
-      ): searchKey === "sett" ? (
+      ) : searchKey === "sett" ? (
         <Settings searchdata={searchKey} />
       )
-      :(<div className="dashboard-content-wrapper">
-        <h3 className="dashboard-content-h3">Dashboard</h3>
-        <div className="dashboardpage-tiles-container">
-          <div className="dashboardpage-tiles">
-            <h2 className="dashboardpage-blue">{activeProviderCounts}</h2>
-            <h1 className="dashboard-tile-text">Activity Provider</h1>
-          </div>
-          <div className="dashboardpage-tiles">
-            <h2 className="dashboardpage-green">{leadsGeneratedCount}</h2>
-            <h1 className="dashboard-tile-text">Leads generated</h1>
-          </div>
-          <div className="dashboardpage-tiles">
-            <h2 className="dashboardpage-red">{coursesCounts}</h2>
-            <h1 className="dashboard-tile-text">Programs & Courses</h1>
-          </div>
-          <div className="dashboardpage-tiles">
-            <h2 className="dashboardpage-yellow">{campaignsCounts}</h2>
-            <h1 className="dashboard-tile-text">Active Campaigns</h1>
-          </div>
-        </div>
-        <div className="dashboardpage-table-container">
-          <div className="dashboardpage-tables">
-            <div className="dashboardpage-table-header">
-              <h3 className="dashboardpage-table-header-h3">
-                Upcoming Meetings
-              </h3>
+        : (<div className="dashboard-content-wrapper">
+          <h3 className="dashboard-content-h3">Dashboard</h3>
+          <div className="dashboardpage-tiles-container">
+            <div className="dashboardpage-tiles">
+              <h2 className="dashboardpage-blue">{activeProviderCounts}</h2>
+              <h1 className="dashboard-tile-text">Activity Provider</h1>
             </div>
-            <div className="dashboardpage-table-wrapper">
-              <table className="dashboardpage-table">
-                <thead>
-                  <tr>
-                    <th>Academy Name</th>
-                    <th>Meeting Date</th>
-                    <th>Location</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {upcommingMeetingsData &&
-                    upcommingMeetingsData.map((meetings) => (
-                      <tr key={meetings._id}>
-                        <td>{meetings.fullName}</td>
-                        <td>{formatDateTime(meetings.meetingScheduleDate)}</td>
-                        <td>{meetings.location}</td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+            <div className="dashboardpage-tiles">
+              <h2 className="dashboardpage-green">{leadsGeneratedCount}</h2>
+              <h1 className="dashboard-tile-text">Leads generated</h1>
+            </div>
+            <div className="dashboardpage-tiles">
+              <h2 className="dashboardpage-red">{coursesCounts}</h2>
+              <h1 className="dashboard-tile-text">Programs & Courses</h1>
+            </div>
+            <div className="dashboardpage-tiles">
+              <h2 className="dashboardpage-yellow">{campaignsCounts}</h2>
+              <h1 className="dashboard-tile-text">Active Campaigns</h1>
             </div>
           </div>
-          <div className="dashboardpage-tables">
-            <div className="dashboardpage-table-header">
-              <h3 className="dashboardpage-table-header-h3">
-                Upcoming Expires
-              </h3>
+          <div className="dashboardpage-table-container">
+            <div className="dashboardpage-tables">
+              <div className="dashboardpage-table-header">
+                <h3 className="dashboardpage-table-header-h3">
+                  Upcoming Meetings
+                </h3>
+              </div>
+              <div className="dashboardpage-table-wrapper">
+                <table className="dashboardpage-table">
+                  <thead>
+                    <tr>
+                      <th>Academy Name</th>
+                      <th>Meeting Date</th>
+                      <th>Location</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {upcommingMeetingsData &&
+                      upcommingMeetingsData.map((meetings) => (
+                        <tr key={meetings._id}>
+                          <td>{meetings.fullName}</td>
+                          <td>{formatDateTime(meetings.meetingScheduleDate)}</td>
+                          <td>{meetings.location}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div className="dashboardpage-table-wrapper">
-              <table className="dashboardpage-table">
-                <thead>
-                  <tr>
-                    <th>Academy Name</th>
-                    <th>Expiry Date</th>
-                    <th>Location</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {upcommingExpiresData &&
-                    upcommingExpiresData.map((expires) => (
-                      <tr>
-                        <td>{expires.fullName}</td>
-                        <td> {formatDate(expires.expiryDate)}</td>
-                        <td>{expires.location}</td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+            <div className="dashboardpage-tables">
+              <div className="dashboardpage-table-header">
+                <h3 className="dashboardpage-table-header-h3">
+                  Upcoming Expires
+                </h3>
+              </div>
+              <div className="dashboardpage-table-wrapper">
+                <table className="dashboardpage-table">
+                  <thead>
+                    <tr>
+                      <th>Academy Name</th>
+                      <th>Expiry Date</th>
+                      <th>Location</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {upcommingExpiresData &&
+                      upcommingExpiresData.map((expires) => (
+                        <tr>
+                          <td>{expires.fullName}</td>
+                          <td> {formatDate(expires.expiryDate)}</td>
+                          <td>{expires.location}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </div>)}
+        </div>)}
     </div>
   );
 };

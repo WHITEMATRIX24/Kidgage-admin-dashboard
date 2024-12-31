@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CampaignEditModal = ({ isShow, closeHandler, tab, modalData , setEditStatus}) => {
+const CampaignEditModal = ({ isShow, closeHandler, tab, modalData, setEditStatus }) => {
   console.log(modalData);
 
   const [newCampaignFormData, setNewCampaignFormData] = useState({

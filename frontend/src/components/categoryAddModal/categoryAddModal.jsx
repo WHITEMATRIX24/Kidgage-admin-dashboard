@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const CategoryAddModal = ({ isShow, closeHandler, setAddStatus}) => {
+const CategoryAddModal = ({ isShow, closeHandler, setAddStatus }) => {
   const [newCategoryData, setNewCategoryData] = useState({
     title: "",
     categoryImage: null,
