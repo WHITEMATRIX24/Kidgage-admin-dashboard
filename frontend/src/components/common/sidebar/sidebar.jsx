@@ -105,7 +105,7 @@ const Sidebar = ({
       "events",
       // "advertisements",
       "categories",
-      // "poster",
+      "news",
       "settings",
     ];
 
@@ -154,7 +154,7 @@ const Sidebar = ({
     events: faImages,
     settings: faCog,
     enquiries: faMessage,
-    // advertisements: faAd, // or faBullseye or faMegaphone
+    news: faAd, // or faBullseye or faMegaphone
   };
 
   const handleItemClick = (item) => {
@@ -217,7 +217,7 @@ const Sidebar = ({
       // "advertisements",
       "categories",
       "events",
-      // "poster",
+      "news",
       "settings",
     ],
     provider: ["dashboard", "courses", "enquiries", "profile", "settings"],
