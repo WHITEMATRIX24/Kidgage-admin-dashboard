@@ -290,14 +290,14 @@ router.post("/updateVerification", async (req, res) => {
 });
 
 router.get("/pending", async (req, res) => {
-  const searchKey=req.query.search
-  console.log("searchKey:.....",searchKey);
+  const searchKey = req.query.search
+  console.log("searchKey:.....", searchKey);
   try {
-    const query ={
-      username:{$regex:searchKey,$options:'i'},
+    const query = {
+      username: { $regex: searchKey, $options: 'i' },
       verificationStatus: "pending",
-  }
-    const pendingUsers = await User.find(query);
+    }
+    const pendingUsers = await User.find({ verificationStatus: "pending" });
     console.log("Fetched Pending Users:", pendingUsers); // Debugging log
     res.status(200).json(pendingUsers);
   } catch (error) {
@@ -970,12 +970,12 @@ router.get("/allUser", async (req, res) => {
   try {
     const { verificationStatus } = req.query;
     const searchKey = req.query.search;  // Get the search key from the query parameters
-    console.log("searchKey:.....",searchKey);
+    console.log("searchKey:.....", searchKey);
     // Define a query object that will filter users based on verificationStatus if provided
     let query = {};
     if (verificationStatus) {
       query.username = { $regex: searchKey, $options: 'i' },
-      query.verificationStatus = verificationStatus;
+        query.verificationStatus = verificationStatus;
     }
 
     // Fetch users with the specified filter

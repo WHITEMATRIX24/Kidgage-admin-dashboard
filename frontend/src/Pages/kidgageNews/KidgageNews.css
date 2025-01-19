@@ -1,0 +1,141 @@
+.newspage-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.newspage-content-heading {
+    color: rgba(17, 151, 224, 0.951);
+    font-size: 25px;
+    margin-top: 2rem;
+    margin-left: 0;
+    margin-bottom: 1rem;
+
+}
+
+.newspage-content-container {
+    padding: 0.5rem 1.5rem;
+    background-color: white;
+    box-shadow: 10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    height: 75vh;
+    margin-top: 2%;
+    margin-left: 0;
+}
+
+.news-table-details {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 22px;
+    margin-top: 10px;
+
+}
+
+.table-head th {
+    background-color: rgb(255, 255, 255);
+    position: sticky;
+    top: 0;
+
+}
+
+table th,
+td {
+    padding: 16px;
+}
+
+.news-icons {
+    justify-content: space-between;
+    display: flex;
+    padding: 5px;
+    margin-right: 30px;
+    font-size: large;
+}
+
+.news-description {
+    overflow-wrap: break-word;
+    width: 400px;
+    text-align: justify;
+}
+
+.add-news-button {
+    background-color: #027ffd;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 15px;
+
+    /* Add this line for spacing */
+}
+
+.news-button-container {
+    padding-bottom: 20px;
+    float: right;
+    /* padding: 20px; */
+    /* margin-right: 20px; */
+}
+
+.toggle-button {
+    background-color: rgb(255, 255, 255);
+    color: #027ffd;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    /* text-decoration-line: underline;
+    text-decoration-color:  #027ffd;  
+    text-decoration-thickness: 1px; */
+    margin-top: 10px;
+}
+
+.news-img img {
+    width: 160px;
+    height: 190px;
+
+}
+
+@media (min-width: 2000px) {
+
+    .newspage-content-heading {
+        padding-top: 1rem;
+        font-size: 45px;
+        padding-bottom: 10px;
+    }
+
+    .add-news-button {
+
+        font-size: 35px;
+
+    }
+
+    .newspage-content-container {
+        padding: 1.2rem 1.8rem;
+    }
+
+    .news-icons {
+        font-size: xx-large;
+    }
+
+
+    .toggle-button {
+        font-size: 25px;
+    }
+
+    .tab-button {
+        font-size: 35px;
+        /* Larger size on large screens */
+    }
+
+    .news-table-details {
+        font-size: 35px;
+    }
+
+    .news-img img {
+        width: 250px;
+        height: 290px;
+
+    }
+
+}

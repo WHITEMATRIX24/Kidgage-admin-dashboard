@@ -37,7 +37,7 @@ function AddCourseForm({ providerId }) {
     const fetchCourseTypes = async () => {
       try {
         const response = await axios.get(
-          "https://admin.kidgage.com/api/course-category/categories"
+          "http://localhost:5001/api/course-category/categories"
         );
         setCourseTypes(response.data);
       } catch (error) {

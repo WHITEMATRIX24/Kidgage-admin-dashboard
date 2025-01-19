@@ -22,7 +22,7 @@ const Appbar = ({ sendDataToParent, visible }) => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch(
-          "https://admin.kidgage.com/api/users/pending"
+          "http://localhost:5001/api/users/pending"
         ); // Adjust the URL as needed
         const data = await response.json();
         setPendingRequests(data);

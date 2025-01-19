@@ -42,6 +42,7 @@ import AdminCoursePage from "../Pages/adminCourse/adminCourse";
 import ProviderDashboard from "../Pages/providerDashboard/providerDashboard";
 import Enquiries from "../Pages/Enquiries/Enquiries";
 import PosterView from "../Pages/poster/PosterView";
+import KidgageNews from "../Pages/kidgageNews/kidgageNews";
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -230,6 +231,10 @@ const Dashboard = () => {
                 {/* <EditCourseCategoryForm />
                 <AddCourseCategoryForm /> */}
                 <CategoryPage />
+              </section>
+              <section id="news" className="db-section">
+
+                <KidgageNews />
               </section>
 
               <section id="events" className="db-section">

@@ -51,7 +51,7 @@ const EditCourseForm = ({ id }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://admin.kidgage.com/api/course-category/categories"
+          "http://localhost:5001/api/course-category/categories"
         );
         // Handle categories if needed
       } catch (error) {
