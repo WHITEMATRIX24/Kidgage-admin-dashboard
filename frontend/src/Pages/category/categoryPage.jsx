@@ -61,7 +61,7 @@ const CategoryPage = (searchdata) => {
   const initialCategoryDataHandler = async () => {
     try {
       const res = await axios.get(
-        `https://admin.kidgage.com/api/course-category/categories?search=${searchKey}`
+        `http://localhost:5001/api/course-category/categories?search=${searchKey}`
       );
       setCategoryData(res.data);
     } catch (error) {

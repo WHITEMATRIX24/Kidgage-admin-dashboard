@@ -68,7 +68,7 @@ function Campaigns(searchdata) {
   const fetchBanners = async (searchTerm = "") => {
     setLoading(true);
     try {
-      const response = await axios.get(`https://admin.kidgage.com/api/banners?search=${searchTerm}`);
+      const response = await axios.get(`http://localhost:5001/api/banners?search=${searchTerm}`);
       //   console.log(response.data);
       setBanners(response.data);
       setLoading(false);
@@ -81,7 +81,7 @@ function Campaigns(searchdata) {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://admin.kidgage.com/api/desktop-banners/?search=${searchTerm}`
+        `http://localhost:5001/api/desktop-banners/?search=${searchTerm}`
       );
       console.log(response.data);
       setDesktopBanners(response.data);
@@ -95,7 +95,7 @@ function Campaigns(searchdata) {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://admin.kidgage.com/api/mobile-banners/?search=${searchTerm}`
+        `http://localhost:5001/api/mobile-banners/?search=${searchTerm}`
       );
       // console.log(response.data);
       setMobileBanners(response.data);
@@ -112,11 +112,11 @@ function Campaigns(searchdata) {
     const toggleApiBasedOnTab = () => {
       switch (tab) {
         case "home":
-          return `https://admin.kidgage.com/api/banners/update-status/${bannerId}`;
+          return `http://localhost:5001/api/banners/update-status/${bannerId}`;
         case "desktop":
-          return `https://admin.kidgage.com/api/desktop-banners/update-status/${bannerId}`;
+          return `http://localhost:5001/api/desktop-banners/update-status/${bannerId}`;
         case "mobile":
-          return `https://admin.kidgage.com/api/mobile-banners/update-status/${bannerId}`;
+          return `http://localhost:5001/api/mobile-banners/update-status/${bannerId}`;
         default:
           return "";
       }

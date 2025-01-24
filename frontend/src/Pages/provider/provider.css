@@ -22,6 +22,15 @@
 
 }
 
+.add-aminities-btn{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    font-size: 15px;
+    float: right;
+    padding: 5px;
+    margin: 10px;
+}
 .provider-details-content {
     background-color: white;
     margin-top: 2%;

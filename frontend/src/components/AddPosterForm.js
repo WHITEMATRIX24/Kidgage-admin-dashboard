@@ -96,7 +96,7 @@ function AddPosterForm({ isShow, closeHandler }) {
 
     try {
       const response = await axios.post(
-        "https://admin.kidgage.com/api/posters/add",
+        "http://localhost:5001/api/posters/add",
         formData,
         {
           headers: {

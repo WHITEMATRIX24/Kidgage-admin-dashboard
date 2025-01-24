@@ -43,7 +43,7 @@ const Appbar = ({ sendDataToParent, visible }) => {
 
       try {
         const providerResponse = await axios.get(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         const providerData = providerResponse.data;
         // console.log(providerData);

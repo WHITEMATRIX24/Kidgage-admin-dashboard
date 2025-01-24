@@ -94,15 +94,77 @@ async function deleteImageFromS3(imageUrl) {
 }
 
 // Add a new course
+// router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
+//   try {
+//     const {
+//       providerId,
+//       name,
+//       duration,
+//       durationUnit,
+//       startDate,
+//       endDate,
+//       description,
+//       feeAmount,
+//       feeType,
+//       days,
+//       timeSlots,
+//       location,
+//       ageGroup,
+//       courseType,
+//       promoted,
+//       preferredGender,
+//     } = req.body;
+
+//     // Ensure the timeSlots are parsed correctly
+//     const parsedTimeSlots =
+//       typeof timeSlots === "string" ? JSON.parse(timeSlots) : timeSlots;
+//     const parsedLocation =
+//       typeof location === "string" ? JSON.parse(location) : location;
+//     const parsedAge =
+//       typeof ageGroup === "string" ? JSON.parse(ageGroup) : ageGroup;
+
+//     // Handle the images
+//     const images = req.files ? await uploadImagesToS3(req.files) : [];
+
+//     const newCourse = new Course({
+//       providerId,
+//       name,
+//       duration,
+//       durationUnit,
+//       startDate,
+//       endDate,
+//       description,
+//       feeAmount,
+//       feeType,
+//       days,
+//       timeSlots: parsedTimeSlots,
+//       location: parsedLocation,
+//       ageGroup: parsedAge,
+//       courseType,
+//       images, // Base64 encoded images
+//       promoted,
+//       preferredGender,
+//     });
+
+//     const savedCourse = await newCourse.save();
+//     res.status(201).json(savedCourse);
+//   } catch (error) {
+//     console.error("Error adding course:", error);
+//     res
+//       .status(500)
+//       .json({ message: "Error adding course", error: error.message });
+//   }
+// });
+
+// Add a new course
+// Backend: Ensure the parsedCourseDurations is handled properly
+
+
 router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   try {
     const {
       providerId,
       name,
-      duration,
-      durationUnit,
-      startDate,
-      endDate,
       description,
       feeAmount,
       feeType,
@@ -113,48 +175,65 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
       courseType,
       promoted,
       preferredGender,
+      courseDuration, // Receiving courseDurations from the frontend
     } = req.body;
 
-    // Ensure the timeSlots are parsed correctly
-    const parsedTimeSlots =
-      typeof timeSlots === "string" ? JSON.parse(timeSlots) : timeSlots;
-    const parsedLocation =
-      typeof location === "string" ? JSON.parse(location) : location;
-    const parsedAge =
-      typeof ageGroup === "string" ? JSON.parse(ageGroup) : ageGroup;
+    console.log("Received courseDurations:", courseDuration);  // Check raw value
+    console.log("Received ageGroup:", ageGroup);  // Check raw value
 
-    // Handle the images
-    const images = req.files ? await uploadImagesToS3(req.files) : [];
+    // Ensure courseDurations is parsed correctly if it's a string
+    const parsedCourseDurations = typeof courseDuration === "string" ? JSON.parse(courseDuration) : courseDuration;
+    console.log("Parsed courseDurations:", parsedCourseDurations);  // Check parsed value
 
+    // // Default to empty array if no courseDurations are provided
+    // const courseDurationsArray = parsedCourseDurations && parsedCourseDurations.length > 0
+    //   ? parsedCourseDurations
+    //   : [{ id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" }];
+
+      // Convert startDate and endDate strings into Date objects
+    //   parsedCourseDurations.forEach(duration => {
+    //     if (typeof duration.startDate === "string") {
+    //         duration.startDate = new Date(duration.startDate);  // Convert string to Date object
+    //     }
+    //     if (typeof duration.endDate === "string") {
+    //         duration.endDate = new Date(duration.endDate);  // Convert string to Date object
+    //     }
+    // });
+
+    // Handle the rest of the course data...
     const newCourse = new Course({
       providerId,
       name,
-      duration,
-      durationUnit,
-      startDate,
-      endDate,
       description,
       feeAmount,
       feeType,
       days,
-      timeSlots: parsedTimeSlots,
-      location: parsedLocation,
-      ageGroup: parsedAge,
+      timeSlots: JSON.parse(timeSlots),
+      location: JSON.parse(location),
+      ageGroup: JSON.parse(ageGroup),
       courseType,
-      images, // Base64 encoded images
+      images: req.files ? await uploadImagesToS3(req.files) : [],
       promoted,
       preferredGender,
+      active: true,
+      courseDuration: parsedCourseDurations,  // Save the courseDurations properly
     });
 
     const savedCourse = await newCourse.save();
-    res.status(201).json(savedCourse);
+    console.log("Saved course:", savedCourse);
+
+    res.status(201).json(savedCourse);  // Return saved course
+
   } catch (error) {
     console.error("Error adding course:", error);
-    res
-      .status(500)
-      .json({ message: "Error adding course", error: error.message });
+    res.status(500).json({ message: "Error adding course", error: error.message });
   }
 });
+
+
+
+
+
 
 router.get("/course/:id", async (req, res) => {
   try {

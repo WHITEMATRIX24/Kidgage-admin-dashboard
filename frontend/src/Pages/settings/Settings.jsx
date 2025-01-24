@@ -33,7 +33,7 @@ function Settings(searchdata) {
   const FetchAdminDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("https://admin.kidgage.com/api/admin");
+      const response = await axios.get("http://localhost:5001/api/admin");
       console.log("Admin data:", response.data); // Check if _id exists
       setAdminSettings(response.data);
       const passwordLength = response.data.password
@@ -64,7 +64,7 @@ function Settings(searchdata) {
 
     try {
       const response = await axios.post(
-        `https://admin.kidgage.com/api/admin/change-password/${adminId}`,
+        `http://localhost:5001/api/admin/change-password/${adminId}`,
         {
           currentPassword,
           newPassword,

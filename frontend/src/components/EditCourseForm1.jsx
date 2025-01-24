@@ -23,10 +23,9 @@ function EditCourseForm1({ courseId }) {
   const [formData, setFormData] = useState({
     providerId: "",
     name: "",
-    duration: "",
-    durationUnit: "days",
-    startDate: "",
-    endDate: "",
+    courseDuration: [
+      { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" },
+    ],
     description: "",
     feeAmount: "",
     feeType: "full_course",
@@ -62,7 +61,7 @@ function EditCourseForm1({ courseId }) {
     try {
       // Assuming searchQuery now contains the course ID
       const response = await axios.get(
-        `https://admin.kidgage.com/api/courses/course/${courseId}`
+        `http://localhost:5001/api/courses/course/${courseId}`
       );
       if (response.data) {
         setCourseData(response.data);
@@ -173,7 +172,7 @@ function EditCourseForm1({ courseId }) {
 
       try {
         const response = await axios.put(
-          `https://admin.kidgage.com/api/courses/update/${courseData._id}`,
+          `http://localhost:5001/api/courses/update/${courseData._id}`,
           modifiedData // Send only modified data
         );
         setSuccess("Course updated successfully!");
@@ -201,7 +200,7 @@ function EditCourseForm1({ courseId }) {
     asetLoading(true);
     try {
       await axios.delete(
-        `https://admin.kidgage.com/api/courses/delete/${courseData._id}`
+        `http://localhost:5001/api/courses/delete/${courseData._id}`
       );
       setCourseData(null);
       setFormData({

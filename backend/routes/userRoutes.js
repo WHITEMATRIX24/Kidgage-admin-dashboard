@@ -1013,6 +1013,71 @@ router.put("/update-activity/:id", async (req, res) => {
   }
 });
 
+//Add amenities 
+// Add amenities 
+// router.post("/add-amenities", async (req, res) => {
+//   const { newData } = req.body; // Assuming newData is an array or object that contains the amenities data
+//  const{userId}=req.body;
+//   console.log('data', newData);
+//   console.log('id', userId);
+
+
+//   try {
+//     const user = await User.findById(userId);
+  
+
+//     if (!user) {
+//       return res.status(404).send("User not found");
+//     }
+
+//     // Add new amenities to the user's existing amenities array
+//     user.amenities = [...user.amenities, ...newData];  // Merge old and new amenities
+
+//     // Save the updated user
+//     await user.save();
+//     console.log(user);
+    
+//     res.status(200).json({ message: "Amenities added successfully", user });
+//   } catch (error) {
+//     console.error("Error updating user:", error);
+//     res.status(500).send("Error adding amenities");
+//   }
+// });
+
+router.post("/add-amenities", async (req, res) => {
+  const { newData, userId } = req.body;
+
+  console.log('data', newData);
+  console.log('id', userId);
+
+  try {
+    // Find the user by their userId
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Ensure amenities is always an array
+    user.amenities = Array.isArray(user.amenities) ? user.amenities : []; // If it's not an array, set it to an empty array
+
+    // Add new amenities to the user's existing amenities array
+    user.amenities = [...user.amenities, ...newData]; // Merge old and new amenities
+
+    // Save the updated user
+    await user.save();
+    console.log(user);
+
+    res.status(200).json({ message: "Amenities added successfully", user });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).send("Error adding amenities");
+  }
+});
+
+
+
+
 // provider status updater
 router.put("/update-status/:id", upload.none(), async (req, res) => {
   const { id } = req.params;
