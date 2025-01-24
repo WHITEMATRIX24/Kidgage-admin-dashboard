@@ -23,7 +23,7 @@ const EditCourseCategoryForm = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://admin.kidgage.com/api/course-category/categories"
+        "http://localhost:5001/api/course-category/categories"
       );
       setCourses(response.data);
       setLoading(false);
@@ -57,7 +57,7 @@ const EditCourseCategoryForm = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://admin.kidgage.com/api/course-category/delete/${bannerToDelete._id}`
+        `http://localhost:5001/api/course-category/delete/${bannerToDelete._id}`
       );
       setSelectedBanner(null);
       setEditMode(false);
@@ -94,7 +94,7 @@ const EditCourseCategoryForm = () => {
 
     try {
       await axios.put(
-        `https://admin.kidgage.com/api/course-category/update/${selectedBanner._id}`,
+        `http://localhost:5001/api/course-category/update/${selectedBanner._id}`,
         formData
       );
       setEditMode(false);

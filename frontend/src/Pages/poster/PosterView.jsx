@@ -27,7 +27,7 @@ function PosterView(searchdata) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [expandedState, setExpandedState] = useState({});
     const getAllPosterDetails = async () => {
-        const result = await axios.get(`https://admin.kidgage.com/api/posters?search=${searchKey}`
+        const result = await axios.get(`http://localhost:5001/api/posters?search=${searchKey}`
         );
         if (result.status == 200) {
             setPosterDetails(result.data)

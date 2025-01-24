@@ -32,7 +32,7 @@ function InboundRequest(searchdata) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://admin.kidgage.com/api/users/pending?search=${searchKey}`
+        `http://localhost:5001/api/users/pending?search=${searchKey}`
       );
       setPendingUsers(response.data);
     } catch (error) {
@@ -75,13 +75,13 @@ function InboundRequest(searchdata) {
 
     try {
       await axios.post(
-        "https://admin.kidgage.com/api/users/updateVerification",
+        "http://localhost:5001/api/users/updateVerification",
         {
           userId: selectedUser._id,
           date: selectedDate.toISOString(),
         }
       );
-      await axios.post("https://admin.kidgage.com/api/users/send-email", {
+      await axios.post("http://localhost:5001/api/users/send-email", {
         email: selectedUser.email,
         date: selectedDate.toISOString(),
       });

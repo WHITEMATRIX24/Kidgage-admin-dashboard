@@ -26,6 +26,7 @@ const CoursePage = (searchdata) => {
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [courseId, setCourseId] = useState(null); // Store the course id
   const [searchKey, setSearchKey] = useState("")
+   const [deleteStatus, setDeleteStatus] = useState([]);
   // const [isActive, setIsActive] = useState(null);
   console.log(searchKey);
 
@@ -40,12 +41,12 @@ const CoursePage = (searchdata) => {
 
     try {
       const providerResponse = await axios.get(
-        `https://admin.kidgage.com/api/users/user/${userId}`
+        `http://localhost:5001/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `https://admin.kidgage.com/api/courses/by-providers?search=${searchKey}`,
+        `http://localhost:5001/api/courses/by-providers?search=${searchKey}`,
         {
           params: { providerIds: [userId] },
         }
@@ -71,7 +72,7 @@ const CoursePage = (searchdata) => {
   const deleteCourse = async (id) => {
     try {
       const res = await axios.delete(
-        `https://admin.kidgage.com/api/courses/delete/${id}`
+        `http://localhost:5001/api/courses/delete/${id}`
       );
       if (res.status === 200) {
         setCourseData((prevData) =>
@@ -109,7 +110,7 @@ const CoursePage = (searchdata) => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [courseData]);
+  }, [courseData,deleteStatus]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -135,7 +136,7 @@ const CoursePage = (searchdata) => {
       const currentStatus = activeStatus === "true" || activeStatus === true;
       const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status
       const res = await axios.put(
-        `https://admin.kidgage.com/api/courses/update-active-status/${id}`,
+        `http://localhost:5001/api/courses/update-active-status/${id}`,
         {
           active: updatedStatus, // Send the updated status
         }
@@ -209,8 +210,29 @@ const CoursePage = (searchdata) => {
                 </tr>
               ) : (
                 courseData.map((course) => {
-                  const startDate = new Date(course.startDate);
-                  const endDate = new Date(course.endDate);
+                  const courseDurations = course.courseDuration;
+                  // Extract startDate and endDate for rendering in the table
+                  const durationsFormatted = courseDurations.map((duration) => {
+                    const startDate = new Date(duration.startDate);
+                    const endDate = new Date(duration.endDate);
+
+                    // Helper function to format the date in a readable way
+                    const formatDate = (date) => {
+                      return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      });
+                    };
+
+                    return `${formatDate(startDate)} to ${formatDate(endDate)}`;
+                  }).join(', ');  // Join durations if multiple durations are present
+                  const durationsAndUnit = courseDurations.map((duration) => {
+                    const durationDisplay = duration.duration;
+                    const durationUnit = duration.durationUnit;
+                    return `${durationDisplay} ${durationUnit}`;
+                  }).join(', ');  // Join durations if multiple durations are present
+
                   return (
                     <tr key={course._id}>
                       <td>
@@ -222,9 +244,9 @@ const CoursePage = (searchdata) => {
                         </div>
                       </td>
                       <td>{course.name}</td>
-                      <td>{course.duration} Months</td>
-                      <td>
-                        {formatDate(startDate)} to {formatDate(endDate)}
+                      <td>{durationsAndUnit}</td>
+                      <td className="duration_dates">
+                        {durationsFormatted}
                       </td>
                       <td>{course.courseType}</td>
                       <td>
@@ -281,10 +303,11 @@ const CoursePage = (searchdata) => {
           isShow={showDeleteModal}
           closeHandler={() => setShowDeleteModal(false)}
           courseDeleteId={deleteCourseId}
-          onConfirmDelete={() => {
-            deleteCourse(deleteCourseId);
-            setShowDeleteModal(false);
-          }}
+          setDeleteStatus={setDeleteStatus}
+          // onConfirmDelete={() => {
+          //   deleteCourse(deleteCourseId);
+          //   setShowDeleteModal(false);
+          // }}
         />
       )}
     </div>

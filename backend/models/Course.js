@@ -18,6 +18,7 @@ const ageGroupSchema = new mongoose.Schema({
 });
 
 const courseDurationSchema = new mongoose.Schema({
+  id: { type: Number, required: true },
   duration: { type: Number, required: true },
   durationUnit: {
     type: String,
@@ -27,6 +28,52 @@ const courseDurationSchema = new mongoose.Schema({
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
 });
+
+// const courseDurationSchema = new mongoose.Schema(
+//   {
+//     id: { 
+//       type: Number, // If this is meant to be a custom ID, Number is fine. For more flexibility, consider using String.
+//       required: true, 
+//       unique: true // Ensure this ID is unique if required
+//     },
+//     duration: { 
+//       type: Number, 
+//       required: true,
+//       min: [1, 'Duration must be at least 1'] // Optional: Ensure duration is at least 1 unit
+//     },
+//     durationUnit: {
+//       type: String,
+//       enum: ["days", "weeks", "months", "years"], // Valid duration units
+//       required: true,
+//     },
+//     startDate: { 
+//       type: Date, 
+//       required: true,
+//       validate: {
+//         validator: function(value) {
+//           // Ensure startDate is earlier than endDate
+//           return !this.endDate || value < this.endDate;
+//         },
+//         message: 'startDate must be before endDate'
+//       }
+//     },
+//     endDate: { 
+//       type: Date, 
+//       required: true,
+//       validate: {
+//         validator: function(value) {
+//           // Ensure endDate is later than startDate
+//           return !this.startDate || value > this.startDate;
+//         },
+//         message: 'endDate must be after startDate'
+//       }
+//     }
+//   },
+//   {
+//     timestamps: true // Optional: Automatically adds createdAt and updatedAt fields
+//   }
+// );
+
 
 const courseSchema = new mongoose.Schema({
   providerId: {
@@ -50,8 +97,7 @@ const courseSchema = new mongoose.Schema({
   images: [{ type: String, required: true }],
   ageGroup: { type: [ageGroupSchema], required: true },
   promoted: { type: Boolean, default: false }, // Add this field to track promoted courses
-  active: { type: String, required: true },
-
+  active: { type: Boolean, default: true },  // Set the default value for 'active' field
   preferredGender: {
     type: String,
     enum: ["Male", "Female", "Any"],

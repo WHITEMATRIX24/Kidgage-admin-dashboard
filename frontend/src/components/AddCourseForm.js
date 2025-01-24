@@ -7,10 +7,9 @@ function AddCourseForm({ providerId }) {
   const initialCourseState = {
     providerId: providerId,
     name: "",
-    duration: "",
-    durationUnit: "days",
-    startDate: "",
-    endDate: "",
+    courseDuration: [
+      { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" },
+    ],
     description: "",
     feeAmount: "",
     feeType: "full_course",
@@ -51,13 +50,49 @@ function AddCourseForm({ providerId }) {
   const [charCount, setCharCount] = useState(0);
   const charLimit = 500;
 
-  const handleChange = (e) => {
+  const handleChange = (e, index) => {
     const { name, value } = e.target;
+
+    // If name is "description", update charCount (for static fields like description)
     if (name === "description") {
       setCharCount(value.length);
     }
-    setCourse((prev) => ({ ...prev, [name]: value }));
+
+    // If we're working with course duration (dynamically generated fields)
+    if (name === "duration" || name === "durationUnit" || name === "startDate" || name === "endDate") {
+      const updatedDurations = [...course.courseDuration];
+      updatedDurations[index][name] = value; // Update the correct field for the specific index
+      setCourse({
+        ...course,
+        courseDuration: updatedDurations,
+      });
+    } else {
+      // For other static fields (like name, description, etc.)
+      setCourse((prev) => ({ ...prev, [name]: value }));
+    }
   };
+  // Add a new duration entry
+  const addDuration = () => {
+    setCourse({
+      ...course,
+      courseDuration: [
+        ...course.courseDuration,
+        { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" },
+      ],
+    });
+  };
+
+  // Remove a specific duration entry
+  const removeDuration = (id) => {
+    const updatedDurations = course.courseDuration.filter(
+      (duration) => duration.id !== id  // Filter out the duration with the matching id
+    );
+    setCourse({
+      ...course,
+      courseDuration: updatedDurations, // Update state with the filtered durations
+    });
+  };
+
 
   const handleDayChange = (e) => {
     const { value, checked } = e.target;
@@ -146,69 +181,165 @@ function AddCourseForm({ providerId }) {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const formData = new FormData();
+
+  //     // Append all course data to the formData object
+  //     formData.append("providerId", course.providerId);
+  //     formData.append("name", course.name);
+  //     // Append the courseDurations to formData
+  //     course.courseDurations.forEach((duration, index) => {
+  //       formData.append(`courseDurations[${index}][duration]`, duration.duration);
+  //       formData.append(`courseDurations[${index}][durationUnit]`, duration.durationUnit);
+  //       formData.append(`courseDurations[${index}][startDate]`, duration.startDate);
+  //       formData.append(`courseDurations[${index}][endDate]`, duration.endDate);
+  //     });
+  //     formData.append("description", course.description);
+  //     formData.append("feeAmount", course.feeAmount);
+  //     formData.append("feeType", course.feeType);
+  //     formData.append("promoted", course.promoted);
+  //     formData.append("courseType", course.courseType);
+  //     formData.append("preferredGender", course.preferredGender); // Append the new field
+
+  //     // Append each timeSlot as a JSON string
+  //     formData.append("timeSlots", JSON.stringify(course.timeSlots));
+
+  //     // Append days and locations as arrays
+  //     course.days.forEach((day) => formData.append("days[]", day));
+  //     const validatedLocations = course.location.map((loc) => ({
+  //       address: loc.address || "",
+  //       city: loc.city || "",
+  //       phoneNumber: loc.phoneNumber || "",
+  //       link: loc.link || "",
+  //     }));
+
+  //     // Append location array as a JSON string
+  //     formData.append("location", JSON.stringify(validatedLocations));
+  //     formData.append("ageGroup", JSON.stringify(course.ageGroup));
+  //     // Append each image file (File object)
+  //     course.images.forEach((image) => {
+  //       if (image) {
+  //         formData.append("academyImg", image); // Send file object directly
+  //       }
+  //     });
+
+  //     const response = await axios.post(
+  //       "http://localhost:5001/api/courses/addcourse",
+  //       formData,
+  //       {
+  //         headers: { "Content-Type": "multipart/form-data" },
+  //       }
+  //     );
+
+  //     console.log("Course added successfully", response.data);
+  //     setCourse(initialCourseState);
+  //     setSuccess("Course added successfully!");
+  //     setError("");
+  //     setIsLoading(false); // Stop loading after fetch
+  //     window.location.reload();
+  //   } catch (error) {
+  //     console.error(
+  //       "Error adding course. Check if all fields are filled",
+  //       error
+  //     );
+  //     if (error.response) {
+  //       setError(error.response.data.message);
+  //     } else {
+  //       setError("An error occurred. Please try again later.");
+  //     }
+  //     setSuccess("");
+  //     setIsLoading(false); // Stop loading after fetch
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       const formData = new FormData();
-
+  
       // Append all course data to the formData object
       formData.append("providerId", course.providerId);
       formData.append("name", course.name);
-      formData.append("duration", course.duration);
-      formData.append("durationUnit", course.durationUnit);
-      formData.append("startDate", course.startDate);
-      formData.append("endDate", course.endDate);
+  
+      // Append the courseDurations to formData
+      course.courseDuration.forEach((duration, index) => {
+        formData.append(`courseDuration[${index}][id]`, duration.id); // Add the 'id' field
+        formData.append(`courseDuration[${index}][duration]`, duration.duration);
+        formData.append(`courseDuration[${index}][durationUnit]`, duration.durationUnit);
+  
+        // Convert startDate and endDate to ISO format (UTC)
+        const startDate = new Date(duration.startDate).toISOString();
+        const endDate = new Date(duration.endDate).toISOString();
+  
+        formData.append(`courseDuration[${index}][startDate]`, startDate);
+        formData.append(`courseDuration[${index}][endDate]`, endDate);
+
+        // formData.append(`courseDurations[${index}][startDate]`, duration.startDate);
+        // formData.append(`courseDurations[${index}][endDate]`, duration.endDate);
+
+      });
+  
+      console.log('Course Durations before submitting: ',course.courseDurations);
+      
+      // Append other course data
       formData.append("description", course.description);
       formData.append("feeAmount", course.feeAmount);
       formData.append("feeType", course.feeType);
       formData.append("promoted", course.promoted);
       formData.append("courseType", course.courseType);
-      formData.append("preferredGender", course.preferredGender); // Append the new field
-
-      // Append each timeSlot as a JSON string
+      formData.append("preferredGender", course.preferredGender); 
+  
+      // Append timeSlots as a JSON string
       formData.append("timeSlots", JSON.stringify(course.timeSlots));
-
+  
       // Append days and locations as arrays
       course.days.forEach((day) => formData.append("days[]", day));
+  
       const validatedLocations = course.location.map((loc) => ({
         address: loc.address || "",
         city: loc.city || "",
         phoneNumber: loc.phoneNumber || "",
         link: loc.link || "",
       }));
-
+  
       // Append location array as a JSON string
       formData.append("location", JSON.stringify(validatedLocations));
+  
+      // Append courseDurations as a stringified array
+      formData.append("courseDurations", JSON.stringify(course.courseDuration));
+  
       formData.append("ageGroup", JSON.stringify(course.ageGroup));
+  
       // Append each image file (File object)
       course.images.forEach((image) => {
         if (image) {
           formData.append("academyImg", image); // Send file object directly
         }
       });
-
+  
+      // Make the POST request
       const response = await axios.post(
-        "https://admin.kidgage.com/api/courses/addcourse",
+        "http://localhost:5001/api/courses/addcourse",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
+  
       console.log("Course added successfully", response.data);
-      setCourse(initialCourseState);
+      setCourse(initialCourseState); // Reset the form state
       setSuccess("Course added successfully!");
-      setError("");
+      setError(""); // Clear error messages
       setIsLoading(false); // Stop loading after fetch
-      window.location.reload();
+      window.location.reload(); // Reload page after success
     } catch (error) {
-      console.error(
-        "Error adding course. Check if all fields are filled",
-        error
-      );
+      console.error("Error adding course. Check if all fields are filled", error);
       if (error.response) {
-        setError(error.response.data.message);
+        setError(error.response.data.message); // Display specific error message
       } else {
         setError("An error occurred. Please try again later.");
       }
@@ -216,6 +347,9 @@ function AddCourseForm({ providerId }) {
       setIsLoading(false); // Stop loading after fetch
     }
   };
+  
+
+
 
   const handleAgeGroupChange = (e) => {
     const { name, value } = e.target;
@@ -228,7 +362,7 @@ function AddCourseForm({ providerId }) {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `https://admin.kidgage.com/api/users/search?query=${searchQuery}`
+        `http://localhost:5001/api/users/search?query=${searchQuery}`
       );
       setSearchResult(response.data);
       setSearchError("");
@@ -242,6 +376,9 @@ function AddCourseForm({ providerId }) {
       );
     }
   };
+
+  console.log(course);
+
 
   return (
     <div className="course-addmodal-container">
@@ -288,52 +425,120 @@ function AddCourseForm({ providerId }) {
             ))}
           </select>
         </div>
-        <div className="form-group add-course-label-group">
-          <label htmlFor="preferredGender">Course Duration</label>
+
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px' }}>
+          <h3>Course Duration Form</h3>
+          {/* Add Another Duration Button */}
+          {course.courseDuration.length >= 0 && (
+            <div className="form-group add-duration-group">
+              <button
+                className="add-time-slot-btn"
+                type="button"
+                style={{
+                  backgroundColor: '#ecedef',
+                  fontSize: '12px',
+                  color: 'black',
+
+                }}
+                onClick={addDuration}
+              >
+                Add Course Duration +
+              </button>
+            </div>
+          )}
         </div>
-        <div className="form-group add-duration-group">
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            placeholder="Course Duration"
-            value={course.duration}
-            onChange={handleChange}
-          />
-          <select
-            id="durationUnit"
-            name="durationUnit"
-            value={course.durationUnit}
-            onChange={handleChange}
-          >
-            <option value="days">Days</option>
-            <option value="weeks">Weeks</option>
-            <option value="months">Months</option>
-            <option value="years">Years</option>
-          </select>
+        {/* Loop through courseDurations to display each one */}
+        {course.courseDuration.map((duration, index) => (
+          <div key={duration.id} className="course-duration-group">
+            <div className="form-group add-course-label-group">
+              <label htmlFor={`duration-${index}`}>Course Duration</label>
+            </div>
+
+            <div className="form-group add-duration-group">
+              <input
+                type="number"
+                id={`duration-${index}`}
+                name="duration"
+                placeholder="Course Duration"
+                value={duration.duration}
+                onChange={(e) => handleChange(e, index)}
+              />
+              <select
+                id={`durationUnit-${index}`}
+                name="durationUnit"
+                value={duration.durationUnit}
+                onChange={(e) => handleChange(e, index)}
+              >
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+              </select>
+            </div>
+
+            <div className="form-group add-duration-label-group">
+              <label htmlFor={`startDate-${index}`}>Start Date</label>
+              <label htmlFor={`endDate-${index}`}>End Date</label>
+            </div>
+
+            <div className="form-group add-duration-group">
+              <input
+                type="date"
+                id={`startDate-${index}`}
+                name="startDate"
+                value={duration.startDate}
+                onChange={(e) => handleChange(e, index)}
+              />
+              <input
+                type="date"
+                id={`endDate-${index}`}
+                name="endDate"
+                value={duration.endDate}
+                onChange={(e) => handleChange(e, index)}
+              />
+            </div>
+
+            {/* Remove Button */}
+            <div
+              className="form-group add-duration-group"
+              style={{
+                marginTop: '20px',
+                marginBottom: '20px',
+                float: 'right'
+              }}
+            >
+              <button
+                className="add-time-slot-btn"
+                type="button"
+                style={{
+                  borderRadius: '15px',
+                  color: 'black',
+
+                }}
+                onClick={() => removeDuration(duration.id)} // Use id to remove duration
+              >
+                Remove Duration
+              </button>
+            </div>
+          </div>
+        ))}
+
+
+        {/* Display Added Duration List */}
+        <div style={{ marginBottom: '20px' }}>
+          <h4>Added Durations:</h4>
+          <ul style={{ marginLeft: '20px' }}>
+            {course.courseDuration.map((duration, index) => (
+              <li key={duration.id}>
+                {duration.duration} {duration.durationUnit} from{" "}
+                {duration.startDate} to {duration.endDate}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="form-group add-duration-label-group">
-          <label htmlFor="startDate">Start Date</label>
-          <label htmlFor="endDate">End Date</label>
-        </div>
-        <div className="form-group add-duration-group">
-          <input
-            className="start-date-ip"
-            type="date"
-            id="startDate"
-            name="startDate"
-            value={course.startDate}
-            onChange={handleChange}
-          />
-          <input
-            className="start-date-ip"
-            type="date"
-            id="endDate"
-            name="endDate"
-            value={course.endDate}
-            onChange={handleChange}
-          />
-        </div>
+
+
 
         <div className="form-group">
           <label htmlFor="description">Course Description</label>

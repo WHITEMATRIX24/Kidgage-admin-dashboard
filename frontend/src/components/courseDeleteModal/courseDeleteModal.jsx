@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import "./courseDeleteModal.css";
 import axios from "axios";
 
-const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
+
+
+
+const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId, setDeleteStatus }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // course delete handler
@@ -11,16 +14,19 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
       setIsLoading(true);
       try {
         const res = await axios.delete(
-          `https://admin.kidgage.com/api/course-category/delete/${courseDeleteId}`
+          `http://localhost:5001/api/courses/delete/${courseDeleteId}`
         );
 
-        if (res.status === 200) {
+        if (res.status == 200) {
           alert("Successfully deleted course");
-          return;
+          setDeleteStatus(res.data); // Assuming res.data has the updated status or course info
+          closeHandler(); // Close the modal
+        } else {
+          alert(res.data.message || "Failed to delete course");
         }
-        alert(res.data.message);
       } catch (error) {
-        console.log(`Error in deleting course: ${error}`);
+        console.error("Error deleting course:", error);
+        alert("An error occurred while deleting the course. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -29,8 +35,7 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
 
   return (
     <div
-      className={`course-deletemodal-wrapper ${isShow ? "course-deletemodal-show" : "course-deletemodal-hide"
-        }`}
+      className={`course-deletemodal-wrapper ${isShow ? "course-deletemodal-show" : "course-deletemodal-hide"}`}
     >
       <div className="course-deletemodal-container">
         <h2>Delete this course</h2>
@@ -48,7 +53,7 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
             disabled={isLoading}
             className="course-deletemodal-btn-delete"
           >
-            {isLoading ? "Please wait" : "Delete"}
+            {isLoading ? "Please wait..." : "Delete"}
           </button>
         </div>
       </div>
@@ -57,3 +62,7 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId }) => {
 };
 
 export default CourseDeleteModal;
+
+
+
+

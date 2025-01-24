@@ -2,17 +2,30 @@ import React, { useEffect, useState } from "react";
 import Appbar from "../../components/common/appbar/Appbar";
 import "./provider.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
+import AddAmenitiesModal from "../../components/AddAmenitiesModal/AddAmenitiesModal";
+
 const ProviderDetails = (searchdata) => {
   const [user, setUser] = useState({});
   const [editValues, setEditValues] = useState({});
+  const [AddAmenitiesModalState, SetAddAmenitiesModalState] = useState(false);
+  
+  
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
   // Access the current pathname (URL path)
   const currentPath = location.hash;
+
+
+// Add Amenities modal handler
+const AddAmenitiesModalOpenHandler = () => SetAddAmenitiesModalState(true);
+
+// Add Amenities modal  closehandler
+const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
+
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -25,7 +38,7 @@ const ProviderDetails = (searchdata) => {
 
       try {
         const response = await fetch(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");
@@ -97,7 +110,7 @@ const ProviderDetails = (searchdata) => {
 
     try {
       const response = await fetch(
-        `https://admin.kidgage.com/api/users/edits/${userId}`,
+        `http://localhost:5001/api/users/edits/${userId}`,
         {
           method: "POST",
           body: formDataToSend,
@@ -137,7 +150,7 @@ const ProviderDetails = (searchdata) => {
           <tbody>
             <tr className="provider-logo-row no-border">
               <td className="provider-logo-cell" colSpan="2">
-                <label htmlFor="logo-input">
+                <label htmlFor="logo-input" >
                   {editValues.logo ? (
                     <img
                       src={
@@ -167,16 +180,26 @@ const ProviderDetails = (searchdata) => {
                     style={{ display: "none" }}
                   />
                 )}
+                <div className="add-aminities-container" style={{marginTop:'-70px'}}>
+                <button className="add-aminities-btn"  onClick={AddAmenitiesModalOpenHandler} >Add Amenities <FontAwesomeIcon icon={faPlus} style={{color: "#fafafa",}} /></button>
+                <button className="add-aminities-btn" style={{}}>Add Awards <FontAwesomeIcon icon={faPlus} style={{color: "#fafafa",}} /></button>
+                </div>
               </td>
+             
+             
               <td className="provider-icon-cell">
-                <FontAwesomeIcon
+              
+               <FontAwesomeIcon
                   icon={faEdit}
                   className="edit-icon"
                   onClick={handleEditClick}
                   title="Edit Details"
+                  style={{marginTop:'10px'}}
                 />
+                             
               </td>
             </tr>
+            
             <tr>
               <td colSpan="2">
                 <div className="input-row">
@@ -367,6 +390,16 @@ const ProviderDetails = (searchdata) => {
           </tbody>
         </table>
       </div>
+
+       {/* Add modal */}
+       {AddAmenitiesModalState && (
+    <AddAmenitiesModal
+          isShow={AddAmenitiesModalState}
+          closeHandler={AddAmenitiesModalCloseHandler}
+          
+          
+        />
+      )}
     </div>
   );
 };

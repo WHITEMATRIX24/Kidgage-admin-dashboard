@@ -65,7 +65,7 @@ function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
     formData.append("image", imageUploded);
 
     try {
-      const res = await axios.put(`https://admin.kidgage.com/api/posters/${posterData._id}`,
+      const res = await axios.put(`http://localhost:5001/api/posters/${posterData._id}`,
         formData);
 
       if (res.status == 200) {

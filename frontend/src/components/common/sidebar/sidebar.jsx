@@ -67,7 +67,7 @@ const Sidebar = ({
       const userId = sessionStorage.getItem("userid");
       try {
         const response = await fetch(
-          `https://admin.kidgage.com/api/users/user/${userId}`
+          `http://localhost:5001/api/users/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user details.");

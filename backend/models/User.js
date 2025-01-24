@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
     },
   },
   promoted: { type: Boolean, required: true, default: false },
+  amenities:{type:[String],default:null},
 });
 
 const User = mongoose.model("User", userSchema);

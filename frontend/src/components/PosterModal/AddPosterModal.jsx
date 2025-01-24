@@ -63,7 +63,7 @@ function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
 
     try {
       const res = await axios.post(
-        "https://admin.kidgage.com/api/posters/add",
+        "http://localhost:5001/api/posters/add",
         formData
       );
 
