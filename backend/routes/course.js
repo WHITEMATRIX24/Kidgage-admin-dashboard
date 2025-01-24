@@ -276,8 +276,11 @@ router.get("/search", async (req, res) => {
 });
 
 router.put("/update/:id", async (req, res) => {
+ const { modifiedData }=req.body
   try {
     // Find the course by ID
+    console.log("modified DAta",modifiedData );
+    
     let course = await Course.findById(req.params.id);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
@@ -300,6 +303,90 @@ router.put("/update/:id", async (req, res) => {
 });
 
 // Delete a course
+
+// router.put('/update/:id', upload.array('images'), async (req, res) => {
+//   // Ensure that modifiedData exists and is an object
+//   const modifiedData = req.body.modifiedData ? JSON.parse(req.body.modifiedData) : {};
+//   const files = req.files; // Get uploaded files from the request
+
+//   try {
+//     // Find the course by ID
+//     const course = await Course.findById(req.params.id);
+//     if (!course) {
+//       return res.status(404).json({ message: 'Course not found' });
+//     }
+
+//     // Handle image upload and get URLs
+//     if (files && files.length > 0) {
+//       const imageUrls = await Promise.all(
+//         files.map(async (file) => {
+//           // Upload each image to S3 and get the URL
+//           return await uploadImageToS3(file);
+//         })
+//       );
+
+//       // Add the image URLs to the modified data (if not already included)
+//       modifiedData.images = imageUrls; // Assuming `images` field in course data
+//     }
+
+//     // Merge modified data with the existing course
+//     Object.keys(modifiedData).forEach((key) => {
+//       if (modifiedData[key] !== undefined && modifiedData[key] !== null) {
+//         course[key] = modifiedData[key]; // Update only fields provided in the request
+//       }
+//     });
+
+//     // Save the updated course
+//     const updatedCourse = await course.save();
+
+//     // Send the updated course back in the response
+//     res.json(updatedCourse);
+//   } catch (err) {
+//     console.error("Error updating course:", err);
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+
+
+
+// router.put("/update/:id", upload.array("images"), async (req, res) => {
+//   const modifiedData = req.body.modifiedData ? JSON.parse(req.body.modifiedData) : {}; // Parse if it's a JSON string
+//   const files = req.files || []; // Ensure files is always an array
+
+//   try {
+//     // Find the course by ID
+//     let course = await Course.findById(req.params.id);
+//     if (!course) {
+//       return res.status(404).json({ message: "Course not found" });
+//     }
+
+//     // Handle image uploads if there are any files
+//     if (files.length > 0) {
+//       const imageUrls = await uploadImagesToS3(files); // Upload images to S3 and get the URLs
+//       modifiedData.images = imageUrls; // Add image URLs to modifiedData
+//     }
+
+//     // Merge modifiedData with the existing course
+//     Object.keys(modifiedData).forEach((key) => {
+//       if (modifiedData[key] !== undefined && modifiedData[key] !== null) {
+//         course[key] = modifiedData[key]; // Update only fields that are provided and not null/undefined
+//       }
+//     });
+
+//     // Save the updated course
+//     const updatedCourse = await course.save();
+//     res.json(updatedCourse);
+//   } catch (err) {
+//     console.error("Error updating course:", err);
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+
+
+
+
 router.delete("/delete/:id", async (req, res) => {
   try {
     const course = await Course.findByIdAndDelete(req.params.id);

@@ -24,7 +24,12 @@ function EditCourseForm1({ courseId }) {
     providerId: "",
     name: "",
     courseDuration: [
-      { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" },
+      {
+        duration: "", // Initial empty value
+        durationUnit: "days", // Default unit
+        startDate: "",
+        endDate: "",
+      },
     ],
     description: "",
     feeAmount: "",
@@ -59,12 +64,23 @@ function EditCourseForm1({ courseId }) {
     setLoading(true);
     console.log("Searching for course ID:", courseId); // Log the courseId
     try {
-      // Assuming searchQuery now contains the course ID
-      const response = await axios.get(
-        `http://localhost:5001/api/courses/course/${courseId}`
-      );
+      // Fetch the course data from the server
+      const response = await axios.get(`http://localhost:5001/api/courses/course/${courseId}`);
+
       if (response.data) {
+        // Assuming response.data contains course data and courseDuration
         setCourseData(response.data);
+
+        // If courseDuration exists, initialize it; otherwise, set a default value
+        const courseDuration = response.data.courseDuration || [
+          {
+            duration: "",
+            durationUnit: "days",
+            startDate: "",
+            endDate: "",
+          },
+        ];
+
         setFormData({
           providerId: response.data.providerId,
           name: response.data.name,
@@ -83,40 +99,87 @@ function EditCourseForm1({ courseId }) {
           promoted: response.data.promoted,
           ageGroup: response.data.ageGroup,
           preferredGender: response.data.preferredGender,
+          courseDuration: courseDuration, // Ensure courseDuration is always set
         });
-        setSearchError("");
-        setError("");
-        setIsEditMode(false);
-        console.log(response.data.images);
+
+        setSearchError(""); // Reset search error if course found
+        setError(""); // Reset any other errors
+        setIsEditMode(false); // Disable editing mode
+
+        console.log("Course images:", response.data.images);
       } else {
-        setSearchError("Course not found.");
-        setCourseData(null);
+        setSearchError("Course not found."); // If no course found
+        setCourseData(null); // Reset course data
       }
-      setLoading(false);
+      setLoading(false); // Stop loading indicator
     } catch (error) {
+      // Handle error gracefully
+      console.error("Error fetching course:", error); // Log the error for debugging
       setSearchError(
         error.response
           ? error.response.data.message
           : "An error occurred. Please try again later."
       );
-      setCourseData(null);
-      setLoading(false);
+      setCourseData(null); // Reset course data on error
+      setLoading(false); // Stop loading indicator
     }
   };
+
 
   const [charCount, setCharCount] = useState(0);
   const charLimit = 500;
 
-  const handleChange = (e) => {
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   if (name === "description") {
+  //     setCharCount(value.length);
+  //   }
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
+
+  const handleChange = (e, index) => {
     const { name, value } = e.target;
     if (name === "description") {
       setCharCount(value.length);
     }
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
+
+    if (["duration", "durationUnit", "startDate", "endDate"].includes(name)) {
+      const updatedDurations = [...formData.courseDuration];
+      updatedDurations[index] = {
+        ...updatedDurations[index],
+        [name]: value,
+      };
+      setFormData((prev) => ({
+        ...prev,
+        courseDuration: updatedDurations,
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const addDuration = () => {
+    setFormData((prev) => ({
+      ...prev,
+      courseDuration: [
+        ...prev.courseDuration,
+        { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" },
+      ],
     }));
   };
+
+  const removeDuration = (id) => {
+    const updatedDurations = formData.courseDuration.filter((duration) => duration.id !== id);
+    setFormData((prev) => ({
+      ...prev,
+      courseDuration: updatedDurations,
+    }));
+  };
+
+
 
   const handleDayChange = (e) => {
     const { value, checked } = e.target;
@@ -149,9 +212,16 @@ function EditCourseForm1({ courseId }) {
     }));
   };
 
+  console.log(formData);
+  
+
   const handleSubmit = async (e) => {
     asetLoading(true);
     e.preventDefault();
+
+   // Debugging: Log formData and courseData
+  console.log("formData", formData);
+  console.log("courseData", courseData);
 
     if (isEditMode) {
       // Create an object to hold the modified fields
@@ -159,7 +229,7 @@ function EditCourseForm1({ courseId }) {
 
       // Check for each field to see if it's different from the original course data
       Object.keys(formData).forEach((key) => {
-        if (formData[key] !== courseData[key]) {
+        if (formData[key] !== courseData?.[key]) {
           modifiedData[key] = formData[key];
         }
       });
@@ -179,7 +249,7 @@ function EditCourseForm1({ courseId }) {
         setError("");
         setIsEditMode(false);
         asetLoading(false);
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         setError(
           error.response
@@ -191,6 +261,86 @@ function EditCourseForm1({ courseId }) {
       }
     }
   };
+
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true); // Set loading to true when the request starts
+  
+  //   // Create the form data object
+  //   const formData = new FormData();
+  
+  //   // Create an object to hold the modified fields
+  //   const modifiedData = {}; 
+  
+  //   // Track if images are updated
+  //   let imagesChanged = false;
+  
+  //   // Loop over formData and check for changes
+  //   // Check if any fields are modified
+  //   Object.keys(formData).forEach((key) => {
+  //     // Example condition: only track non-image fields
+  //     if (key !== "images" && formData[key] !== courseData[key]) {
+  //       modifiedData[key] = formData[key];
+  //     }
+  //   });
+  
+  //   // Check if there are any images and if they are changed
+  //   if (formData.images && formData.images.length > 0) {
+  //     // If images are updated, add them to modifiedData
+  //     modifiedData.images = formData.images;
+  //     imagesChanged = true; // Set flag to true if images are changed
+  
+  //     // Append images to formData
+  //     formData.images.forEach((image) => {
+  //       formData.append("images", image);
+  //     });
+  //   }
+  
+  //   // Add modified course data (excluding images) to formData
+  //   formData.append("modifiedData", JSON.stringify(modifiedData));
+  
+  //   // Check if there's any modified data before sending the request
+  //   if (Object.keys(modifiedData).length === 0 && !imagesChanged) {
+  //     setError("No changes made to the course data.");
+  //     setLoading(false);
+  //     return;
+  //   }
+  
+  //   try {
+  //     // Send the PUT request with the form data (including images)
+  //     const response = await axios.put(
+  //       `http://localhost:5001/api/courses/update/${courseData._id}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  
+  //     // Handle success
+  //     console.log("Course updated successfully:", response.data);
+  //     setSuccess("Course updated successfully!");
+  //     setError("");
+  //     setIsEditMode(false);
+  //     setLoading(false);
+  //     window.location.reload();
+  //   } catch (error) {
+  //     // Handle error
+  //     setError(
+  //       error.response
+  //         ? error.response.data.message
+  //         : "An error occurred. Please try again later."
+  //     );
+  //     setSuccess("");
+  //     setLoading(false);
+  //   }
+  // };
+  
+
 
   const handleDelete = () => {
     setShowConfirmPopup(true);
@@ -206,10 +356,14 @@ function EditCourseForm1({ courseId }) {
       setFormData({
         providerId: "",
         name: "",
-        duration: "",
-        durationUnit: "days",
-        startDate: "",
-        endDate: "",
+        courseDuration: [
+          {
+            duration: "", // Initial empty value
+            durationUnit: "days", // Default unit
+            startDate: "",
+            endDate: "",
+          },
+        ],
         description: "",
         feeAmount: "",
         feeType: "full_course",
@@ -293,48 +447,23 @@ function EditCourseForm1({ courseId }) {
 
   const fileInputRef = useRef(null); // Reference for the file input
   // Helper function to convert ArrayBuffer to Base64
-  const arrayBufferToBase64 = (buffer) => {
-    let binary = "";
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
 
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
 
-    return btoa(binary); // Encode binary string to Base64
-  };
+  // Function to handle image input change (when files are selected)
+  const handleImageChange = (e) => {
+    const files = e.target.files;  // Get selected files
+    if (files && files.length > 0) {
+      // Convert FileList to array and create object URLs for each image
+      const newImages = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
 
-  const handleImageChange = (event) => {
-    const files = event.target.files;
-    const newImagesPromises = Array.from(files).map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        // Read the file as an ArrayBuffer
-        reader.readAsArrayBuffer(file);
-
-        reader.onload = () => {
-          // Convert the ArrayBuffer to Base64
-          const base64String = arrayBufferToBase64(reader.result);
-          resolve(base64String); // Resolve promise with the Base64 string
-        };
-
-        reader.onerror = (error) => {
-          reject(error); // Reject promise on error
-        };
-      });
-    });
-
-    // Wait for all images to be read and then update the state with the new array of images
-    Promise.all(newImagesPromises).then((loadedImages) => {
+      // Update the formData state with the new images
       setFormData((prevState) => ({
         ...prevState,
-        images: [...prevState.images, ...loadedImages], // Append new images to the existing array
+        images: [...prevState.images, ...newImages] // Append the new images
       }));
-    });
-
-    event.target.value = null; // Reset file input
+    }
   };
 
   // Function to trigger file input
@@ -343,7 +472,6 @@ function EditCourseForm1({ courseId }) {
       fileInputRef.current.click(); // Simulate click on file input
     }
   };
-
   // Function to remove an image
   const removeImage = (index) => {
     setFormData((prevState) => {
@@ -438,67 +566,128 @@ function EditCourseForm1({ courseId }) {
                     ))}
                   </select>
                 </div>
-                <div className="form-group add-duration-label-group">
-                  <label htmlFor="startDate">Course Duration</label>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px' }}>
+                  <div className="form-group add-duration-label-group">
+                    <label htmlFor="startDate">Course Duration</label>
+                  </div>
+                  {/* Add Another Duration Button */}
+                  {formData.courseDuration.length >= 0 && (
+                    <div className="form-group add-duration-group">
+                      <button
+                        className="add-time-slot-btn"
+                        type="button"
+                        style={{
+                          backgroundColor: '#ecedef',
+                          fontSize: '12px',
+                          color: 'black',
+                        }}
+                        onClick={addDuration} // Ensure addDuration is defined to handle adding new duration
+                      >
+                        Add Course Duration +
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <div className="form-group add-duration-group">
-                  <input
-                    type="number"
-                    id="duration"
-                    name="duration"
-                    placeholder="Course Duration"
-                    value={formData.duration}
-                    onChange={handleChange}
-                    disabled={!isEditMode}
-                  />
-                  <select
-                    id="durationUnit"
-                    name="durationUnit"
-                    value={formData.durationUnit}
-                    onChange={handleChange}
-                    disabled={!isEditMode}
-                  >
-                    <option value="days">Days</option>
-                    <option value="weeks">Weeks</option>
-                    <option value="months">Months</option>
-                    <option value="years">Years</option>
-                  </select>
+
+                {/* Loop through courseDurations to display each one */}
+                {formData.courseDuration.map((duration, index) => (
+                  <div key={duration.id} className="course-duration-group">
+                    <div className="form-group add-duration-group">
+                      <input
+                        type="number"
+                        id={`duration-${index}`}
+                        name="duration"
+                        placeholder="Course Duration"
+                        value={duration.duration || ""} // Ensure duration value is controlled
+                        onChange={(e) => handleChange(e, index)} // Pass index for correct update
+                        disabled={!isEditMode}
+                      />
+                      <select
+                        id={`durationUnit-${index}`}
+                        name="durationUnit"
+                        value={duration.durationUnit || "days"} // Default to "days" if not set
+                        onChange={(e) => handleChange(e, index)} // Pass index for correct update
+                        disabled={!isEditMode}
+                      >
+                        <option value="days">Days</option>
+                        <option value="weeks">Weeks</option>
+                        <option value="months">Months</option>
+                        <option value="years">Years</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group add-duration-label-group">
+                      <label htmlFor={`startDate-${index}`}>Start Date</label>
+                      <label htmlFor={`endDate-${index}`}>End Date</label>
+                    </div>
+
+                    <div className="form-group add-duration-group">
+                      <input
+                        type="date"
+                        id={`startDate-${index}`}
+                        name="startDate"
+                        value={duration.startDate ? new Date(duration.startDate).toISOString().split("T")[0] : ""}
+                        onChange={(e) => handleChange(e, index)} // Pass index for correct update
+                        disabled={!isEditMode}
+                      />
+                      <input
+                        type="date"
+                        id={`endDate-${index}`}
+                        name="endDate"
+                        value={duration.endDate ? new Date(duration.endDate).toISOString().split("T")[0] : ""}
+                        onChange={(e) => handleChange(e, index)} // Pass index for correct update
+                        disabled={!isEditMode}
+                      />
+                    </div>
+
+                    {/* Remove Button */}
+                    <div
+                      className="form-group add-duration-group"
+                      style={{
+                        marginTop: '20px',
+                        marginBottom: '20px',
+                        float: 'right',
+                      }}
+                    >
+                      <button
+                        className="add-time-slot-btn"
+                        type="button"
+                        style={{
+                          borderRadius: '15px',
+                          color: 'black',
+                        }}
+                        onClick={() => removeDuration(duration.id)} // Use id to remove duration
+                      >
+                        Remove Duration
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+
+
+                {/* Display Added Duration List */}
+                <div style={{ marginBottom: '20px' }}>
+                  <h4>Added Durations:</h4>
+                  <ul style={{ marginLeft: '20px' }}>
+                    {formData.courseDuration.map((duration, index) => {
+                      // Format the startDate and endDate
+                      const formattedStartDate = duration.startDate ? new Date(duration.startDate).toLocaleDateString() : 'N/A';
+                      const formattedEndDate = duration.endDate ? new Date(duration.endDate).toLocaleDateString() : 'N/A';
+
+                      return (
+                        <li key={duration.id}>
+                          {duration.duration} {duration.durationUnit} from{" "}
+                          {formattedStartDate} to {formattedEndDate}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
-                <div className="form-group add-duration-label-group">
-                  <label htmlFor="startDate">Start Date</label>
-                  <label htmlFor="endDate">End Date</label>
-                </div>
-                <div className="form-group add-duration-group">
-                  <input
-                    className="start-date-ip"
-                    type="date"
-                    id="startDate"
-                    name="startDate"
-                    value={
-                      formData.startDate
-                        ? new Date(formData.startDate)
-                          .toISOString()
-                          .split("T")[0]
-                        : ""
-                    }
-                    onChange={handleChange}
-                    disabled={!isEditMode}
-                  />
-                  <input
-                    className="start-date-ip"
-                    type="date"
-                    id="endDate"
-                    name="endDate"
-                    value={
-                      formData.endDate
-                        ? new Date(formData.endDate).toISOString().split("T")[0]
-                        : ""
-                    }
-                    onChange={handleChange}
-                    disabled={!isEditMode}
-                  />
-                </div>
-                <div className="form-group">
+
+
+                <div className="form-group" style={{ marginTop: '20px' }}>
                   <label htmlFor="description">Course Description</label>
                   <textarea
                     id="description"
@@ -797,36 +986,38 @@ function EditCourseForm1({ courseId }) {
                   <div className="btn-grpp">
                     <label>
                       Course Images{" "}
-                      <span style={{ fontSize: ".8rem", color: "grey" }}></span>
+                      <span style={{ fontSize: ".8rem", color: "grey" }}>
+                        [ size: 1280 X 1028 ]
+                      </span>
                       :
                     </label>
-                    <button
-                      type="button"
-                      className="add-time-slot-btn"
-                      onClick={addImage}
-                    >
+                    <button type="button" className="add-time-slot-btn" onClick={addImage}>
                       Add Images
                     </button>
+                    {/* Hidden file input field triggered by the button */}
                     <input
                       type="file"
                       ref={fileInputRef}
                       onChange={handleImageChange}
                       accept=".png, .jpg, .jpeg"
                       multiple
-                      style={{ display: "none" }}
+                      style={{ display: "none" }} // Hide the input field
                     />
                   </div>
+
+                  {/* Render the list of images */}
                   {formData.images.map((img, index) => (
                     <div key={index} className="time-slot">
+                      {/* If the image is a file, use object URL to display the image */}
                       <img
-                        src={getBase64ImageSrc(img)}
+                        src={img} // Create a URL for the file object
                         alt={`Course Image ${index + 1}`}
                         width="100"
                       />
                       <button
                         type="button"
                         className="rem-button"
-                        onClick={() => removeImage(index)}
+                        onClick={() => removeImage(index)} // Remove image button
                       >
                         Remove
                       </button>

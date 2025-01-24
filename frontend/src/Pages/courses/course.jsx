@@ -244,7 +244,8 @@ const CoursePage = (searchdata) => {
                         </div>
                       </td>
                       <td>{course.name}</td>
-                      <td>{durationsAndUnit}</td>
+                      <td className="duration_dates">
+                        {durationsAndUnit}</td>
                       <td className="duration_dates">
                         {durationsFormatted}
                       </td>
