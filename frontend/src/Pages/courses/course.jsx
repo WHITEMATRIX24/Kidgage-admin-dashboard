@@ -28,7 +28,7 @@ const CoursePage = (searchdata) => {
   const [searchKey, setSearchKey] = useState("")
    const [deleteStatus, setDeleteStatus] = useState([]);
   // const [isActive, setIsActive] = useState(null);
-  console.log(searchKey);
+  // console.log(searchKey);
 
   const fetchProviderAndCourses = async () => {
     setError(null);
@@ -133,8 +133,12 @@ const CoursePage = (searchdata) => {
 
   const handleStatusToggle = async (activeStatus, id) => {
     try {
+       console.log(activeStatus);
+       
       const currentStatus = activeStatus === "true" || activeStatus === true;
-      const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status
+      const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status 
+      console.log(updatedStatus);
+      
       const res = await axios.put(
         `http://localhost:5001/api/courses/update-active-status/${id}`,
         {
@@ -253,7 +257,7 @@ const CoursePage = (searchdata) => {
                       <td>
                         <div className="course-icons">
                           <FontAwesomeIcon
-                            icon={course.active === "true" ? faEye : faEyeSlash}
+                            icon={course.active ? faEye : faEyeSlash}
                             style={{ color: "#000205", cursor: "pointer" }}
                             onClick={() =>
                               handleStatusToggle(course.active, course._id)
