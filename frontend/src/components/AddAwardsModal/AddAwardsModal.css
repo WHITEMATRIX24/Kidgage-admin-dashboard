@@ -1,0 +1,164 @@
+/* AddAwardsModal.css */
+
+.award-addmodal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.award-addmodal-container {
+    background-color: white;
+    min-width: 400px;
+    /* min-height: 30rem; */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    /* gap: 2rem; */
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    align-items: center;
+    position: relative;
+}
+
+.award-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+
+}
+
+.award-addmodal-container>span {
+    margin-left: auto;
+    cursor: pointer;
+}
+
+/* .award-close-btn {
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+
+} */
+
+.award-tile {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed gray;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.award-image-wrapper {
+    position: relative;
+}
+
+.award-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.delete-award-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgb(0, 0, 0);
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border: none;
+    border-radius: 25%;
+    cursor: pointer;
+}
+
+.award-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: gray;
+}
+
+.award-deletemodal-wrapper {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.delete-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    background-color: white;
+    width: 30rem;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-aminities-btn {
+    background-color: black;
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: none;
+}
+
+.award-delete-btn-container {
+    display: flex;
+    gap: 2rem;
+    padding-bottom: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.delete-popup-content h4 {
+    margin-top: 30px;
+}
+
+.cancel-btn,
+.delete-btn {
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    gap: 20px;
+    border-radius: 15px;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: green;
+    color: white;
+}
+
+.delete-btn {
+    background-color: rgb(188, 17, 17);
+    color: white;
+}

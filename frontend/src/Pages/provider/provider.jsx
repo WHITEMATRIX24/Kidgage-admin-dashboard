@@ -4,14 +4,14 @@ import "./provider.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
+import AddAwardsModal from "../../components/AddAwardsModal/AddAwardsModal";
 import AddAmenitiesModal from "../../components/AddAmenitiesModal/AddAmenitiesModal";
-
 const ProviderDetails = (searchdata) => {
   const [user, setUser] = useState({});
   const [editValues, setEditValues] = useState({});
   const [AddAmenitiesModalState, SetAddAmenitiesModalState] = useState(false);
-  
-  
+  const [AddAwardsModalState, setAddAwardsModalState] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,12 +20,13 @@ const ProviderDetails = (searchdata) => {
   const currentPath = location.hash;
 
 
-// Add Amenities modal handler
-const AddAmenitiesModalOpenHandler = () => SetAddAmenitiesModalState(true);
+  // Add Amenities modal handler
+  const AddAmenitiesModalOpenHandler = () => SetAddAmenitiesModalState(true);
 
-// Add Amenities modal  closehandler
-const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
-
+  // Add Amenities modal  closehandler
+  const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
+  const AddAwardsModalOpenHandler = () => setAddAwardsModalState(true);
+  const AddAwardsModalCloseHandler = () => setAddAwardsModalState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -180,26 +181,26 @@ const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
                     style={{ display: "none" }}
                   />
                 )}
-                <div className="add-aminities-container" style={{marginTop:'-70px'}}>
-                <button className="add-aminities-btn"  onClick={AddAmenitiesModalOpenHandler} >Add Amenities <FontAwesomeIcon icon={faPlus} style={{color: "#fafafa",}} /></button>
-                <button className="add-aminities-btn" style={{}}>Add Awards <FontAwesomeIcon icon={faPlus} style={{color: "#fafafa",}} /></button>
+                <div className="add-aminities-container" style={{ marginTop: '-70px' }}>
+                  <button className="add-aminities-btn" onClick={AddAmenitiesModalOpenHandler} >Amenities <FontAwesomeIcon icon={faPlus} style={{ color: "#fafafa", }} /></button>
+                  <button className="add-aminities-btn" onClick={AddAwardsModalOpenHandler} style={{}}>Awards <FontAwesomeIcon icon={faPlus} style={{ color: "#fafafa", }} /></button>
                 </div>
               </td>
-             
-             
+
+
               <td className="provider-icon-cell">
-              
-               <FontAwesomeIcon
+
+                <FontAwesomeIcon
                   icon={faEdit}
                   className="edit-icon"
                   onClick={handleEditClick}
                   title="Edit Details"
-                  style={{marginTop:'10px'}}
+                  style={{ marginTop: '10px' }}
                 />
-                             
+
               </td>
             </tr>
-            
+
             <tr>
               <td colSpan="2">
                 <div className="input-row">
@@ -352,6 +353,19 @@ const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
                 </div>
               </td>
             </tr>
+            <tr>
+              <td colSpan="2">
+                <div className="input-row">
+                  <span className="label-cell">Amenities:</span>
+                  <span>
+                    {user.amenities
+                      ?.map((amenity) => amenity.replace(/([A-Z])/g, " $1").trim()) // Add space before capital letters
+                      .join(", ") || "No amenities added"}
+                  </span>
+                </div>
+              </td>
+            </tr>
+
 
             <tr>
               <td colSpan="2">
@@ -375,6 +389,26 @@ const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
                 </div>
               </td>
             </tr>
+            <tr>
+              <td colSpan="2">
+                <div className="input-row">
+                  <span className="label-cell">Awards:</span>
+                  <div className="awards-container">
+                    {user.awards?.map((award, index) => (
+                      <div key={index} className="award">
+                        <img
+                          src={award}
+                          alt={`Award ${index + 1}`}
+                          className="award-image"
+                          style={{ width: "150px", height: "150px" }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </td>
+            </tr>
+
             <tr className="provider-save">
               <td colSpan="2" style={{ textAlign: "center" }}>
                 {isEditing && (
@@ -391,13 +425,21 @@ const AddAmenitiesModalCloseHandler = () => SetAddAmenitiesModalState(false);
         </table>
       </div>
 
-       {/* Add modal */}
-       {AddAmenitiesModalState && (
-    <AddAmenitiesModal
+      {/* Add modal */}
+      {AddAmenitiesModalState && (
+        <AddAmenitiesModal
           isShow={AddAmenitiesModalState}
           closeHandler={AddAmenitiesModalCloseHandler}
-          
-          
+
+
+        />
+      )}
+      {AddAwardsModalState && (
+        <AddAwardsModal
+          isShow={AddAwardsModalState}
+          closeHandler={AddAwardsModalCloseHandler}
+
+
         />
       )}
     </div>
