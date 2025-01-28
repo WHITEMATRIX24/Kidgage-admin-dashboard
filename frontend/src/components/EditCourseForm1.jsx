@@ -29,11 +29,13 @@ function EditCourseForm1({ courseId }) {
         durationUnit: "days", // Default unit
         startDate: "",
         endDate: "",
+        noOfSessions: "",
+         fee: ""
       },
     ],
     description: "",
-    feeAmount: "",
-    feeType: "full_course",
+    // feeAmount: "",
+    // feeType: "full_course",
     days: [],
     removedImages: [], // Track removed images
     timeSlots: [{ from: "", to: "" }],
@@ -80,6 +82,7 @@ function EditCourseForm1({ courseId }) {
             durationUnit: "days",
             startDate: "",
             endDate: "",
+            noOfSessions: "", fee: ""
           },
         ];
         const mappedCourseDuration = courseDuration.map((item) => ({
@@ -87,6 +90,8 @@ function EditCourseForm1({ courseId }) {
           durationUnit: item.durationUnit || "days", // Default to "days"
           startDate: item.startDate || "",
           endDate: item.endDate || "",
+          noOfSessions:item.noOfSessions || "", 
+          fee:item.fee|| "",
         }));
 
         // Update formData with values from courseDuration
@@ -96,8 +101,8 @@ function EditCourseForm1({ courseId }) {
           // Assuming courseDuration is an array, use the first item for these values
           courseDuration: mappedCourseDuration,
           description: response.data.description || "",
-          feeAmount: response.data.feeAmount || "",
-          feeType: response.data.feeType || "full_course", // Default value for feeType
+          // feeAmount: response.data.feeAmount || "",
+          // feeType: response.data.feeType || "full_course", // Default value for feeType
           days: response.data.days || [],
           timeSlots: response.data.timeSlots || [{ from: "", to: "" }], // Default timeSlots value
           location: response.data.location || [{ address: "", city: "", phoneNumber: "", link: "" }],
@@ -141,7 +146,7 @@ function EditCourseForm1({ courseId }) {
       setCharCount(value.length);
     }
 
-    if (["duration", "durationUnit", "startDate", "endDate"].includes(name)) {
+    if (["duration", "durationUnit", "startDate", "endDate","noOfSessions","fee"].includes(name)) {
       const updatedDurations = [...courseData?.courseDuration];
       updatedDurations[index] = {
         ...updatedDurations[index],
@@ -161,7 +166,7 @@ function EditCourseForm1({ courseId }) {
       ...prev,
       courseDuration: [
         ...prev.courseDuration,
-        { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" },
+        { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" ,noOfSessions:"",fee:""},
       ],
     }));
   };
@@ -233,6 +238,8 @@ function EditCourseForm1({ courseId }) {
 
             formData.append(`courseDuration[${index}][startDate]`, startDate);
             formData.append(`courseDuration[${index}][endDate]`, endDate);
+            formData.append(`courseDuration[${index}][noOfSessions]`, duration.noOfSessions);
+            formData.append(`courseDuration[${index}][fee]`, duration.fee);
           });
         }
 
@@ -240,8 +247,8 @@ function EditCourseForm1({ courseId }) {
 
         // Append other course data
         formData.append("description", courseData.description);
-        formData.append("feeAmount", courseData.feeAmount);
-        formData.append("feeType", courseData.feeType);
+        // formData.append("feeAmount", courseData.feeAmount);
+        // formData.append("feeType", courseData.feeType);
         formData.append("promoted", courseData.promoted);
         formData.append("courseType", courseData.courseType);
         formData.append("preferredGender", courseData.preferredGender);
@@ -302,7 +309,7 @@ function EditCourseForm1({ courseId }) {
         setSuccess("Course updated successfully!");
         setError(""); // Clear error messages
         asetLoading(false); // Stop loading after fetch
-        // window.location.reload(); // Reload page after success
+        window.location.reload(); // Reload page after success
       } catch (error) {
         console.error("Error updating course. Check if all fields are filled", error);
 
@@ -630,6 +637,33 @@ function EditCourseForm1({ courseId }) {
                       />
                     </div>
 
+                    <div className="form-group add-duration-label-group">
+              <label htmlFor={`noOfSessions-${index}`}>No of sessions</label>
+              <label htmlFor={`fee-${index}`}>Fee</label>
+            </div>
+            <div className="form-group add-duration-group">
+              <input
+                type="number"
+                id={`noOfSessions-${index}`}
+                name="noOfSessions"
+                placeholder="No of sessions"
+                value={duration.noOfSessions}
+                onChange={(e) => handleChange(e, index)}
+                disabled={!isEditMode}
+              />
+
+              <input
+                type="number"
+                id={`fee-${index}`}
+                name="fee"
+                placeholder="fee"
+                value={duration.fee}
+                onChange={(e) => handleChange(e, index)}
+                disabled={!isEditMode}
+              />
+
+            </div>
+
                     {/* Remove Button */}
                     <div
                       className="form-group add-duration-group"
@@ -696,7 +730,7 @@ function EditCourseForm1({ courseId }) {
                     {charCount}/{charLimit} characters
                   </p>
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label>Fee Structure</label>
                   <div className="fee-structure">
                     <input
@@ -722,7 +756,7 @@ function EditCourseForm1({ courseId }) {
                       <option value="per_class">Per Class</option>
                     </select>
                   </div>
-                </div>
+                </div> */}
                 <label
                   style={{ color: "black" }}
                   className="selecet-days-label"

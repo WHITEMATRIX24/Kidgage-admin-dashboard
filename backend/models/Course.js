@@ -27,6 +27,8 @@ const courseDurationSchema = new mongoose.Schema({
   },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
+  noOfSessions:{ type: Number, required: true },
+  fee:{type: Number, required: true }
 });
 
 // const courseDurationSchema = new mongoose.Schema(
@@ -84,12 +86,12 @@ const courseSchema = new mongoose.Schema({
   name: { type: String, required: true },
   courseDuration: { type: [courseDurationSchema], required: true },
   description: { type: String, required: true },
-  feeAmount: { type: Number, required: true },
-  feeType: {
-    type: String,
-    enum: ["full_course", "per_day", "per_week", "per_month"],
-    required: true,
-  },
+  // feeAmount: { type: Number, required: true },
+  // feeType: {
+  //   type: String,
+  //   enum: ["full_course", "per_day", "per_week", "per_month"],
+  //   required: true,
+  // },
   days: { type: [String], required: true },
   timeSlots: { type: [timeSlotSchema], required: true },
   location: { type: [locationSchema], required: true },
