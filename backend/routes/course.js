@@ -356,24 +356,51 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
 
 
 // Delete a course
+// router.delete("/delete/:id", async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const course = await Course.findByIdAndDelete(req.params.id);
+//     if (!course) {
+//       return res.status(404).json({ message: "Course not found" });
+//     }
+
+//     // If the course has images, delete each one from S3
+//     if (course.images && course.images.length > 0) {
+//       await Promise.all(
+//         // course.images.map((imageUrl) => deleteImageFromS3(imageUrl))
+//       );
+//     }
+
+//     res.json({ message: "Course and associated images deleted successfully" });
+//   } catch (err) {
+//     console.error("Error deleting course or images:", err);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
+
 router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const course = await Course.findByIdAndDelete(req.params.id);
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
+    const deletedCourse = await Course.findByIdAndDelete(id);
+
+    if (!deletedCourse) {
+      return res.status(404).json({ message: "Course  not found" });
     }
 
-    // If the course has images, delete each one from S3
-    if (course.images && course.images.length > 0) {
-      await Promise.all(
-        course.images.map((imageUrl) => deleteImageFromS3(imageUrl))
-      );
-    }
+    // // Assuming 'imageUrl' is stored in the course category document
+    // if (deletedCourse.imageUrl) {
+    //   await deleteImageFromS3(deletedCourse.imageUrl);
+    // }
 
-    res.json({ message: "Course and associated images deleted successfully" });
-  } catch (err) {
-    console.error("Error deleting course or images:", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(200).json({
+      message: "Course  and associated image deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting course  or image:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error. Please try again later." });
   }
 });
 
