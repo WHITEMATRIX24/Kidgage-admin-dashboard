@@ -33,9 +33,8 @@ async function uploadImageToS3(file) {
   try {
     // Generate a unique name for the image
     const rawBytes = await randomBytes(16);
-    const imageName =
-      rawBytes.toString("hex") + path.extname(file.originalname);
-
+    const extension = file.originalname ? path.extname(file.originalname) : ".jpg"; // Default to .jpg if missing
+    const imageName = rawBytes.toString("hex") + extension;
     const params = {
       Bucket: "kidgage", // The bucket name from .env
       Key: imageName, // The unique file name
@@ -1024,7 +1023,7 @@ router.put("/update-activity/:id", async (req, res) => {
 
 //   try {
 //     const user = await User.findById(userId);
-  
+
 
 //     if (!user) {
 //       return res.status(404).send("User not found");
@@ -1036,7 +1035,7 @@ router.put("/update-activity/:id", async (req, res) => {
 //     // Save the updated user
 //     await user.save();
 //     console.log(user);
-    
+
 //     res.status(200).json({ message: "Amenities added successfully", user });
 //   } catch (error) {
 //     console.error("Error updating user:", error);
@@ -1047,8 +1046,8 @@ router.put("/update-activity/:id", async (req, res) => {
 router.post("/add-amenities", async (req, res) => {
   const { newData, userId } = req.body;
 
-  console.log('data', newData);
-  console.log('id', userId);
+  console.log('Received Data:', newData);
+  console.log('User ID:', userId);
 
   try {
     // Find the user by their userId
@@ -1058,22 +1057,21 @@ router.post("/add-amenities", async (req, res) => {
       return res.status(404).send("User not found");
     }
 
-    // Ensure amenities is always an array
-    user.amenities = Array.isArray(user.amenities) ? user.amenities : []; // If it's not an array, set it to an empty array
-
-    // Add new amenities to the user's existing amenities array
-    user.amenities = [...user.amenities, ...newData]; // Merge old and new amenities
+    // Replace old amenities with the updated unique list
+    user.amenities = Array.isArray(newData) ? [...new Set(newData)] : [];
 
     // Save the updated user
     await user.save();
-    console.log(user);
+    console.log('Updated User:', user);
 
-    res.status(200).json({ message: "Amenities added successfully", user });
+    res.status(200).json({ message: "Amenities updated successfully", user });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).send("Error adding amenities");
+    console.error("Error updating amenities:", error);
+    res.status(500).send("Error updating amenities");
   }
 });
+
+
 
 
 
@@ -1107,6 +1105,89 @@ router.put("/update-status/:id", upload.none(), async (req, res) => {
     res.status(500).json({ message: "server Error", error });
   }
 });
+router.get("/:userId/amenities", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    res.status(200).json({ amenities: user.amenities });
+  } catch (error) {
+    console.error("Error fetching amenities:", error);
+    res.status(500).send("Error fetching amenities");
+  }
+});
+
+router.post('/upload-awards/:userId', upload.array('awards', 3), async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log("Uploaded Files:", req.files);
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files uploaded" });
+    }
+
+    // Upload each file individually and store URLs in an array
+    const awardUrls = await Promise.all(req.files.map(file => uploadImageToS3(file)));
+
+    // Ensure awardUrls is an array before pushing to MongoDB
+    await user.updateOne({ $push: { awards: { $each: awardUrls } } });
+
+    // Fetch updated user data
+    const updatedUser = await User.findById(userId);
+
+    res.status(200).json({ message: "Awards uploaded successfully", awards: updatedUser.awards });
+  } catch (error) {
+    console.error("Error uploading awards:", error);
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+});
+
+router.get('/:userId/awards', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ awards: user.awards });
+  } catch (error) {
+    console.error("Error fetching awards:", error);
+    res.status(500).json({ message: "An error occurred" });
+  }
+});
+router.delete('/:userId/awards/:index', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const index = parseInt(req.params.index, 10);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (index < 0 || index >= user.awards.length) {
+      return res.status(400).json({ message: "Invalid index" });
+    }
+
+    user.awards.splice(index, 1); // Remove award from array
+    await user.save();
+    res.status(200).json({ message: "Award deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting award:", error);
+    res.status(500).json({ message: "An error occurred" });
+  }
+});
+
+
 
 
 module.exports = router;
