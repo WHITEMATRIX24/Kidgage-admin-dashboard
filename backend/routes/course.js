@@ -11,6 +11,7 @@ const { promisify } = require("util");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+
 const router = express.Router();
 
 // Generate a random file name
@@ -230,11 +231,6 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   }
 });
 
-
-
-
-
-
 router.get("/course/:id", async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
@@ -275,29 +271,93 @@ router.get("/search", async (req, res) => {
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
   try {
-    // Find the course by ID
-    let course = await Course.findById(req.params.id);
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
-    }
+    // Destructure request body
+    const {
+      providerId,
+      name,
+      description,
+      feeAmount,
+      feeType,
+      days,
+      timeSlots,
+      location,
+      ageGroup,
+      courseType,
+      promoted,
+      preferredGender,
+      courseDuration,
+      removedImages,  // Array of images to be removed from the course (can be empty)
+    } = req.body;
 
-    // Merge existing course with the fields to be updated
-    Object.keys(req.body).forEach((key) => {
-      if (req.body[key] !== undefined && req.body[key] !== null) {
-        course[key] = req.body[key]; // Update only fields that are provided and not null/undefined
-      }
+    // Log the received fields for debugging
+    console.log("Received data:", {
+      name, courseDuration, ageGroup, timeSlots, location, removedImages
     });
 
-    // Save the updated course
-    const updatedCourse = await course.save();
+    // Parse courseDuration, timeSlots, location, ageGroup safely
+    const parsedCourseDurations = typeof courseDuration === "string" ? JSON.parse(courseDuration) : courseDuration;
+    const parsedTimeSlots = timeSlots ? JSON.parse(timeSlots) : [];
+    const parsedLocation = location ? JSON.parse(location) : [];
+    const parsedAgeGroup = ageGroup ? JSON.parse(ageGroup) : [];
 
-    res.json(updatedCourse);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    // Prepare file upload if any
+    const uploadedImages = req.files ? await uploadImagesToS3(req.files) : [];
+
+    // Fetch the current course to retain existing images and other data
+    const currentCourse = await Course.findById(req.params.id);
+
+    if (!currentCourse) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    // Handle removed images (if any) and retain existing images
+    let remainingImages = currentCourse.images;
+    if (removedImages && Array.isArray(removedImages)) {
+      remainingImages = currentCourse.images.filter(image => !removedImages.includes(image));
+      // Optionally delete removed images from cloud storage here
+      // for (const image of removedImages) {
+      //   await deleteImageFromS3(image); // Replace with your S3 deletion logic
+      // }
+    }
+
+    // Combine the remaining images with the newly uploaded ones
+    const combinedImages = remainingImages.concat(uploadedImages);
+
+    // Update the course with all the fields (including the combined images)
+    const updatedCourse = await Course.findByIdAndUpdate(
+      req.params.id,  // Use the ID from the URL
+      {
+        providerId,
+        name,
+        description,
+        feeAmount,
+        feeType,
+        days,
+        timeSlots: parsedTimeSlots,
+        location: parsedLocation,
+        ageGroup: parsedAgeGroup,
+        courseType,
+        images: combinedImages,  // Update images with new and remaining ones
+        promoted,
+        preferredGender,
+        active: false,  // Ensure the course is inactive
+        courseDuration: parsedCourseDurations,  // Update course duration
+      },
+      { new: true }  // Return the updated document
+    );
+
+    // Return the updated course as a response
+    res.status(200).json(updatedCourse);
+
+  } catch (error) {
+    console.error("Error updating course:", error);
+    res.status(500).json({ error: "Something went wrong during the update." });
   }
 });
+
+
 
 // Delete a course
 router.delete("/delete/:id", async (req, res) => {
@@ -356,43 +416,6 @@ router.get("/get-all-courses", async (req, res) => {
     res.status(500).json({ message: "Server Error", error });
   }
 });
-
-
-//course status updator
-// router.put('/update-active-status/:id', async (req, res) => {
-//   const  {id}  = req.params;
-//   const {active}  = req.body; // Get 'active' from the body
-
-//   console.log("id",id);
-//   console.log("active status",active);
-
-
-//   // Validate the 'active' value
-//   if (active !== "true" && active !== "false" && typeof active !== "boolean") {
-//     return res.status(400).json({ message: "Invalid 'active' value. It should be 'true' or 'false'." });
-//   }
-
-//   try {
-//     // Update the course's active status in the database
-//     const course = await Course.findByIdAndUpdate(
-//       id,
-//       {
-//         active: active,
-//       },
-//       { new: true }
-//     );
-//       console.log("course",course.active);
-
-//     if (!course) {
-//       return res.status(404).json({ message: "Course not found." });
-//     }
-
-//     res.json(course); // Return the updated course object
-//   } catch (err) {
-//     console.error('Error updating course:', err);
-//     res.status(500).json({ message: "Error updating course" });
-//   }
-// });
 
 router.put('/update-active-status/:id', async (req, res) => {
   const { id } = req.params;  // Extract 'id' from URL parameters

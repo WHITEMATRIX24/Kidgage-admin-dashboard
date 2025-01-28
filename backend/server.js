@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+
 // Import routes
 const userRoutes = require("./routes/userRoutes"); // Existing routes for business sign-up
 const personalRoutes = require("./routes/personalRoutes"); // New routes for personal sign-up
@@ -25,6 +26,7 @@ const PORT = process.env.PORT || 5001;
 
 app.use(cors());
 app.use(express.json()); // To parse JSON bodies
+
 
 // Connect to MongoDB
 mongoose

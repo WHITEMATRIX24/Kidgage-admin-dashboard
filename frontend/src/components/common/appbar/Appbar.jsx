@@ -7,7 +7,7 @@ import axios from "axios";
 import adminImage from "../../assets/images/admin-photo.jpeg";
 
 const Appbar = ({ sendDataToParent, visible }) => {
-  console.log("vlaue", visible);
+  // console.log("vlaue", visible);
 
 
   const [pendingRequests, setPendingRequests] = useState([]);
