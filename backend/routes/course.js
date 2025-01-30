@@ -160,7 +160,7 @@ async function deleteImageFromS3(imageUrl) {
 // Add a new course
 // Backend: Ensure the parsedCourseDurations is handled properly
 
-//original code 
+// //original code 
 router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   try {
     const {
@@ -194,7 +194,7 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
 
      // Ensure faq is parsed correctly if it's a string
      const parsedthingstokeepinmind = typeof  thingstokeepinmind === "string" ? JSON.parse( thingstokeepinmind) :  thingstokeepinmind;
-     console.log("Parsed faq:", parsedthingstokeepinmind);  // Log the parsed faq value
+     console.log("parsedthingstokeepinmind", parsedthingstokeepinmind);  // Log the parsed faq value
 
     // Handle the rest of the course data...
     const newCourse = new Course({
@@ -226,134 +226,7 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   }
 });
 
-
-
-
 //for checking
-
-// Function to resolve Google Maps short link and get the full URL
-// const resolveGoogleMapsLink = async (shortUrl) => {
-//   try {
-//     const response = await axios.get(shortUrl, { maxRedirects: 5 });
-//     const fullUrl = response.request.res.responseUrl; // The resolved URL
-//     console.log("Resolved Full URL:", fullUrl);
-//     return fullUrl;
-//   } catch (error) {
-//     console.error("Error resolving the short URL:", error.message);
-//     throw new Error("Failed to resolve the short link");
-//   }
-// };
-
-// // Function to extract coordinates from the full URL
-// const extractCoordinates = (url) => {
-//   const urlParts = new URL(url);
-//   const query = urlParts.searchParams.get('q');
-//   if (query) {
-//     const [latitude, longitude] = query.split(',');
-//     return { latitude: parseFloat(latitude), longitude: parseFloat(longitude) };
-//   } else {
-//     throw new Error("Coordinates not found in the URL");
-//   }
-// };
-
-// // POST /addcourse route
-// router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
-//   try {
-//     const {
-//       providerId,
-//       name,
-//       description,
-//       days,
-//       timeSlots,
-//       location, // Expecting an array of location objects
-//       ageGroup,
-//       courseType,
-//       promoted,
-//       preferredGender,
-//       courseDuration,
-//     } = req.body;
-
-//     console.log("Received courseDurations:", courseDuration);
-//     console.log("Received ageGroup:", ageGroup);
-//     console.log("Received Location:", location);
-
-//     const parsedCourseDurations = typeof courseDuration === "string" ? JSON.parse(courseDuration) : courseDuration;
-
-//     // Initialize an empty array for the locations
-//     let locations = [];
-
-//     // Process each location in the location array
-//    // Process each location in the location array
-// for (let loc of location) {
-//   let { address, city, phoneNumber, link, latitude, longitude } = loc;
-
-//   console.log("Processing location:", loc);
-
-//   // Check if required fields are present
-//   if (!address || !city || !phoneNumber) {
-//     console.log("Missing address, city, or phone number:", { address, city, phoneNumber });
-//     continue; // Skip this location and move to the next one
-//   }
-
-//   try {
-//     // Check if link is valid and a string
-//     if (link && typeof link === 'string' && link.includes("google.com/maps")) {
-//       // Resolve the short URL to get the full URL
-//       const fullUrl = await resolveGoogleMapsLink(link);
-//       const { latitude: lat, longitude: lon } = extractCoordinates(fullUrl);
-//       latitude = lat;
-//       longitude = lon;
-//     }
-
-//     // Ensure latitude and longitude are populated
-//     if (!latitude || !longitude) {
-//       console.log("Missing coordinates:", { latitude, longitude });
-//       continue; // Skip this location if coordinates are missing
-//     }
-
-//     // Add the valid location to the locations array
-//     locations.push({
-//       address,
-//       city,
-//       phoneNumber,
-//       link,
-//       latitude,
-//       longitude
-//     });
-
-//   } catch (error) {
-//     console.error("Error processing location:", error.message);
-//     return res.status(400).json({ message: "Error with location data", error: error.message });
-//   }
-// }
-
-//     // Create the new course object with the location array
-//     const newCourse = new Course({
-//       providerId,
-//       name,
-//       description,
-//       days,
-//       timeSlots: JSON.parse(timeSlots),
-//       location: locations,  // Store locations as an array
-//       ageGroup: JSON.parse(ageGroup),
-//       courseType,
-//       images: req.files ? await uploadImagesToS3(req.files) : [],
-//       promoted,
-//       preferredGender,
-//       active: true,
-//       courseDuration: parsedCourseDurations,
-//     });
-
-//     const savedCourse = await newCourse.save();
-//     console.log("Saved course:", savedCourse);
-
-//     res.status(201).json(savedCourse);  // Return saved course
-
-//   } catch (error) {
-//     console.error("Error adding course:", error);
-//     res.status(500).json({ message: "Error adding course", error: error.message });
-//   }
-// });
 
 router.get("/course/:id", async (req, res) => {
   try {

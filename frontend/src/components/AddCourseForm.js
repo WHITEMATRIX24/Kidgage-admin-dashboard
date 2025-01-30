@@ -101,7 +101,6 @@ function AddCourseForm({ providerId }) {
     });
   };
 
-
   const handleDayChange = (e) => {
     const { value, checked } = e.target;
     setCourse((prev) => ({
@@ -295,7 +294,6 @@ function AddCourseForm({ providerId }) {
 
     try {
       const formData = new FormData();
-
       // Append all course data to the formData object
       formData.append("providerId", course.providerId);
       formData.append("name", course.name);
@@ -305,8 +303,6 @@ function AddCourseForm({ providerId }) {
         formData.append(`courseDuration[${index}][id]`, duration.id); // Add the 'id' field
         formData.append(`courseDuration[${index}][duration]`, duration.duration);
         formData.append(`courseDuration[${index}][durationUnit]`, duration.durationUnit);
-
-
         // Convert startDate and endDate to ISO format (UTC)
         const startDate = new Date(duration.startDate).toISOString();
         const endDate = new Date(duration.endDate).toISOString();
@@ -315,17 +311,11 @@ function AddCourseForm({ providerId }) {
         formData.append(`courseDuration[${index}][endDate]`, endDate);
         formData.append(`courseDuration[${index}][noOfSessions]`, duration.noOfSessions);
         formData.append(`courseDuration[${index}][fee]`, duration.fee);
-        // formData.append(`courseDurations[${index}][startDate]`, duration.startDate);
-        // formData.append(`courseDurations[${index}][endDate]`, duration.endDate);
-
       });
 
       console.log('Course Durations before submitting: ', course.courseDuration);
-
       // Append other course data
       formData.append("description", course.description);
-      // formData.append("feeAmount", course.feeAmount);
-      // formData.append("feeType", course.feeType);
       formData.append("promoted", course.promoted);
       formData.append("courseType", course.courseType);
       formData.append("preferredGender", course.preferredGender);
@@ -358,14 +348,11 @@ function AddCourseForm({ providerId }) {
         formData.append(`faq[${index}][answer]`, item.answer);
       })
 
-      //Append the faq 
+      //Append the thingstokeepinmind
       course.thingstokeepinmind.forEach((item, index) => {
         formData.append(`thingstokeepinmind[${index}][desc]`, item.desc);
       })
 
-
-      // // Append things to keep in mind
-      // formData.append("thingstokeepinmind", course.thingstokeepinmind);
 
       // Append each image file (File object)
       course.images.forEach((image) => {
@@ -388,7 +375,7 @@ function AddCourseForm({ providerId }) {
       setSuccess("Course added successfully!");
       setError(""); // Clear error messages
       setIsLoading(false); // Stop loading after fetch
-      // window.location.reload(); // Reload page after success
+      window.location.reload(); // Reload page after success
     } catch (error) {
       console.error("Error adding course. Check if all fields are filled", error);
       if (error.response) {

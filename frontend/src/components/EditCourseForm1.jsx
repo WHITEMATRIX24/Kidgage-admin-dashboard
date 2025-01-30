@@ -427,8 +427,6 @@ function EditCourseForm1({ courseId }) {
 
         // Append other course data
         formData.append("description", courseData.description);
-        // formData.append("feeAmount", courseData.feeAmount);
-        // formData.append("feeType", courseData.feeType);
         formData.append("promoted", courseData.promoted);
         formData.append("courseType", courseData.courseType);
         formData.append("preferredGender", courseData.preferredGender);
@@ -470,7 +468,7 @@ function EditCourseForm1({ courseId }) {
         })
 
 
-        // 2. Append new images (if any new images are added in courseData.images)
+        // 1. Append new images (if any new images are added in courseData.images)
         if (Array.isArray(courseData.images)) {
           courseData.images.forEach((image) => {
             if (image) {
@@ -479,7 +477,7 @@ function EditCourseForm1({ courseId }) {
           });
         }
 
-        // 3. Send removed images as a separate field (check for empty or undefined removedImages)
+        // 2. Send removed images as a separate field (check for empty or undefined removedImages)
         const removedImages = Array.isArray(courseData.removedImages) ? courseData.removedImages : []; // Default to empty array if removedImages is undefined
         console.log("Final removed images:", removedImages); // Debug log to check if removedImages is correctly handled
 
@@ -501,7 +499,7 @@ function EditCourseForm1({ courseId }) {
         setSuccess("Course updated successfully!");
         setError(""); // Clear error messages
         asetLoading(false); // Stop loading after fetch
-        // window.location.reload(); // Reload page after success
+        window.location.reload(); // Reload page after success
       } catch (error) {
         console.error("Error updating course. Check if all fields are filled", error);
 
@@ -1212,7 +1210,7 @@ function EditCourseForm1({ courseId }) {
                         placeholder="Enter your data"
                         disabled={!isEditMode}
                       />
-                      <button style={{ float: 'right' }} disabled={!isEditMode} className="rem-button" onClick={() => handleRemoveThingstoMind(index)}><FaTrash/></button>
+                      <button style={{ float: 'right' }} disabled={!isEditMode} className="rem-button" onClick={() => handleRemoveThingstoMind(index)}><FaTrash /></button>
                     </div>
                   ))}
                 </div>
@@ -1221,14 +1219,14 @@ function EditCourseForm1({ courseId }) {
                 <div className="form-group" >
                   <div className="btn-grpp">
                     <label>Add FAQS:</label>
-                    <button className="add-time-slot-btn"  onClick={handleAddFaq} disabled={courseData.faq.length >= MAX_FAQ_LIMIT || !isEditMode}>
+                    <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={courseData.faq.length >= MAX_FAQ_LIMIT || !isEditMode}>
                       Add FAQ
                     </button>
-                  </div> 
+                  </div>
 
 
-                {/* Render the FAQ inputs */}
-                 {courseData.faq.map((faq, index) => (
+                  {/* Render the FAQ inputs */}
+                  {courseData.faq.map((faq, index) => (
                     <div key={index}>
                       <input
                         type="text"
@@ -1246,10 +1244,10 @@ function EditCourseForm1({ courseId }) {
                         placeholder="Enter your answer"
                         disabled={!isEditMode}
                       />
-                      <button style={{ float: 'right' }} disabled={!isEditMode}  className="rem-button" onClick={() => handleRemoveFaq(index)}><FaTrash/></button>
+                      <button style={{ float: 'right' }} disabled={!isEditMode} className="rem-button" onClick={() => handleRemoveFaq(index)}><FaTrash /></button>
                     </div>
                   ))}
-                </div> 
+                </div>
 
 
 

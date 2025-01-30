@@ -11,6 +11,8 @@ const locationSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true },
   link: { type: String, required: true },
 });
+
+//for checking map
 // const locationSchema = new mongoose.Schema({
 //   address: { type: String, required: true },
 //   city: { type: String, required: true },
