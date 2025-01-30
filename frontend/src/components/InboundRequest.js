@@ -16,6 +16,7 @@ import InspectionRejectModal from "../Pages/inspections/reject-modal/inspectionR
 
 function InboundRequest(searchdata) {
   const [pendingUsers, setPendingUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);  // Step 1: Loading state
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRequestPopup, setShowRequestPopup] = useState(false);
@@ -72,8 +73,9 @@ function InboundRequest(searchdata) {
       console.error("No user or date selected for scheduling a meeting.");
       return;
     }
-
+    
     try {
+      setIsLoading(true); // Step 2: Set loading state to true
       await axios.post(
         "http://localhost:5001/api/users/updateVerification",
         {
@@ -93,6 +95,8 @@ function InboundRequest(searchdata) {
       console.error("Error scheduling meeting:", error);
       console.log("Selected User:", selectedUser);
       console.log("Selected Date:", selectedDate);
+    }finally {
+      setIsLoading(false);  // Step 3: Set loading state to false after process finishes
     }
   };
 
@@ -218,10 +222,13 @@ function InboundRequest(searchdata) {
             />
             <button
               className="inbound-schedule-button"
-              onClick={handleConfirmDate}
+              onClick={handleConfirmDate} 
+              disabled={isLoading}
             >
               Schedule Meeting
+              {isLoading ? "Scheduling..." : "Schedule Meeting"}
             </button>
+            {isLoading && <div className="loading-spinner">Loading...</div>} {/* Optional: Add a spinner */}
           </div>
         </div>
       )}

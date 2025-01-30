@@ -56,6 +56,19 @@ const CategoryPage = (searchdata) => {
   };
 
   console.log(searchKey);
+  const SearchDataHandler = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/api/course-category/categories-search?search=${searchKey}`
+      );
+      setCategoryData(res.data);
+    } catch (error) {
+      console.log(`error in searching categories error: ${error}`);
+    }
+  };
+
+
+
 
   // initial data handler
   const initialCategoryDataHandler = async () => {
@@ -75,6 +88,7 @@ const CategoryPage = (searchdata) => {
 
   useEffect(() => {
     initialCategoryDataHandler();
+    SearchDataHandler();
   }, [addstatus, editStatus, deleteStatus, searchKey]);
 
   return (

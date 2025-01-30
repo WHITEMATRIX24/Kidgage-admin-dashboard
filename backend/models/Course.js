@@ -5,22 +5,22 @@ const timeSlotSchema = new mongoose.Schema({
   to: { type: String, required: true },
 });
 
-const locationSchema = new mongoose.Schema({
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
-  link: { type: String, required: true },
-});
-
-//for checking map
 // const locationSchema = new mongoose.Schema({
 //   address: { type: String, required: true },
 //   city: { type: String, required: true },
 //   phoneNumber: { type: String, required: true },
 //   link: { type: String, required: true },
-//   latitude: { type: Number},  // Store latitude
-//   longitude: { type: Number},  // Store longitude
 // });
+
+//for checking map
+const locationSchema = new mongoose.Schema({
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
+  link: { type: String, required: true },
+  lat: { type: Number, default: null },
+  lon: { type: Number, default: null },
+});
 
 
 const ageGroupSchema = new mongoose.Schema({

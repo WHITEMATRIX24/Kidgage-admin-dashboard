@@ -183,6 +183,8 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
     console.log("Received ageGroup:", ageGroup);  // Check raw value
     console.log("faq:", faq);  // Check raw value
     console.log(" thingstokeepinmind:",  thingstokeepinmind);  // Check raw value
+    console.log(" location:",  location);  // Check raw value
+
 
     // Ensure courseDurations is parsed correctly if it's a string
     const parsedCourseDurations = typeof courseDuration === "string" ? JSON.parse(courseDuration) : courseDuration;
@@ -195,6 +197,12 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
      // Ensure faq is parsed correctly if it's a string
      const parsedthingstokeepinmind = typeof  thingstokeepinmind === "string" ? JSON.parse( thingstokeepinmind) :  thingstokeepinmind;
      console.log("parsedthingstokeepinmind", parsedthingstokeepinmind);  // Log the parsed faq value
+
+    //  location.forEach(location => {
+    //   if (location.coordinates.lat === null || location.coordinates.lng === null) {
+    //     console.log("Coordinates are missing for location:", location);
+    //   }
+    // });
 
     // Handle the rest of the course data...
     const newCourse = new Course({

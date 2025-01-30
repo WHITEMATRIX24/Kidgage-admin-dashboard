@@ -10,6 +10,7 @@ import Settings from "../settings/Settings";
 import PosterView from "../poster/PosterView";
 import CategoryPage from "../category/categoryPage";
 import Campaigns from "../campaigns/Campaigns";
+import KidgageNews from "../kidgageNews/kidgageNews";
 const DashboardPage = () => {
   const [activeProviderCounts, setActiveProviderCounts] = useState(0);
   const [campaignsCounts, setCampaignsCounts] = useState(0);
@@ -158,6 +159,8 @@ const DashboardPage = () => {
         <CategoryPage searchdata={searchKey} />
       ) : searchKey === "even" ? (
         <PosterView searchdata={searchKey} />
+      ) : searchKey === "news" ? (
+        <KidgageNews searchdata={searchKey} />
       ) : searchKey === "sett" ? (
         <Settings searchdata={searchKey} />
       )

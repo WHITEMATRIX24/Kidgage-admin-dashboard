@@ -10,6 +10,12 @@
   padding: 10px;
 
 }
+.loading-spinner {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+}
 
 .inbound-table-container {
   background-color: white;
