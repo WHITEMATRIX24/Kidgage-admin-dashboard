@@ -30,10 +30,16 @@ function EditCourseForm1({ courseId }) {
         startDate: "",
         endDate: "",
         noOfSessions: "",
-         fee: ""
+        fee: ""
       },
     ],
+    faq: [
+      { question: "", answer: "" },
+    ],
     description: "",
+    thingstokeepinmind: [{
+      desc: ""
+    }],
     // feeAmount: "",
     // feeType: "full_course",
     days: [],
@@ -75,6 +81,28 @@ function EditCourseForm1({ courseId }) {
         // Assuming response.data contains course data and courseDuration
         setCourseData(response.data);
 
+        const thingstokeepinmind = response.data.thingstokeepinmind || [
+          {
+            desc: ""
+          }
+        ];
+
+        const mappedthingstokeepinmind = thingstokeepinmind.map((item) => ({
+          desc: item.desc || "",
+        }));
+
+        const faq = response.data.faq || [
+          {
+            question: "",
+            answer: ""
+          }
+        ];
+
+        const mappedfaq = faq.map((item) => ({
+          question: item.question || "",
+          answer: item.answer || "",
+        }));
+
         // If courseDuration exists, initialize it; otherwise, set a default value
         const courseDuration = response.data.courseDuration || [
           {
@@ -90,8 +118,8 @@ function EditCourseForm1({ courseId }) {
           durationUnit: item.durationUnit || "days", // Default to "days"
           startDate: item.startDate || "",
           endDate: item.endDate || "",
-          noOfSessions:item.noOfSessions || "", 
-          fee:item.fee|| "",
+          noOfSessions: item.noOfSessions || "",
+          fee: item.fee || "",
         }));
 
         // Update formData with values from courseDuration
@@ -100,6 +128,8 @@ function EditCourseForm1({ courseId }) {
           name: response.data.name || "",
           // Assuming courseDuration is an array, use the first item for these values
           courseDuration: mappedCourseDuration,
+          faq: mappedfaq,
+          thingstokeepinmind: mappedthingstokeepinmind,
           description: response.data.description || "",
           // feeAmount: response.data.feeAmount || "",
           // feeType: response.data.feeType || "full_course", // Default value for feeType
@@ -142,11 +172,11 @@ function EditCourseForm1({ courseId }) {
   const charLimit = 500;
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    if (name === "description") {
+    if (name === "description" || name === "thingstokeepinmind") {
       setCharCount(value.length);
     }
 
-    if (["duration", "durationUnit", "startDate", "endDate","noOfSessions","fee"].includes(name)) {
+    if (["duration", "durationUnit", "startDate", "endDate", "noOfSessions", "fee"].includes(name)) {
       const updatedDurations = [...courseData?.courseDuration];
       updatedDurations[index] = {
         ...updatedDurations[index],
@@ -160,13 +190,12 @@ function EditCourseForm1({ courseId }) {
       setCourseData((prev) => ({ ...prev, [name]: value }));
     }
   };
-
   const addDuration = () => {
     setCourseData((prev) => ({
       ...prev,
       courseDuration: [
         ...prev.courseDuration,
-        { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" ,noOfSessions:"",fee:""},
+        { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "", noOfSessions: "", fee: "" },
       ],
     }));
   };
@@ -210,12 +239,163 @@ function EditCourseForm1({ courseId }) {
     }));
   };
 
+  const MAX_FAQ_LIMIT = 6;  // Set the maximum number of FAQs
+  const MIN_FAQ_LIMIT = 4;  // Set the minimum number of FAQs (optional, can be 0 if no lower limit)
+
+  // Function to handle FAQ changes (same as before)
+  const handleFaqChange = (index, e) => {
+    const { name, value } = e.target;
+
+    if (name === "question" || name === "answer") {
+      const updatedFaqList = [...courseData.faq];
+      updatedFaqList[index][name] = value;
+
+      setCourseData({
+        ...courseData,
+        faq: updatedFaqList,
+      });
+    } else {
+      setCourseData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Function to handle adding a new FAQ entry
+  const handleAddFaq = () => {
+    if (courseData.faq.length < MAX_FAQ_LIMIT) {
+      // Only add a new FAQ if it's under the max limit
+      setCourseData({
+        ...courseData,
+        faq: [
+          ...courseData.faq,
+          { question: "", answer: "" }, // Add a new FAQ object with empty fields
+        ],
+      });
+    } else {
+      // Optional: alert or show an error message if the max FAQ limit is reached
+      alert(`You can only add up to ${MAX_FAQ_LIMIT} FAQs.`);
+    }
+  };
+
+  // Function to handle removing an FAQ entry (if you want to allow removing FAQs)
+  const handleRemoveFaq = (index) => {
+    if (courseData.faq.length > MIN_FAQ_LIMIT) {
+      // const updatedFaqList = [...courseData.faq];
+      // updatedFaqList.splice(index, 1); // Remove the FAQ at the given index
+      // setCourseData({
+      //   ...courseData,
+      //   faq: updatedFaqList,
+      // });
+      setCourseData((prev) => ({
+        ...prev,
+        faq: prev.faq.filter((_, i) => i !== index),
+      }));
+    } else {
+      // Optional: alert or show an error message if the min FAQ limit is reached
+      alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
+    }
+  };
+
+  // Function to handle Things to mind changes (same as before)
+  const handleThingstoMindChange = (index, e) => {
+    const { name, value } = e.target;
+
+    // Update FAQ field dynamically based on field name (question or answer)
+    const updatedList = [...courseData.thingstokeepinmind];
+    updatedList[index][name] = value;
+
+    // Set the updated FAQ list in state
+    setCourseData({
+      ...courseData,
+      thingstokeepinmind: updatedList,
+    });
+
+    // Check if the current FAQ has empty fields
+    if (value.trim() === "") {
+      setError("FAQ question and answer cannot be empty.");
+    } else {
+      setError(""); // Clear any error if fields are filled
+    }
+  };
+
+  // Function to handle adding a new desc entry
+  const handleAddThingsToMind = () => {
+    if (courseData.thingstokeepinmind.length < MAX_FAQ_LIMIT) {
+      // Only add a new FAQ if it's under the max limit
+      setCourseData({
+        ...courseData,
+        thingstokeepinmind: [
+          ...courseData.thingstokeepinmind,
+          { desc: "" }, // Add a new  object with empty fields
+        ],
+      });
+    } else {
+      // Optional: alert or show an error message if the max FAQ limit is reached
+      alert(`You can only add up to ${MAX_FAQ_LIMIT} FAQs.`);
+    }
+  };
+
+  // Function to handle removing an  entry (if you want to allow removing )
+  const handleRemoveThingstoMind = (index) => {
+    if (courseData.thingstokeepinmind.length > MIN_FAQ_LIMIT) {
+      // const updatedList = [...courseData.thingstokeepinmind];
+      // updatedList.splice(index, 1); // Remove the FAQ at the given index
+      // setCourseData({
+      //   ...courseData,
+      //   thingstokeepinmind: updatedList,
+      // });
+      setCourseData((prev) => ({
+        ...prev,
+        thingstokeepinmind: prev.thingstokeepinmind.filter((_, i) => i !== index),
+      }));
+    } else {
+      // Optional: alert or show an error message if the min FAQ limit is reached
+      alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     asetLoading(true);
     if (isEditMode) {
+
+      if (courseData.thingstokeepinmind.length < 4) {
+        setError("A minimum of 4 datas are required.");
+        asetLoading(false);  // Stop loading
+        return;  // Prevent form submission
+      }
+
+      //Filter out empty FAQs
+      const cleanedData = courseData.thingstokeepinmind.filter(
+        (item) => item.desc.trim()
+      );
+
+      //Check if there are any empty FAQs after cleaning
+      if (cleanedData.length !== courseData.thingstokeepinmind.length) {
+        setError("Please fill all data field");
+        asetLoading(false);  // Stop loading
+        return;  // Prevent form submission
+      }
+
+      // Validate FAQ length and empty fields (question and answer must not be empty)
+      if (courseData.faq.length < 4) {
+        setError("A minimum of 4 FAQs (questions and answers) are required.");
+        asetLoading(false);  // Stop loading
+        return;  // Prevent form submission
+      }
+
+      // Filter out empty FAQs
+      const cleanedFaq = courseData.faq.filter(
+        (item) => item.question.trim() && item.answer.trim()
+      );
+
+      // Check if there are any empty FAQs after cleaning
+      if (cleanedFaq.length !== courseData.faq.length) {
+        setError("Please fill in all FAQ fields (both question and answer).");
+        asetLoading(false);  // Stop loading
+        return;  // Prevent form submission
+      }
       try {
-      
+
         const formData = new FormData();
         // Ensure courseData is defined before accessing its properties
         if (!courseData) {
@@ -247,8 +427,6 @@ function EditCourseForm1({ courseId }) {
 
         // Append other course data
         formData.append("description", courseData.description);
-        // formData.append("feeAmount", courseData.feeAmount);
-        // formData.append("feeType", courseData.feeType);
         formData.append("promoted", courseData.promoted);
         formData.append("courseType", courseData.courseType);
         formData.append("preferredGender", courseData.preferredGender);
@@ -278,7 +456,19 @@ function EditCourseForm1({ courseId }) {
         // Append ageGroup as a stringified array
         formData.append("ageGroup", JSON.stringify(courseData.ageGroup));
 
-        // 2. Append new images (if any new images are added in courseData.images)
+        //Append the faq 
+        courseData.faq.forEach((item, index) => {
+          formData.append(`faq[${index}][question]`, item.question);
+          formData.append(`faq[${index}][answer]`, item.answer);
+        })
+
+        // Append things to keep in mind
+        courseData.thingstokeepinmind.forEach((item, index) => {
+          formData.append(`thingstokeepinmind[${index}][desc]`, item.desc);
+        })
+
+
+        // 1. Append new images (if any new images are added in courseData.images)
         if (Array.isArray(courseData.images)) {
           courseData.images.forEach((image) => {
             if (image) {
@@ -287,7 +477,7 @@ function EditCourseForm1({ courseId }) {
           });
         }
 
-        // 3. Send removed images as a separate field (check for empty or undefined removedImages)
+        // 2. Send removed images as a separate field (check for empty or undefined removedImages)
         const removedImages = Array.isArray(courseData.removedImages) ? courseData.removedImages : []; // Default to empty array if removedImages is undefined
         console.log("Final removed images:", removedImages); // Debug log to check if removedImages is correctly handled
 
@@ -432,9 +622,6 @@ function EditCourseForm1({ courseId }) {
 
   const fileInputRef = useRef(null); // Reference for the file input
   // Helper function to convert ArrayBuffer to Base64
-
-
-  // Function to handle image input change (when files are selected)
 
   const handleImageChange = (e) => {
     const files = e.target.files;  // Get selected files
@@ -638,31 +825,31 @@ function EditCourseForm1({ courseId }) {
                     </div>
 
                     <div className="form-group add-duration-label-group">
-              <label htmlFor={`noOfSessions-${index}`}>No of sessions</label>
-              <label htmlFor={`fee-${index}`}>Fee</label>
-            </div>
-            <div className="form-group add-duration-group">
-              <input
-                type="number"
-                id={`noOfSessions-${index}`}
-                name="noOfSessions"
-                placeholder="No of sessions"
-                value={duration.noOfSessions}
-                onChange={(e) => handleChange(e, index)}
-                disabled={!isEditMode}
-              />
+                      <label htmlFor={`noOfSessions-${index}`}>No of sessions</label>
+                      <label htmlFor={`fee-${index}`}>Fee</label>
+                    </div>
+                    <div className="form-group add-duration-group">
+                      <input
+                        type="number"
+                        id={`noOfSessions-${index}`}
+                        name="noOfSessions"
+                        placeholder="No of sessions"
+                        value={duration.noOfSessions}
+                        onChange={(e) => handleChange(e, index)}
+                        disabled={!isEditMode}
+                      />
 
-              <input
-                type="number"
-                id={`fee-${index}`}
-                name="fee"
-                placeholder="fee"
-                value={duration.fee}
-                onChange={(e) => handleChange(e, index)}
-                disabled={!isEditMode}
-              />
+                      <input
+                        type="number"
+                        id={`fee-${index}`}
+                        name="fee"
+                        placeholder="fee"
+                        value={duration.fee}
+                        onChange={(e) => handleChange(e, index)}
+                        disabled={!isEditMode}
+                      />
 
-            </div>
+                    </div>
 
                     {/* Remove Button */}
                     <div
@@ -1002,6 +1189,67 @@ function EditCourseForm1({ courseId }) {
                     </div>
                   ))}
                 </div>
+
+
+
+                <div className="form-group" >
+                  <div className="btn-grpp">
+                    <label>Things to keep in mind:</label>
+                    <button className="add-time-slot-btn" onClick={handleAddThingsToMind} disabled={courseData.thingstokeepinmind.length >= MAX_FAQ_LIMIT || !isEditMode}>
+                      Add
+                    </button>
+                  </div>
+                  {/* Render the FAQ inputs */}
+                  {courseData.thingstokeepinmind.map((thingstokeepinmind, index) => (
+                    <div key={index}>
+                      <input
+                        type="text"
+                        name="desc"
+                        value={thingstokeepinmind.desc}
+                        onChange={(e) => handleThingstoMindChange(index, e)}
+                        placeholder="Enter your data"
+                        disabled={!isEditMode}
+                      />
+                      <button style={{ float: 'right' }} disabled={!isEditMode} className="rem-button" onClick={() => handleRemoveThingstoMind(index)}><FaTrash /></button>
+                    </div>
+                  ))}
+                </div>
+
+
+                <div className="form-group" >
+                  <div className="btn-grpp">
+                    <label>Add FAQS:</label>
+                    <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={courseData.faq.length >= MAX_FAQ_LIMIT || !isEditMode}>
+                      Add FAQ
+                    </button>
+                  </div>
+
+
+                  {/* Render the FAQ inputs */}
+                  {courseData.faq.map((faq, index) => (
+                    <div key={index}>
+                      <input
+                        type="text"
+                        name="question"
+                        value={faq.question}
+                        onChange={(e) => handleFaqChange(index, e)}
+                        placeholder="Enter your question"
+                        disabled={!isEditMode}
+                      />
+                      <input
+                        type="text"
+                        name="answer"
+                        value={faq.answer}
+                        onChange={(e) => handleFaqChange(index, e)}
+                        placeholder="Enter your answer"
+                        disabled={!isEditMode}
+                      />
+                      <button style={{ float: 'right' }} disabled={!isEditMode} className="rem-button" onClick={() => handleRemoveFaq(index)}><FaTrash /></button>
+                    </div>
+                  ))}
+                </div>
+
+
 
                 {/* images */}
                 <div className="form-group">

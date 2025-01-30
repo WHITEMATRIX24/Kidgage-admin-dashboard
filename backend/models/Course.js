@@ -12,6 +12,17 @@ const locationSchema = new mongoose.Schema({
   link: { type: String, required: true },
 });
 
+//for checking map
+// const locationSchema = new mongoose.Schema({
+//   address: { type: String, required: true },
+//   city: { type: String, required: true },
+//   phoneNumber: { type: String, required: true },
+//   link: { type: String, required: true },
+//   latitude: { type: Number},  // Store latitude
+//   longitude: { type: Number},  // Store longitude
+// });
+
+
 const ageGroupSchema = new mongoose.Schema({
   ageStart: { type: Date, required: true },
   ageEnd: { type: Date, required: true },
@@ -31,51 +42,15 @@ const courseDurationSchema = new mongoose.Schema({
   fee:{type: Number, required: true }
 });
 
-// const courseDurationSchema = new mongoose.Schema(
-//   {
-//     id: { 
-//       type: Number, // If this is meant to be a custom ID, Number is fine. For more flexibility, consider using String.
-//       required: true, 
-//       unique: true // Ensure this ID is unique if required
-//     },
-//     duration: { 
-//       type: Number, 
-//       required: true,
-//       min: [1, 'Duration must be at least 1'] // Optional: Ensure duration is at least 1 unit
-//     },
-//     durationUnit: {
-//       type: String,
-//       enum: ["days", "weeks", "months", "years"], // Valid duration units
-//       required: true,
-//     },
-//     startDate: { 
-//       type: Date, 
-//       required: true,
-//       validate: {
-//         validator: function(value) {
-//           // Ensure startDate is earlier than endDate
-//           return !this.endDate || value < this.endDate;
-//         },
-//         message: 'startDate must be before endDate'
-//       }
-//     },
-//     endDate: { 
-//       type: Date, 
-//       required: true,
-//       validate: {
-//         validator: function(value) {
-//           // Ensure endDate is later than startDate
-//           return !this.startDate || value > this.startDate;
-//         },
-//         message: 'endDate must be after startDate'
-//       }
-//     }
-//   },
-//   {
-//     timestamps: true // Optional: Automatically adds createdAt and updatedAt fields
-//   }
-// );
 
+const faqSchema = new mongoose.Schema({
+ question: { type: String, required: true },
+answer: { type: String, required: true }
+})
+
+const keepinmindSchema=new mongoose.Schema({
+  desc:{type: String, required: true}
+})
 
 const courseSchema = new mongoose.Schema({
   providerId: {
@@ -105,6 +80,9 @@ const courseSchema = new mongoose.Schema({
     enum: ["Male", "Female", "Any"],
     default: "Any", // You can set a default value if desired
   },
+
+  faq:{ type: [faqSchema], required:true},
+  thingstokeepinmind:{type: [keepinmindSchema], required: true}
 });
 
 const Course = mongoose.model("Course", courseSchema);

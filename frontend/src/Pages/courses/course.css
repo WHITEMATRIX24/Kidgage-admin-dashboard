@@ -85,7 +85,7 @@
     word-wrap: break-word;  /* Ensures long words will break and wrap */
     word-break: break-word; /* Forces long unbreakable words (like long URLs) to break */
     white-space: normal;    /* Allows normal wrapping of text */
-    max-width: 250px;       /* Optional: Set width constraint for wrapping */
+    max-width: 200px;       /* Optional: Set width constraint for wrapping */
   }
 
 @media(min-width:2000px) {

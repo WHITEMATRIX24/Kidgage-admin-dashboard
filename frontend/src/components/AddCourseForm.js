@@ -10,7 +10,13 @@ function AddCourseForm({ providerId }) {
     courseDuration: [
       { id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "", noOfSessions: "", fee: "" },
     ],
+    faq: [
+      { question: "", answer: "" },
+    ],
     description: "",
+    thingstokeepinmind: [{
+      desc:""
+    }],
     // feeAmount: "",
     // feeType: "full_course",
     days: [],
@@ -24,6 +30,7 @@ function AddCourseForm({ providerId }) {
   };
   const [isLoading, setIsLoading] = useState(false); // Manage loading state
   const [course, setCourse] = useState(initialCourseState);
+  // const [faqList, setFaqList] = useState([{ question: "", answer: "" }]);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null);
@@ -31,6 +38,7 @@ function AddCourseForm({ providerId }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [courseTypes, setCourseTypes] = useState([]);
+
 
   useEffect(() => {
     const fetchCourseTypes = async () => {
@@ -54,12 +62,12 @@ function AddCourseForm({ providerId }) {
     const { name, value } = e.target;
 
     // If name is "description", update charCount (for static fields like description)
-    if (name === "description") {
+    if (name === "description" || name === "thingstokeepinmind") {
       setCharCount(value.length);
     }
 
     // If we're working with course duration (dynamically generated fields)
-    if (name === "duration" || name === "durationUnit" || name === "startDate" || name === "endDate" || name==="noOfSessions"||name==="fee") {
+    if (name === "duration" || name === "durationUnit" || name === "startDate" || name === "endDate" || name === "noOfSessions" || name === "fee") {
       const updatedDurations = [...course.courseDuration];
       updatedDurations[index][name] = value; // Update the correct field for the specific index
       setCourse({
@@ -92,7 +100,6 @@ function AddCourseForm({ providerId }) {
       courseDuration: updatedDurations, // Update state with the filtered durations
     });
   };
-
 
   const handleDayChange = (e) => {
     const { value, checked } = e.target;
@@ -258,9 +265,35 @@ function AddCourseForm({ providerId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (course.thingstokeepinmind.length < 4) {
+      setError("A minimum of 4 datas are required.");
+      setIsLoading(false);  // Stop loading
+      return;  // Prevent form submission
+    }
+
+
+    // Validate FAQ length and empty fields (question and answer must not be empty)
+    if (course.faq.length < 4) {
+      setError("A minimum of 4 FAQs (questions and answers) are required.");
+      setIsLoading(false);  // Stop loading
+      return;  // Prevent form submission
+    }
+
+    // Filter out empty FAQs
+    const cleanedFaq = course.faq.filter(
+      (item) => item.question.trim() && item.answer.trim()
+    );
+
+    // Check if there are any empty FAQs after cleaning
+    if (cleanedFaq.length !== course.faq.length) {
+      setError("Please fill in all FAQ fields (both question and answer).");
+      setIsLoading(false);  // Stop loading
+      return;  // Prevent form submission
+    }
+
     try {
       const formData = new FormData();
-
       // Append all course data to the formData object
       formData.append("providerId", course.providerId);
       formData.append("name", course.name);
@@ -270,8 +303,6 @@ function AddCourseForm({ providerId }) {
         formData.append(`courseDuration[${index}][id]`, duration.id); // Add the 'id' field
         formData.append(`courseDuration[${index}][duration]`, duration.duration);
         formData.append(`courseDuration[${index}][durationUnit]`, duration.durationUnit);
-
-
         // Convert startDate and endDate to ISO format (UTC)
         const startDate = new Date(duration.startDate).toISOString();
         const endDate = new Date(duration.endDate).toISOString();
@@ -280,17 +311,11 @@ function AddCourseForm({ providerId }) {
         formData.append(`courseDuration[${index}][endDate]`, endDate);
         formData.append(`courseDuration[${index}][noOfSessions]`, duration.noOfSessions);
         formData.append(`courseDuration[${index}][fee]`, duration.fee);
-        // formData.append(`courseDurations[${index}][startDate]`, duration.startDate);
-        // formData.append(`courseDurations[${index}][endDate]`, duration.endDate);
-
       });
 
       console.log('Course Durations before submitting: ', course.courseDuration);
-
       // Append other course data
       formData.append("description", course.description);
-      // formData.append("feeAmount", course.feeAmount);
-      // formData.append("feeType", course.feeType);
       formData.append("promoted", course.promoted);
       formData.append("courseType", course.courseType);
       formData.append("preferredGender", course.preferredGender);
@@ -315,6 +340,19 @@ function AddCourseForm({ providerId }) {
       formData.append("courseDurations", JSON.stringify(course.courseDuration));
 
       formData.append("ageGroup", JSON.stringify(course.ageGroup));
+
+
+      //Append the faq 
+      course.faq.forEach((item, index) => {
+        formData.append(`faq[${index}][question]`, item.question);
+        formData.append(`faq[${index}][answer]`, item.answer);
+      })
+
+      //Append the thingstokeepinmind
+      course.thingstokeepinmind.forEach((item, index) => {
+        formData.append(`thingstokeepinmind[${index}][desc]`, item.desc);
+      })
+
 
       // Append each image file (File object)
       course.images.forEach((image) => {
@@ -350,7 +388,117 @@ function AddCourseForm({ providerId }) {
     }
   };
 
+  const MAX_FAQ_LIMIT = 6;  // Set the maximum number of FAQs
+  const MIN_FAQ_LIMIT = 4;  // Set the minimum number of FAQs (optional, can be 0 if no lower limit)
 
+  // Function to handle FAQ changes (same as before)
+  const handleFaqChange = (index, e) => {
+    const { name, value } = e.target;
+
+    // Update FAQ field dynamically based on field name (question or answer)
+    const updatedFaqList = [...course.faq];
+    updatedFaqList[index][name] = value;
+
+    // Set the updated FAQ list in state
+    setCourse({
+      ...course,
+      faq: updatedFaqList,
+    });
+
+    // Check if the current FAQ has empty fields
+    if (value.trim() === "") {
+      setError("FAQ question and answer cannot be empty.");
+    } else {
+      setError(""); // Clear any error if fields are filled
+    }
+  };
+
+  // Function to handle adding a new FAQ entry
+  const handleAddFaq = () => {
+    if (course.faq.length < MAX_FAQ_LIMIT) {
+      // Only add a new FAQ if it's under the max limit
+      setCourse({
+        ...course,
+        faq: [
+          ...course.faq,
+          { question: "", answer: "" }, // Add a new FAQ object with empty fields
+        ],
+      });
+    } else {
+      // Optional: alert or show an error message if the max FAQ limit is reached
+      alert(`You can only add up to ${MAX_FAQ_LIMIT} FAQs.`);
+    }
+  };
+
+
+  // Function to handle removing an FAQ entry (if you want to allow removing FAQs)
+  const handleRemoveFaq = (index) => {
+    if (course.faq.length > MIN_FAQ_LIMIT) {
+      const updatedFaqList = [...course.faq];
+      updatedFaqList.splice(index, 1); // Remove the FAQ at the given index
+      setCourse({
+        ...course,
+        faq: updatedFaqList,
+      });
+    } else {
+      // Optional: alert or show an error message if the min FAQ limit is reached
+      alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
+    }
+  };
+
+ // Function to handle Things to mind changes (same as before)
+ const handleThingstoMindChange = (index, e) => {
+  const { name, value } = e.target;
+
+  // Update FAQ field dynamically based on field name (question or answer)
+  const updatedList = [...course.thingstokeepinmind];
+  updatedList[index][name] = value;
+
+  // Set the updated FAQ list in state
+  setCourse({
+    ...course,
+    thingstokeepinmind: updatedList,
+  });
+
+  // Check if the current FAQ has empty fields
+  if (value.trim() === "") {
+    setError("FAQ question and answer cannot be empty.");
+  } else {
+    setError(""); // Clear any error if fields are filled
+  }
+};
+
+ // Function to handle adding a new desc entry
+ const handleAddThingsToMind = () => {
+  if (course.thingstokeepinmind.length < MAX_FAQ_LIMIT) {
+    // Only add a new FAQ if it's under the max limit
+    setCourse({
+      ...course,
+      thingstokeepinmind: [
+        ...course.thingstokeepinmind,
+        { desc: ""}, // Add a new  object with empty fields
+      ],
+    });
+  } else {
+    // Optional: alert or show an error message if the max FAQ limit is reached
+    alert(`You can only add up to ${MAX_FAQ_LIMIT} FAQs.`);
+  }
+};
+
+// Function to handle removing an  entry (if you want to allow removing )
+const handleRemoveThingstoMind = (index) => {
+  if (course.thingstokeepinmind.length > MIN_FAQ_LIMIT) {
+    const updatedList = [...course.thingstokeepinmind];
+    updatedList.splice(index, 1); // Remove the FAQ at the given index
+    setCourse({
+      ...course,
+      thingstokeepinmind: updatedList,
+    });
+  } else {
+    // Optional: alert or show an error message if the min FAQ limit is reached
+    alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
+  }
+};
 
 
   const handleAgeGroupChange = (e) => {
@@ -380,8 +528,6 @@ function AddCourseForm({ providerId }) {
   };
 
   console.log(course);
-
-
   return (
     <div className="course-addmodal-container">
       <form className="add-course-form" onSubmit={handleSubmit}>
@@ -427,10 +573,10 @@ function AddCourseForm({ providerId }) {
             ))}
           </select>
         </div>
-
-
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', marginBottom: '20px' }}>
-          <h3>Course Duration Form</h3>
+          <div className="form-group add-course-label-group">
+            <label htmlFor={`duration`}>Course Duration</label>
+          </div>
           {/* Add Another Duration Button */}
           {course.courseDuration.length >= 0 && (
             <div className="form-group add-duration-group">
@@ -562,8 +708,6 @@ function AddCourseForm({ providerId }) {
             ))}
           </ul>
         </div>
-
-
 
         <div className="form-group">
           <label htmlFor="description">Course Description</label>
@@ -800,6 +944,63 @@ function AddCourseForm({ providerId }) {
                 style={{ width: "100%" }}
                 required
               />
+            </div>
+          ))}
+        </div>
+
+        <div className="form-group" >
+          <div className="btn-grpp">
+            <label>Things to keep in mind:</label>
+            <button className="add-time-slot-btn" onClick={handleAddThingsToMind} disabled={course.thingstokeepinmind.length >= MAX_FAQ_LIMIT}>
+              Add
+            </button>
+          </div>
+
+
+          {/* Render the FAQ inputs */}
+          {course.thingstokeepinmind.map((thingstokeepinmind, index) => (
+            <div key={index}>
+              <input
+                type="text"
+                name="desc"
+                value={thingstokeepinmind.desc}
+                onChange={(e) => handleThingstoMindChange(index, e)}
+                placeholder="Enter your data"
+
+              />
+              <button style={{ float: 'right' }} className="add-time-slot-btn" onClick={() => handleRemoveThingstoMind(index)}>Remove</button>
+            </div>
+          ))}
+        </div>
+
+
+        <div className="form-group" >
+          <div className="btn-grpp">
+            <label>Add FAQS:</label>
+            <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={course.faq.length >= MAX_FAQ_LIMIT}>
+              Add FAQ
+            </button>
+          </div>
+
+
+          {/* Render the FAQ inputs */}
+          {course.faq.map((faq, index) => (
+            <div key={index}>
+              <input
+                type="text"
+                name="question"
+                value={faq.question}
+                onChange={(e) => handleFaqChange(index, e)}
+                placeholder="Enter your question"
+              />
+              <input
+                type="text"
+                name="answer"
+                value={faq.answer}
+                onChange={(e) => handleFaqChange(index, e)}
+                placeholder="Enter your answer"
+              />
+              <button style={{ float: 'right' }} className="add-time-slot-btn" onClick={() => handleRemoveFaq(index)}>Remove FAQ</button>
             </div>
           ))}
         </div>

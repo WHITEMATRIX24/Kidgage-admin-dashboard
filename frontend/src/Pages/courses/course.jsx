@@ -69,24 +69,24 @@ const CoursePage = (searchdata) => {
     setCourseId(id); // Set the selected course id
   };
 
-  const deleteCourse = async (id) => {
-    try {
-      const res = await axios.delete(
-        `http://localhost:5001/api/courses/delete/${id}`
-      );
-      if (res.status === 200) {
-        setCourseData((prevData) =>
-          prevData.filter((course) => course._id !== id)
-        );
-        alert("Course deleted successfully");
-      } else {
-        alert(res.data.message);
-      }
-    } catch (error) {
-      console.error("Error deleting course:", error);
-      alert("Failed to delete course");
-    }
-  };
+  // const deleteCourse = async (id) => {
+  //   try {
+  //     const res = await axios.delete(
+  //       `http://localhost:5001/api/courses/delete/${id}`
+  //     );
+  //     if (res.status === 200) {
+  //       setCourseData((prevData) =>
+  //         prevData.filter((course) => course._id !== id)
+  //       );
+  //       alert("Course deleted successfully");
+  //     } else {
+  //       alert(res.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting course:", error);
+  //     alert("Failed to delete course");
+  //   }
+  // };
 
   const handleDeleteClick = (id) => {
     setDeleteCourseId(id);
@@ -95,7 +95,7 @@ const CoursePage = (searchdata) => {
 
   useEffect(() => {
     fetchProviderAndCourses();
-  }, [searchKey]);
+  }, [searchKey,deleteStatus]);
 
   useEffect(() => {
     const interval = setInterval(() => {

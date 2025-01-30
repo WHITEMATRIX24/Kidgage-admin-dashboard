@@ -160,15 +160,13 @@ async function deleteImageFromS3(imageUrl) {
 // Add a new course
 // Backend: Ensure the parsedCourseDurations is handled properly
 
-
+// //original code 
 router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   try {
     const {
       providerId,
       name,
       description,
-      // feeAmount,
-      // feeType,
       days,
       timeSlots,
       location,
@@ -177,29 +175,26 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
       promoted,
       preferredGender,
       courseDuration, // Receiving courseDurations from the frontend
+      faq, // Expecting an array of FAQ objects with question and answer fields
+      thingstokeepinmind,
     } = req.body;
 
     console.log("Received courseDurations:", courseDuration);  // Check raw value
     console.log("Received ageGroup:", ageGroup);  // Check raw value
+    console.log("faq:", faq);  // Check raw value
+    console.log(" thingstokeepinmind:",  thingstokeepinmind);  // Check raw value
 
     // Ensure courseDurations is parsed correctly if it's a string
     const parsedCourseDurations = typeof courseDuration === "string" ? JSON.parse(courseDuration) : courseDuration;
     console.log("Parsed courseDurations:", parsedCourseDurations);  // Check parsed value
 
-    // // Default to empty array if no courseDurations are provided
-    // const courseDurationsArray = parsedCourseDurations && parsedCourseDurations.length > 0
-    //   ? parsedCourseDurations
-    //   : [{ id: Date.now(), duration: "", durationUnit: "days", startDate: "", endDate: "" }];
+    // Ensure faq is parsed correctly if it's a string
+    const parsedFaq = typeof faq === "string" ? JSON.parse(faq) : faq;
+    console.log("Parsed faq:", parsedFaq);  // Log the parsed faq value
 
-      // Convert startDate and endDate strings into Date objects
-    //   parsedCourseDurations.forEach(duration => {
-    //     if (typeof duration.startDate === "string") {
-    //         duration.startDate = new Date(duration.startDate);  // Convert string to Date object
-    //     }
-    //     if (typeof duration.endDate === "string") {
-    //         duration.endDate = new Date(duration.endDate);  // Convert string to Date object
-    //     }
-    // });
+     // Ensure faq is parsed correctly if it's a string
+     const parsedthingstokeepinmind = typeof  thingstokeepinmind === "string" ? JSON.parse( thingstokeepinmind) :  thingstokeepinmind;
+     console.log("parsedthingstokeepinmind", parsedthingstokeepinmind);  // Log the parsed faq value
 
     // Handle the rest of the course data...
     const newCourse = new Course({
@@ -216,6 +211,8 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
       preferredGender,
       active: true,
       courseDuration: parsedCourseDurations,  // Save the courseDurations properly
+      faq: parsedFaq, // Correctly pass the parsed FAQ array, not a string
+      thingstokeepinmind:parsedthingstokeepinmind,
     });
 
     const savedCourse = await newCourse.save();
@@ -229,6 +226,8 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   }
 });
 
+//for checking
+
 router.get("/course/:id", async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
@@ -240,7 +239,6 @@ router.get("/course/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
-
 // Route to search for a course by ID
 router.get("/search", async (req, res) => {
   try {
@@ -287,11 +285,13 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
       preferredGender,
       courseDuration,
       removedImages,  // Array of images to be removed from the course (can be empty)
+      thingstokeepinmind,
+      faq,
     } = req.body;
 
     // Log the received fields for debugging
     console.log("Received data:", {
-      name, courseDuration, ageGroup, timeSlots, location, removedImages
+      name, courseDuration, ageGroup, timeSlots, location, removedImages,thingstokeepinmind,faq
     });
 
     // Parse courseDuration, timeSlots, location, ageGroup safely
@@ -299,6 +299,15 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
     const parsedTimeSlots = timeSlots ? JSON.parse(timeSlots) : [];
     const parsedLocation = location ? JSON.parse(location) : [];
     const parsedAgeGroup = ageGroup ? JSON.parse(ageGroup) : [];
+
+    // Ensure data is parsed correctly if it's a string
+    const parsedthingstokeepinmind = typeof  thingstokeepinmind === "string" ? JSON.parse( thingstokeepinmind) :  thingstokeepinmind;
+    console.log("Parsed faq:", parsedthingstokeepinmind);  // Log the parsed faq value
+
+
+    // Ensure data is parsed correctly if it's a string
+    const parsedfaq = typeof  faq === "string" ? JSON.parse(faq) :  faq;
+    console.log("Parsed faq:", faq);  // Log the parsed faq value
 
     // Prepare file upload if any
     const uploadedImages = req.files ? await uploadImagesToS3(req.files) : [];
@@ -340,10 +349,11 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
         preferredGender,
         active: false,  // Ensure the course is inactive
         courseDuration: parsedCourseDurations,  // Update course duration
+        thingstokeepinmind:parsedthingstokeepinmind,
+        faq:parsedfaq,
       },
       { new: true }  // Return the updated document
     );
-
     // Return the updated course as a response
     res.status(200).json(updatedCourse);
 
@@ -353,38 +363,41 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
   }
 });
 
-
-
-// Delete a course
+//delete course
 router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const course = await Course.findByIdAndDelete(req.params.id);
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
+    const deletedCourse = await Course.findByIdAndDelete(id);
+
+    if (!deletedCourse) {
+      return res.status(404).json({ message: "Course  not found" });
     }
 
-    // If the course has images, delete each one from S3
-    if (course.images && course.images.length > 0) {
-      await Promise.all(
-        course.images.map((imageUrl) => deleteImageFromS3(imageUrl))
-      );
-    }
+    // // Assuming 'imageUrl' is stored in the course category document
+    // if (deletedCourse.imageUrl) {
+    //   await deleteImageFromS3(deletedCourse.imageUrl);
+    // }
 
-    res.json({ message: "Course and associated images deleted successfully" });
-  } catch (err) {
-    console.error("Error deleting course or images:", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(200).json({
+      message: "Course  and associated image deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting course  or image:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error. Please try again later." });
   }
 });
 
 // Route to get courses by provider IDs
 router.get("/by-providers", async (req, res) => {
   const { providerIds } = req.query;
-  const searchKey=req.query.search
+  const searchKey = req.query.search
   if (searchKey && typeof searchKey !== 'string') {
     return res.status(400).json({ message: "Search key must be a string" });
   }
-  console.log("searchKey:.....",searchKey);
+  console.log("searchKey:.....", searchKey);
   try {
     const query = {
       providerId: { $in: providerIds }

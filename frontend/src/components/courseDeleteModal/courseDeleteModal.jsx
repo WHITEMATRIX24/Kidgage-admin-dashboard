@@ -9,29 +9,56 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId, setDeleteStat
   const [isLoading, setIsLoading] = useState(false);
 
   // course delete handler
-  const deleteCourseHandler = async () => {
-    if (courseDeleteId) {
-      setIsLoading(true);
-      try {
-        const res = await axios.delete(
-          `http://localhost:5001/api/courses/delete/${courseDeleteId}`
-        );
+  // const deleteCourseHandler = async () => {
+  //   if (courseDeleteId) {
+  //     setIsLoading(true);
+  //     try {
+  //       const res = await axios.delete(
+  //         `http://localhost:5001/api/courses/delete/${courseDeleteId}`
+  //       );
+  
+  //       if (res.status === 200 || res.status === 204) { // Handle both 200 and 204 status codes
+  //         alert("Successfully deleted course");
+  //         setDeleteStatus(res.data); // Assuming res.data has the updated status or course info
+  //         // closeHandler(); // Close the modal
+  //       } else {
+  //         // Log response data to debug further
+  //         console.log("Response data:", res.data);
+  //         alert(res.data.message || "Failed to delete course");
+  //       }
+  //     } catch (error) {
+  //       // Log error details to understand what might be going wrong
+  //       console.error("Error deleting course:", error);
+  //       alert("An error occurred while deleting the course. Please try again.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // };
+  
 
-        if (res.status == 200) {
-          alert("Successfully deleted course");
-          setDeleteStatus(res.data); // Assuming res.data has the updated status or course info
-          closeHandler(); // Close the modal
-        } else {
-          alert(res.data.message || "Failed to delete course");
-        }
-      } catch (error) {
-        console.error("Error deleting course:", error);
-        alert("An error occurred while deleting the course. Please try again.");
-      } finally {
-        setIsLoading(false);
+const deleteCourseHandler=async()=>{
+  if (courseDeleteId) {
+    setIsLoading(true);
+    try {
+      const res = await axios.delete(
+        `http://localhost:5001/api/courses/delete/${courseDeleteId}`
+      );
+
+      if (res.status === 200) {
+        alert("successfully delete couses");
+        setDeleteStatus(res.data)
+        closeHandler()
+        return;
       }
+      alert(res.data.message);
+    } catch (error) {
+      console.log(`error in deleting category error: ${error}`);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
+}
 
   return (
     <div
