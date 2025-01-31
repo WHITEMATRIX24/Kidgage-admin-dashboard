@@ -21,8 +21,8 @@ function EditCourseForm1({ courseId }) {
   const [searchError, setSearchError] = useState("");
   const [success, setSuccess] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-    const [address, setAddress] = useState("");
-   const [coordinates, setCoordinates] = useState({ lat: null, lon: null }); // To store latitude and longitude
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({ lat: null, lon: null }); // To store latitude and longitude
   const [formData, setFormData] = useState({
     providerId: "",
     name: "",
@@ -138,7 +138,7 @@ function EditCourseForm1({ courseId }) {
           // feeType: response.data.feeType || "full_course", // Default value for feeType
           days: response.data.days || [],
           timeSlots: response.data.timeSlots || [{ from: "", to: "" }], // Default timeSlots value
-          location: response.data.location || [{ address: "", city: "", phoneNumber: "", link: "" ,lat:"",lon:""}],
+          location: response.data.location || [{ address: "", city: "", phoneNumber: "", link: "", lat: "", lon: "" }],
           courseType: response.data.courseType || "",
           images: response.data.images || [],
           removedImages: [],
@@ -356,7 +356,6 @@ function EditCourseForm1({ courseId }) {
     }
   };
 
-
   const getCoordinates = async (address) => {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=1`;
 
@@ -409,11 +408,7 @@ function EditCourseForm1({ courseId }) {
 
     setSuggestions([]); // Clear suggestions after selection
   };
-  console.log(coordinates);
-
-
-
-
+  // console.log(coordinates);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -508,10 +503,10 @@ function EditCourseForm1({ courseId }) {
             phoneNumber: loc.phoneNumber || "", // Ensure phoneNumber is set
             link: loc.link || "", // Ensure link is set
             lat: loc.lat || coordinates.lat, // Default lat to coordinates if not provided
-            lon: loc.lng || coordinates.lon, // Default lng to coordinates if not provided
+            lon: loc.lon || coordinates.lon, // Default lng to coordinates if not provided
           };
         });
-  
+
         console.log("Validated Locations:", validatedLocations);
 
         // Append location array as a JSON string
@@ -658,48 +653,36 @@ function EditCourseForm1({ courseId }) {
     setShowForm(!showForm);
   };
 
-  // Handle location changes
-  // const handleLocationChange = (index, field, value) => {
-  //   const updatedLocation = [...courseData?.location];
-  //   updatedLocation[index] = {
-  //     ...updatedLocation[index],
-  //     [field]: value,
-  //   };
-  //   setCourseData((prev) => ({ ...prev, location: updatedLocation }));
-  // };
-
   const handleLocationChange = (index, field, value) => {
-    const updatedLocation = [...courseData?.location];
+    setCourseData((prevCourse) => {
+      const updatedLocations = [...prevCourse.location];
+      updatedLocations[index] = {
+        ...updatedLocations[index], // Preserve other fields
+        [field]: value, // Update only the specific field (e.g., address, lat, lon)
+      };
 
-    // Update the location data at the specified index
-    updatedLocation[index] = {
-      ...updatedLocation[index],
-      [field]: value,
+      // Log the updated locations to the console
+      console.log("Updated Locations:", updatedLocations);
+
+      return { ...prevCourse, location: updatedLocations };
+    });
+  };
+
+  const addLocation = () => {
+    const newLocation = {
+      address: "",
+      city: "",
+      phoneNumber: "",
+      link: "",
+      lat: "",  // Default value
+      lon: "",  // Default value
     };
 
-    // Update the coordinates state if lat or lng is being changed
-    if (field === 'lat' || field === 'lon') {
-      setCoordinates((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    }
-
-    // Update the courseData state
-    setCourseData((prev) => ({ ...prev, location: updatedLocation }));
-  };
-
-  // Add a new location
-  const addLocation = () => {
     setCourseData((prev) => ({
       ...prev,
-      location: [
-        ...prev.location,
-        { address: "", city: "", phoneNumber: "", link: "" },
-      ],
+      location: [...prev.location, newLocation],
     }));
   };
-
   // Remove a location
   const removeLocation = (index) => {
     setCourseData((prev) => ({
@@ -709,7 +692,7 @@ function EditCourseForm1({ courseId }) {
   };
 
   const fileInputRef = useRef(null); // Reference for the file input
-  // Helper function to convert ArrayBuffer to Base64
+
 
   const handleImageChange = (e) => {
     const files = e.target.files;  // Get selected files
@@ -1156,112 +1139,112 @@ function EditCourseForm1({ courseId }) {
                     <label htmlFor="ageEnd">Phone No.</label>
                   </div>
                   {courseData.location.map((loc, index) => (
-                             <div
-                               key={index}
-                               className="time-slot"
-                               style={{
-                                 width: "100%",
-                                 display: "flex",
-                                 flexDirection: "column",
-                                 gap: "1rem",
-                                 alignItems: "center",
-                               }}
-                             >
-                               <div
-                                 style={{ display: "flex", flexDirection: "row", width: "100%" }}
-                               >
-                                 <div
-                                   style={{
-                                     display: "flex",
-                                     flexDirection: "row",
-                                     width: "100%",
-                                   }}
-                                 >
-                                   <div style={{ position: 'relative', width: '33%' }}>
-                                     <input
-                                       type="text"
-                                       name="address"
-                                       value={loc.address}
-                                       placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
-                                       onChange={(e) => handleAddressChange(e.target.value, index)}
-                                       style={{ width: '100%' }}
-                                       required
-                                       disabled={!isEditMode}
-                                     />
-                                     {aloading && <div>Loading...</div>}
-                                     {suggestions.length > 0 && (
-                                       <ul style={{ position: 'absolute', zIndex: 10, width: '100%', background: 'white', border: '1px solid #ccc', maxHeight: '200px', overflowY: 'auto' }}>
-                                         {suggestions.map((suggestion, idx) => (
-                                           <li
-                                             key={idx}
-                                             style={{ padding: '5px', cursor: 'pointer' }}
-                                             onClick={() => handleSelectAddress(suggestion, index)}
-                                           >
-                                             {suggestion.display_name}
-                                           </li>
-                                         ))}
-                                       </ul>
-                                     )}
-                                   </div>
-                 
-                                   <select
-                                     name="city"
-                                     value={loc.city}
-                                     onChange={(e) =>
-                                       handleLocationChange(index, "city", e.target.value)
-                                     }
-                                     style={{ width: "33%" }}
-                                   >
-                                     <option value="">Select A City</option>
-                                     <option value="Doha">Doha</option>
-                                     <option value="Al Rayyan">Al Rayyan</option>
-                                     <option value="Al Wakrah">Al Wakrah</option>
-                                     <option value="Al Shamal">Al Shamal</option>
-                                     <option value="Al Khor">Al Khor</option>
-                                     <option value="Umm Salal">Umm Salal</option>
-                                     <option value="Al Daayen">Al Daayen</option>
-                                     <option value="Al Shahaniya">Al Shahaniya</option>
-                                     <option value="Dukhan">Dukhan</option>
-                                     <option value="Mesaieed">Mesaieed</option>
-                                   </select>
-                 
-                                   <input
-                                     type="text"
-                                     name="phoneNumber"
-                                     value={loc.phoneNumber}
-                                     placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
-                                     onChange={(e) =>
-                                       handleLocationChange(index, "phoneNumber", e.target.value)
-                                     }
-                                     style={{ width: "36%" }}
-                                     required
-                                     disabled={!isEditMode}
-                                   />
-                                 </div>
-                                 {index > 0 && (
-                                   <button
-                                     type="button"
-                                     className="rem-button"
-                                     onClick={() => removeLocation(index)}
-                                   >
-                                     <FaTrash />
-                                   </button>
-                                 )}
-                               </div>
-                               <input
-                                 type="text"
-                                 name="link"
-                                 value={loc.link}
-                                 placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
-                                 onChange={(e) =>
-                                   handleLocationChange(index, "link", e.target.value)
-                                 }
-                                 style={{ width: "100%" }}
-                                 required
-                                 disabled={!isEditMode}
-                               />
-                             </div>
-                           ))}
+                    <div
+                      key={index}
+                      className="time-slot"
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div
+                        style={{ display: "flex", flexDirection: "row", width: "100%" }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                          }}
+                        >
+                          <div style={{ position: 'relative', width: '33%' }}>
+                            <input
+                              type="text"
+                              name="address"
+                              value={loc.address}
+                              placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
+                              onChange={(e) => handleAddressChange(e.target.value, index)}
+                              style={{ width: '100%' }}
+                              required
+                              disabled={!isEditMode}
+                            />
+                            {aloading && <div>Loading...</div>}
+                            {suggestions.length > 0 && (
+                              <ul style={{ position: 'absolute', zIndex: 10, width: '100%', background: 'white', border: '1px solid #ccc', maxHeight: '200px', overflowY: 'auto' }}>
+                                {suggestions.map((suggestion, idx) => (
+                                  <li
+                                    key={idx}
+                                    style={{ padding: '5px', cursor: 'pointer' }}
+                                    onClick={() => handleSelectAddress(suggestion, index)}
+                                  >
+                                    {suggestion.display_name}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+
+                          <select
+                            name="city"
+                            value={loc.city}
+                            onChange={(e) =>
+                              handleLocationChange(index, "city", e.target.value)
+                            }
+                            style={{ width: "33%" }}
+                          >
+                            <option value="">Select A City</option>
+                            <option value="Doha">Doha</option>
+                            <option value="Al Rayyan">Al Rayyan</option>
+                            <option value="Al Wakrah">Al Wakrah</option>
+                            <option value="Al Shamal">Al Shamal</option>
+                            <option value="Al Khor">Al Khor</option>
+                            <option value="Umm Salal">Umm Salal</option>
+                            <option value="Al Daayen">Al Daayen</option>
+                            <option value="Al Shahaniya">Al Shahaniya</option>
+                            <option value="Dukhan">Dukhan</option>
+                            <option value="Mesaieed">Mesaieed</option>
+                          </select>
+
+                          <input
+                            type="text"
+                            name="phoneNumber"
+                            value={loc.phoneNumber}
+                            placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
+                            onChange={(e) =>
+                              handleLocationChange(index, "phoneNumber", e.target.value)
+                            }
+                            style={{ width: "36%" }}
+                            required
+                            disabled={!isEditMode}
+                          />
+                        </div>
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            className="rem-button"
+                            onClick={() => removeLocation(index)}
+                          >
+                            <FaTrash />
+                          </button>
+                        )}
+                      </div>
+                      <input
+                        type="text"
+                        name="link"
+                        value={loc.link}
+                        placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
+                        onChange={(e) =>
+                          handleLocationChange(index, "link", e.target.value)
+                        }
+                        style={{ width: "100%" }}
+                        required
+                        disabled={!isEditMode}
+                      />
+                    </div>
+                  ))}
                 </div>
 
 

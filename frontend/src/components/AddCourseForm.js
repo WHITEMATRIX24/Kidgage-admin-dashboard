@@ -22,10 +22,7 @@ function AddCourseForm({ providerId }) {
     days: [],
     timeSlots: [{ from: "", to: "" }],
     location: [{
-      address: "", city: "", phoneNumber: "", link: "", coordinates: {
-        lat: null,  // Initialize latitude as null
-        lon: null   // Initialize longitude as null
-      }
+      address: "", city: "", phoneNumber: "", link: "", lat: "", lon: "",
     }],
     courseType: "",
     images: [""],
@@ -150,30 +147,34 @@ function AddCourseForm({ providerId }) {
   };
 
   const handleLocationChange = (index, field, value) => {
-    const updatedLocation = [...course?.location];
+    setCourse((prevCourse) => {
+      const updatedLocations = [...prevCourse.location];
+      updatedLocations[index] = {
+        ...updatedLocations[index], // Preserve other fields
+        [field]: value, // Update only the specific field (e.g., address, lat, lon)
+      };
 
-    // Update the location data at the specified index
-    updatedLocation[index] = {
-      ...updatedLocation[index],
-      [field]: value,
-    };
+      // Log the updated locations to the console
+      console.log("Updated Locations:", updatedLocations);
 
-    // Update the coordinates state if lat or lng is being changed
-    if (field === 'lat' || field === 'lon') {
-      setCoordinates((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    }
-
-    // Update the courseData state
-    setCourse((prev) => ({ ...prev, location: updatedLocation }));
+      return { ...prevCourse, location: updatedLocations };
+    });
   };
 
-
-
   const addLocation = () => {
-    setCourse((prev) => ({ ...prev, location: [...prev.location, ""] }));
+    const newLocation = {
+      address: "",
+      city: "",
+      phoneNumber: "",
+      link: "",
+      lat: "",  // Default value
+      lon: "",  // Default value
+    };
+
+    setCourse((prev) => ({
+      ...prev,
+      location: [...prev.location, newLocation],
+    }));
   };
 
   const removeLocation = (index) => {
@@ -256,14 +257,14 @@ function AddCourseForm({ providerId }) {
 
     const coordinates = await getCoordinates(selectedAddress.display_name);
     if (coordinates) {
-      handleLocationChange(index, 'latitude', coordinates.lat);
-      handleLocationChange(index, 'longitude', coordinates.lon);
+      handleLocationChange(index, 'lat', coordinates.lat);
+      handleLocationChange(index, 'lon', coordinates.lon);
       setCoordinates({ lat: coordinates.lat, lon: coordinates.lon }); // Update state with the coordinates
     }
 
     setSuggestions([]); // Clear suggestions after selection
   };
-  console.log(coordinates);
+  // console.log(coordinates);
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -412,7 +413,7 @@ function AddCourseForm({ providerId }) {
           phoneNumber: loc.phoneNumber || "", // Ensure phoneNumber is set
           link: loc.link || "", // Ensure link is set
           lat: loc.lat || coordinates.lat, // Default lat to coordinates if not provided
-          lon: loc.lng || coordinates.lon, // Default lng to coordinates if not provided
+          lon: loc.lon || coordinates.lon, // Default lon  to coordinates if not provided
         };
       });
 
@@ -612,7 +613,7 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-  console.log(course);
+
   return (
     <div className="course-addmodal-container">
       <form className="add-course-form" onSubmit={handleSubmit}>

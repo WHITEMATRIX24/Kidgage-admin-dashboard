@@ -43,6 +43,7 @@ import ProviderDashboard from "../Pages/providerDashboard/providerDashboard";
 import Enquiries from "../Pages/Enquiries/Enquiries";
 import PosterView from "../Pages/poster/PosterView";
 import KidgageNews from "../Pages/kidgageNews/kidgageNews";
+import TermsAndPrivacy from "../Pages/Terms &Conditions/TermsAndPrivacy";
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -261,6 +262,9 @@ const Dashboard = () => {
                   </button>
                 </div> */}
                 <Settings />
+              </section>
+              <section id="privacy" className="db-section">
+                <TermsAndPrivacy/>
               </section>
             </>
           )}
