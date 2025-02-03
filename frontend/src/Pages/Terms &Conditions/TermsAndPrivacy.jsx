@@ -139,12 +139,12 @@ function TermsAndPrivacy() {
     return (
         <>
             <div className="coursepage-container">
-                <h3 className="coursepage-content-heading">Terms And Conditions </h3>
+                <h3 className="campaign-heading-h3">Footer Pages </h3>
                 <div className="coursepage-content-container">
                     <div className="coursepage-content-header">
                         {/* Tab Button for Programs Offered */}
                         <button
-                            className={`course_tab-button1 ${activeTab === "Programs Offered" ? "active" : ""}`}
+                            className={`course_tab-button1   ${activeTab === "Programs Offered" ? "active" : ""}`}
                             onClick={() => setActiveTab("Programs Offered")}
                         >
                             Terms and Conditions
