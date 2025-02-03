@@ -118,7 +118,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
   
     const { title, bookingLink } = req.body;
     // const updateData = { title, bookingLink };
-    const updateData=req.body
+    const updateData=req.body;
   
     if (req.file) {
       const image = await uploadImageToS3(req.file);
