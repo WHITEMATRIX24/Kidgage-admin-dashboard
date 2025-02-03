@@ -8,8 +8,7 @@ import TermsDeleteModal from '../../components/TermsAndPrivacyModal/TermsDeleteM
 import PolicyDeleteModal from '../../components/TermsAndPrivacyModal/PolicyDeleteModal';
 import TermsEditModal from '../../components/TermsAndPrivacyModal/TermsEditModal';
 import PolicyEditModal from '../../components/TermsAndPrivacyModal/PolicyEditModal';
-
-
+import "./TermsAndPrivacy.css";
 
 function TermsAndPrivacy() {
     const [error, setError] = useState(null);
@@ -22,19 +21,19 @@ function TermsAndPrivacy() {
         isShow: false,
         termId: null,
     });
-    
+
     const [policyDeleteModalState, setPolicyDeleteModalState] = useState({
         isShow: false,
         policyId: null,
     });
 
-     const [TermsAndPolicyEditModalState, setTermsAndPolicyEditModalState] = useState({
+    const [TermsAndPolicyEditModalState, setTermsAndPolicyEditModalState] = useState({
         isShow: false,
         data: null,
-      });
+    });
     const [addstatus, setAddStatus] = useState([]);
-     const [deleteStatus, setDeleteStatus] = useState([]);
-      const [editStatus, setEditStatus] = useState([]);
+    const [deleteStatus, setDeleteStatus] = useState([]);
+    const [editStatus, setEditStatus] = useState([]);
 
     // Add terms modal handler
     const termsAddModalOpenHandler = () => setTermsAddModalState(true);
@@ -52,38 +51,32 @@ function TermsAndPrivacy() {
     };
 
     // delete terms modal close handler
-    const deleteTermModalCloseHandler = (termId) => {
+    const deleteTermModalCloseHandler = () => {
         setTermsDeleteModalState({ isShow: false, termId: null });
     };
 
-     // delete policy modal open handler
-     const deletePolicyModalOpenHandler = (policyId) => {
+    // delete policy modal open handler
+    const deletePolicyModalOpenHandler = (policyId) => {
         setPolicyDeleteModalState({ isShow: true, policyId });
     };
 
     // delete terms modal close handler
-    const deletePolicyModalCloseHandler = (policyId) => {
+    const deletePolicyModalCloseHandler = () => {
         setPolicyDeleteModalState({ isShow: false, policyId: null });
     };
 
-
     const TermsAndPolicyEditModalOpenHandler = (editModalData) =>
         setTermsAndPolicyEditModalState({
-          isShow: true,
-          data: editModalData,
+            isShow: true,
+            data: editModalData,
         });
-    
-      // edit category modal Close handler
-      const TermsAndPolicyModalCloseHandler = (editModalData) =>
+
+    // edit category modal Close handler
+    const TermsAndPolicyModalCloseHandler = (editModalData) =>
         setTermsAndPolicyEditModalState({
-          isShow: false,
-          data: null,
+            isShow: false,
+            data: null,
         });
-    
-
-
-
-
 
     //fetch terms and codition data
     const fetchTermData = async () => {
@@ -120,13 +113,11 @@ function TermsAndPrivacy() {
     useEffect(() => {
         fetchTermData();
         fetchPolicyData();
-    }, [addstatus,deleteStatus,editStatus]);
+    }, [addstatus, deleteStatus, editStatus]);
 
-    console.log(policyData);
-
+    // console.log(policyData);
 
     const filteredPolicyData = policyData.filter(item => item.policy);  // Filter items with policy field
-
     if (filteredPolicyData.length > 0) {
         filteredPolicyData.forEach(item => {
             console.log(item.policy);  // Log the available policy
@@ -135,11 +126,7 @@ function TermsAndPrivacy() {
     } else {
         console.log('No available policies.');
     }
-
-
-
     const filteredTermData = termData.filter(item => item.terms);  // Filter items with policy field
-
     if (filteredTermData.length > 0) {
         filteredTermData.forEach(item => {
             console.log(item.terms);  // Log the available policy
@@ -149,16 +136,15 @@ function TermsAndPrivacy() {
         console.log('No available terms.');
     }
 
-
     return (
         <>
             <div className="coursepage-container">
-                <h3 className="coursepage-content-heading">Terms And Conditions </h3>
+                <h3 className="campaign-heading-h3">Footer Pages </h3>
                 <div className="coursepage-content-container">
                     <div className="coursepage-content-header">
                         {/* Tab Button for Programs Offered */}
                         <button
-                            className={`course_tab-button ${activeTab === "Programs Offered" ? "active" : ""}`}
+                            className={`course_tab-button1   ${activeTab === "Programs Offered" ? "active" : ""}`}
                             onClick={() => setActiveTab("Programs Offered")}
                         >
                             Terms and Conditions
@@ -166,7 +152,7 @@ function TermsAndPrivacy() {
 
                         {/* Tab Button for Add Course */}
                         <button
-                            className={`course_tab-button ${activeTab === "Add Course" ? "active" : ""}`}
+                            className={`course_tab-button1 ${activeTab === "Add Course" ? "active" : ""}`}
                             onClick={() => setActiveTab("Add Course")}
                         >
                             <FontAwesomeIcon icon={faPlus} style={{ color: "#fcfcfc" }} /> Privacy Policy
@@ -177,7 +163,7 @@ function TermsAndPrivacy() {
                     {activeTab === "Programs Offered" && (
 
                         <div>
-                            <button style={{ float: 'right' }}
+                            <button style={{ float: 'right', cursor: 'pointer' }}
                                 className="add-campaign-button"
                                 onClick={termsAddModalOpenHandler}
 
@@ -192,7 +178,7 @@ function TermsAndPrivacy() {
                                 <thead className="table-head">
                                     <tr>
                                         <th>Terms And Conditions</th>
-                                        <th>Date</th>
+                                        <th> Updatd Date</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -208,7 +194,11 @@ function TermsAndPrivacy() {
                                                     <td style={{ width: '60%', textAlign: 'justify' }}>
                                                         {item.terms} {/* Display policy */}
                                                     </td>
-                                                    <td>{item.date}</td>  {/* Display date */}
+                                                    <td>{new Date(item.date).toLocaleDateString('en-US', {
+                                                        year: 'numeric',
+                                                        month: 'short',
+                                                        day: 'numeric'
+                                                    })}</td>  {/* Display date */}
                                                     <td>
                                                         <div className="course-icons">
                                                             <FontAwesomeIcon
@@ -240,7 +230,7 @@ function TermsAndPrivacy() {
 
                     {activeTab === "Add Course" && (
                         <div>
-                            <button style={{ float: 'right' }}
+                            <button style={{ float: 'right', cursor: 'pointer' }}
                                 className="add-campaign-button"
                                 onClick={privacyAddModalOpenHandler}
                             >
@@ -270,7 +260,11 @@ function TermsAndPrivacy() {
                                                     <td style={{ width: '60%', textAlign: 'justify' }}>
                                                         {item.policy} {/* Display policy */}
                                                     </td>
-                                                    <td>{item.date}</td>  {/* Display date */}
+                                                    <td>{new Date(item.date).toLocaleDateString('en-US', {
+                                                        year: 'numeric',
+                                                        month: 'short',
+                                                        day: 'numeric'
+                                                    })}</td>  {/* Display date */}
                                                     <td>
                                                         <div className="course-icons">
                                                             <FontAwesomeIcon
@@ -333,7 +327,7 @@ function TermsAndPrivacy() {
                 )}
 
                 {/* delete modal */}
-                {policyDeleteModalState.isShow && policyDeleteModalState.isShow && (
+                {policyDeleteModalState.isShow && (
                     <PolicyDeleteModal
                         isShow={policyDeleteModalState.isShow}
                         closeHandler={deletePolicyModalCloseHandler}
@@ -344,28 +338,26 @@ function TermsAndPrivacy() {
 
 
                 {/* Edit modal */}
-      {TermsAndPolicyEditModalState.isShow && (
-        <TermsEditModal
-          isShow={TermsAndPolicyEditModalState.isShow}
-          closeHandler={TermsAndPolicyModalCloseHandler }
-          termsData={TermsAndPolicyEditModalState.data}
-          setEditStatus={setEditStatus}
-        />
-      )}
+                {TermsAndPolicyEditModalState.isShow && (
+                    <TermsEditModal
+                        isShow={TermsAndPolicyEditModalState.isShow}
+                        closeHandler={TermsAndPolicyModalCloseHandler}
+                        termsData={TermsAndPolicyEditModalState.data}
+                        setEditStatus={setEditStatus}
+                    />
+                )}
 
 
-      
+
                 {/* Edit modal */}
                 {TermsAndPolicyEditModalState.isShow && (
-        <PolicyEditModal
-          isShow={TermsAndPolicyEditModalState.isShow}
-          closeHandler={TermsAndPolicyModalCloseHandler }
-          policyData={TermsAndPolicyEditModalState.data}
-          setEditStatus={setEditStatus}
-        />
-      )}
-
-
+                    <PolicyEditModal
+                        isShow={TermsAndPolicyEditModalState.isShow}
+                        closeHandler={TermsAndPolicyModalCloseHandler}
+                        policyData={TermsAndPolicyEditModalState.data}
+                        setEditStatus={setEditStatus}
+                    />
+                )}
 
             </div>
         </>

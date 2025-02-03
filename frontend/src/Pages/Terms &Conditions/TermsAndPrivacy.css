@@ -1,0 +1,16 @@
+/* Common button styling */
+.course_tab-button1 {
+    /* Your general styles for the button */
+    padding: 10px 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 20px;
+    border: none;
+}
+
+/* Active button style */
+.course_tab-button1.active {
+    color: #2196F3;  /* Blue color when active */
+    
+}

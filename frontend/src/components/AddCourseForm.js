@@ -32,7 +32,6 @@ function AddCourseForm({ providerId }) {
   };
   const [isLoading, setIsLoading] = useState(false); // Manage loading state
   const [course, setCourse] = useState(initialCourseState);
-  // const [faqList, setFaqList] = useState([{ question: "", answer: "" }]);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null);
@@ -43,7 +42,7 @@ function AddCourseForm({ providerId }) {
   const [suggestions, setSuggestions] = useState([]);
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({ lat: null, lon: null }); // To store latitude and longitude
-
+  const [loadingList, setLoadingList] = useState([]);
 
   useEffect(() => {
     const fetchCourseTypes = async () => {
@@ -183,7 +182,7 @@ function AddCourseForm({ providerId }) {
       location: prev.location.filter((_, i) => i !== index),
     }));
   };
-  // Function to add a new image input
+
   const addImage = () => {
     setCourse((prevCourse) => ({
       ...prevCourse,
@@ -191,7 +190,6 @@ function AddCourseForm({ providerId }) {
     }));
   };
 
-  // Function to handle the image input change
   const handleImageChange = (index, e) => {
     const file = e.target.files[0]; // Get the selected file
     if (file) {
@@ -203,14 +201,12 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-  // Function to remove an image input
   const removeImage = (index) => {
     setCourse((prevCourse) => ({
       ...prevCourse,
       images: prevCourse.images.filter((_, i) => i !== index),
     }));
   };
-
 
   const getCoordinates = async (address) => {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=1`;
@@ -236,18 +232,41 @@ function AddCourseForm({ providerId }) {
     setAddress(value);
     handleLocationChange(index, 'address', value);
 
+    // Update the loading state for this particular index
+    setLoadingList((prevLoading) => {
+      const newLoading = [...prevLoading];
+      newLoading[index] = true;  // Set loading to true for this location
+      return newLoading;
+    });
+
     if (value.length > 2) { // Start suggesting after 3 characters
-      setIsLoading(true);
       try {
-        const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&addressdetails=1&limit=5`);
-        setSuggestions(response.data);
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&addressdetails=1&limit=5`
+        );
+
+        // Update the suggestions for the current index
+        setSuggestions((prevSuggestions) => {
+          const newSuggestions = [...prevSuggestions];
+          newSuggestions[index] = response.data;  // Update the suggestions for the specific location
+          return newSuggestions;
+        });
       } catch (error) {
         console.error("Error fetching address suggestions", error);
       } finally {
-        setIsLoading(false);
+        // Update loading state after the request completes
+        setLoadingList((prevLoading) => {
+          const newLoading = [...prevLoading];
+          newLoading[index] = false;  // Set loading to false after the request is done
+          return newLoading;
+        });
       }
     } else {
-      setSuggestions([]);
+      setSuggestions((prevSuggestions) => {
+        const newSuggestions = [...prevSuggestions];
+        newSuggestions[index] = [];  // Clear the suggestions for the current location
+        return newSuggestions;
+      });
     }
   };
 
@@ -264,82 +283,6 @@ function AddCourseForm({ providerId }) {
 
     setSuggestions([]); // Clear suggestions after selection
   };
-  // console.log(coordinates);
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   try {
-  //     const formData = new FormData();
-
-  //     // Append all course data to the formData object
-  //     formData.append("providerId", course.providerId);
-  //     formData.append("name", course.name);
-  //     // Append the courseDurations to formData
-  //     course.courseDurations.forEach((duration, index) => {
-  //       formData.append(`courseDurations[${index}][duration]`, duration.duration);
-  //       formData.append(`courseDurations[${index}][durationUnit]`, duration.durationUnit);
-  //       formData.append(`courseDurations[${index}][startDate]`, duration.startDate);
-  //       formData.append(`courseDurations[${index}][endDate]`, duration.endDate);
-  //     });
-  //     formData.append("description", course.description);
-  //     formData.append("feeAmount", course.feeAmount);
-  //     formData.append("feeType", course.feeType);
-  //     formData.append("promoted", course.promoted);
-  //     formData.append("courseType", course.courseType);
-  //     formData.append("preferredGender", course.preferredGender); // Append the new field
-
-  //     // Append each timeSlot as a JSON string
-  //     formData.append("timeSlots", JSON.stringify(course.timeSlots));
-
-  //     // Append days and locations as arrays
-  //     course.days.forEach((day) => formData.append("days[]", day));
-  //     const validatedLocations = course.location.map((loc) => ({
-  //       address: loc.address || "",
-  //       city: loc.city || "",
-  //       phoneNumber: loc.phoneNumber || "",
-  //       link: loc.link || "",
-  //     }));
-
-  //     // Append location array as a JSON string
-  //     formData.append("location", JSON.stringify(validatedLocations));
-  //     formData.append("ageGroup", JSON.stringify(course.ageGroup));
-  //     // Append each image file (File object)
-  //     course.images.forEach((image) => {
-  //       if (image) {
-  //         formData.append("academyImg", image); // Send file object directly
-  //       }
-  //     });
-
-  //     const response = await axios.post(
-  //       "http://localhost:5001/api/courses/addcourse",
-  //       formData,
-  //       {
-  //         headers: { "Content-Type": "multipart/form-data" },
-  //       }
-  //     );
-
-  //     console.log("Course added successfully", response.data);
-  //     setCourse(initialCourseState);
-  //     setSuccess("Course added successfully!");
-  //     setError("");
-  //     setIsLoading(false); // Stop loading after fetch
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.error(
-  //       "Error adding course. Check if all fields are filled",
-  //       error
-  //     );
-  //     if (error.response) {
-  //       setError(error.response.data.message);
-  //     } else {
-  //       setError("An error occurred. Please try again later.");
-  //     }
-  //     setSuccess("");
-  //     setIsLoading(false); // Stop loading after fetch
-  //   }
-  // };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -477,7 +420,7 @@ function AddCourseForm({ providerId }) {
   const MAX_FAQ_LIMIT = 6;  // Set the maximum number of FAQs
   const MIN_FAQ_LIMIT = 4;  // Set the minimum number of FAQs (optional, can be 0 if no lower limit)
 
-  // Function to handle FAQ changes (same as before)
+
   const handleFaqChange = (index, e) => {
     const { name, value } = e.target;
 
@@ -499,7 +442,6 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-  // Function to handle adding a new FAQ entry
   const handleAddFaq = () => {
     if (course.faq.length < MAX_FAQ_LIMIT) {
       // Only add a new FAQ if it's under the max limit
@@ -516,8 +458,6 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-
-  // Function to handle removing an FAQ entry (if you want to allow removing FAQs)
   const handleRemoveFaq = (index) => {
     if (course.faq.length > MIN_FAQ_LIMIT) {
       const updatedFaqList = [...course.faq];
@@ -532,7 +472,6 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-  // Function to handle Things to mind changes (same as before)
   const handleThingstoMindChange = (index, e) => {
     const { name, value } = e.target;
 
@@ -554,7 +493,6 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-  // Function to handle adding a new desc entry
   const handleAddThingsToMind = () => {
     if (course.thingstokeepinmind.length < MAX_FAQ_LIMIT) {
       // Only add a new FAQ if it's under the max limit
@@ -571,7 +509,6 @@ function AddCourseForm({ providerId }) {
     }
   };
 
-  // Function to handle removing an  entry (if you want to allow removing )
   const handleRemoveThingstoMind = (index) => {
     if (course.thingstokeepinmind.length > MIN_FAQ_LIMIT) {
       const updatedList = [...course.thingstokeepinmind];
@@ -585,7 +522,6 @@ function AddCourseForm({ providerId }) {
       alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
     }
   };
-
 
   const handleAgeGroupChange = (e) => {
     const { name, value } = e.target;
@@ -612,7 +548,6 @@ function AddCourseForm({ providerId }) {
       );
     }
   };
-
 
   return (
     <div className="course-addmodal-container">
@@ -935,8 +870,7 @@ function AddCourseForm({ providerId }) {
             <label htmlFor="ageEnd">Phone No.</label>
           </div>
 
-
-          {/* for checking */}
+         
           {course.location.map((loc, index) => (
             <div
               key={index}
@@ -949,33 +883,43 @@ function AddCourseForm({ providerId }) {
                 alignItems: "center",
               }}
             >
-              <div
-                style={{ display: "flex", flexDirection: "row", width: "100%" }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
-                  }}
-                >
-                  <div style={{ position: 'relative', width: '33%' }}>
+              <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+                <div style={{ display: "flex", flexDirection: "row", width: "100%", gap: "1rem" }}>
+
+                  {/* Address Field */}
+                  <div style={{ position: "relative", flex: 1 }}>
                     <input
                       type="text"
                       name="address"
                       value={loc.address}
                       placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
                       onChange={(e) => handleAddressChange(e.target.value, index)}
-                      style={{ width: '100%' }}
+                      style={{
+                        width: "100%",
+                        padding: "0.5rem",
+                        boxSizing: "border-box",
+                      }}
                       required
                     />
-                    {isLoading && <div>Loading...</div>}
-                    {suggestions.length > 0 && (
-                      <ul style={{ position: 'absolute', zIndex: 10, width: '100%', background: 'white', border: '1px solid #ccc', maxHeight: '200px', overflowY: 'auto' }}>
-                        {suggestions.map((suggestion, idx) => (
+                    {loadingList[index] && <div>Loading...</div>} {/* Only show loading for the specific index */}
+
+                    {/* Address Suggestions */}
+                    {suggestions[index] && suggestions[index].length > 0 && (
+                      <ul
+                        style={{
+                          position: "absolute",
+                          zIndex: 10,
+                          width: "100%",
+                          background: "white",
+                          border: "1px solid #ccc",
+                          maxHeight: "200px",
+                          overflowY: "auto",
+                        }}
+                      >
+                        {suggestions[index].map((suggestion, idx) => (
                           <li
                             key={idx}
-                            style={{ padding: '5px', cursor: 'pointer' }}
+                            style={{ padding: "5px", cursor: "pointer" }}
                             onClick={() => handleSelectAddress(suggestion, index)}
                           >
                             {suggestion.display_name}
@@ -985,39 +929,51 @@ function AddCourseForm({ providerId }) {
                     )}
                   </div>
 
-                  <select
-                    name="city"
-                    value={loc.city}
-                    onChange={(e) =>
-                      handleLocationChange(index, "city", e.target.value)
-                    }
-                    style={{ width: "33%" }}
-                  >
-                    <option value="">Select A City</option>
-                    <option value="Doha">Doha</option>
-                    <option value="Al Rayyan">Al Rayyan</option>
-                    <option value="Al Wakrah">Al Wakrah</option>
-                    <option value="Al Shamal">Al Shamal</option>
-                    <option value="Al Khor">Al Khor</option>
-                    <option value="Umm Salal">Umm Salal</option>
-                    <option value="Al Daayen">Al Daayen</option>
-                    <option value="Al Shahaniya">Al Shahaniya</option>
-                    <option value="Dukhan">Dukhan</option>
-                    <option value="Mesaieed">Mesaieed</option>
-                  </select>
+                  {/* City Dropdown */}
+                  <div style={{ flex: 1 }}>
+                    <select
+                      name="city"
+                      value={loc.city}
+                      onChange={(e) => handleLocationChange(index, "city", e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "0.5rem",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <option value="">Select A City</option>
+                      <option value="Doha">Doha</option>
+                      <option value="Al Rayyan">Al Rayyan</option>
+                      <option value="Al Wakrah">Al Wakrah</option>
+                      <option value="Al Shamal">Al Shamal</option>
+                      <option value="Al Khor">Al Khor</option>
+                      <option value="Umm Salal">Umm Salal</option>
+                      <option value="Al Daayen">Al Daayen</option>
+                      <option value="Al Shahaniya">Al Shahaniya</option>
+                      <option value="Dukhan">Dukhan</option>
+                      <option value="Mesaieed">Mesaieed</option>
+                    </select>
+                  </div>
 
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    value={loc.phoneNumber}
-                    placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
-                    onChange={(e) =>
-                      handleLocationChange(index, "phoneNumber", e.target.value)
-                    }
-                    style={{ width: "36%" }}
-                    required
-                  />
+                  {/* Phone Number Field */}
+                  <div style={{ flex: 1 }}>
+                    <input
+                      type="text"
+                      name="phoneNumber"
+                      value={loc.phoneNumber}
+                      placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
+                      onChange={(e) => handleLocationChange(index, "phoneNumber", e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "0.5rem",
+                        boxSizing: "border-box",
+                      }}
+                      required
+                    />
+                  </div>
                 </div>
+
+                {/* Remove Button */}
                 {index > 0 && (
                   <button
                     type="button"
@@ -1028,15 +984,19 @@ function AddCourseForm({ providerId }) {
                   </button>
                 )}
               </div>
+
+              {/* Map Link Field */}
               <input
                 type="text"
                 name="link"
                 value={loc.link}
                 placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
-                onChange={(e) =>
-                  handleLocationChange(index, "link", e.target.value)
-                }
-                style={{ width: "100%" }}
+                onChange={(e) => handleLocationChange(index, "link", e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.5rem",
+                  boxSizing: "border-box",
+                }}
                 required
               />
             </div>
@@ -1045,7 +1005,7 @@ function AddCourseForm({ providerId }) {
 
         <div className="form-group" >
           <div className="btn-grpp">
-            <label>Things to keep in mind:</label>
+            <label>Things to keep in mind:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span></label>
             <button className="add-time-slot-btn" onClick={handleAddThingsToMind} disabled={course.thingstokeepinmind.length >= MAX_FAQ_LIMIT}>
               Add
             </button>
@@ -1071,7 +1031,7 @@ function AddCourseForm({ providerId }) {
 
         <div className="form-group" >
           <div className="btn-grpp">
-            <label>Add FAQS:</label>
+            <label>Add FAQS:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span> </label>
             <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={course.faq.length >= MAX_FAQ_LIMIT}>
               Add FAQ
             </button>

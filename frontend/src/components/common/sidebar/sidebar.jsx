@@ -14,6 +14,7 @@ import {
   faRightFromBracket,
   faGraduationCap,
   faBorderAll,
+  faUserLock,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../../assets/images/logo2.png";
 import "./sidebar.css";
@@ -106,7 +107,7 @@ const Sidebar = ({
       // "advertisements",
       "categories",
       "news",
-      "privacy",
+      "footerPages",
       "settings",
     ];
 
@@ -156,6 +157,7 @@ const Sidebar = ({
     settings: faCog,
     enquiries: faMessage,
     news: faAd, // or faBullseye or faMegaphone
+    footerPages:faUserLock,
   };
 
   const handleItemClick = (item) => {
@@ -219,7 +221,7 @@ const Sidebar = ({
       "categories",
       "events",
       "news",
-      "privacy",
+      "footerPages",
       "settings",
     ],
     provider: ["dashboard", "courses", "enquiries", "profile", "settings"],

@@ -263,7 +263,7 @@ const Dashboard = () => {
                 </div> */}
                 <Settings />
               </section>
-              <section id="privacy" className="db-section">
+              <section id="footerPages" className="db-section">
                 <TermsAndPrivacy/>
               </section>
             </>

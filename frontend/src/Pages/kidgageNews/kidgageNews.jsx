@@ -139,7 +139,7 @@ function KidgageNews(searchdata) {
                                             />
                                         </div>
                                     </td>
-                                    <td>{news.title}</td>
+                                    <td style={{width:'20%'}}>{news.title}</td>
                                     <td className='news-description'>
                                         <p>
                                             {expandedState[news._id] ? news.description : `${news.description.substring(0, 100)}...`}

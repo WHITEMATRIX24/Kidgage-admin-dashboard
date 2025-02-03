@@ -9,8 +9,6 @@ function PolicyAddModal({ isShow, closeHandler, setAddStatus }) {
     policy:"",
   })
 
-console.log(newData);
-
 const handleCreate = async (e) => {
   e.preventDefault()
   const { policy } = newData; // Use newData from state to get 'terms'
@@ -21,8 +19,9 @@ const handleCreate = async (e) => {
     return;
   }
 
-  setIsLoading(true);
+  
   try {
+    setIsLoading(true);
     const res = await axios.post(
       "http://localhost:5001/api/terms-condition/add-policy",
       newData // Send the new 'formData' here
@@ -51,7 +50,7 @@ const handleCreate = async (e) => {
            className={`category-addmodal-wrapper ${isShow ? "category-addmodal-show" : "category-addmodal-hide"
              }`}
          >
-           <div className="category-addmodal-container" >
+           <div className="category-addmodal-container" style={{width:'48rem',height:'35rem'}} >
              <span onClick={handleClose}>
                <FontAwesomeIcon icon={faX} style={{ color: "#ff0000" }} />
              </span>
@@ -80,7 +79,6 @@ const handleCreate = async (e) => {
                  disabled={isLoading}
                  onClick={handleCreate}
                >
-                 Submit
                  {isLoading ? "please wait" : "Publish"}
                </button>
                

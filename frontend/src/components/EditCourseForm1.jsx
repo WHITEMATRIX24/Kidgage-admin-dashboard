@@ -23,6 +23,7 @@ function EditCourseForm1({ courseId }) {
   const [suggestions, setSuggestions] = useState([]);
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({ lat: null, lon: null }); // To store latitude and longitude
+   const [loadingList, setLoadingList] = useState([]);
   const [formData, setFormData] = useState({
     providerId: "",
     name: "",
@@ -380,18 +381,41 @@ function EditCourseForm1({ courseId }) {
     setAddress(value);
     handleLocationChange(index, 'address', value);
 
+    // Update the loading state for this particular index
+    setLoadingList((prevLoading) => {
+      const newLoading = [...prevLoading];
+      newLoading[index] = true;  // Set loading to true for this location
+      return newLoading;
+    });
+
     if (value.length > 2) { // Start suggesting after 3 characters
-      asetLoading(true);
       try {
-        const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&addressdetails=1&limit=5`);
-        setSuggestions(response.data);
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&addressdetails=1&limit=5`
+        );
+
+        // Update the suggestions for the current index
+        setSuggestions((prevSuggestions) => {
+          const newSuggestions = [...prevSuggestions];
+          newSuggestions[index] = response.data;  // Update the suggestions for the specific location
+          return newSuggestions;
+        });
       } catch (error) {
         console.error("Error fetching address suggestions", error);
       } finally {
-        asetLoading(false);
+        // Update loading state after the request completes
+        setLoadingList((prevLoading) => {
+          const newLoading = [...prevLoading];
+          newLoading[index] = false;  // Set loading to false after the request is done
+          return newLoading;
+        });
       }
     } else {
-      setSuggestions([]);
+      setSuggestions((prevSuggestions) => {
+        const newSuggestions = [...prevSuggestions];
+        newSuggestions[index] = [];  // Clear the suggestions for the current location
+        return newSuggestions;
+      });
     }
   };
 
@@ -1138,120 +1162,143 @@ function EditCourseForm1({ courseId }) {
                     <label htmlFor="ageStart">Municipality</label>
                     <label htmlFor="ageEnd">Phone No.</label>
                   </div>
-                  {courseData.location.map((loc, index) => (
-                    <div
-                      key={index}
-                      className="time-slot"
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "1rem",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div
-                        style={{ display: "flex", flexDirection: "row", width: "100%" }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                          }}
-                        >
-                          <div style={{ position: 'relative', width: '33%' }}>
-                            <input
-                              type="text"
-                              name="address"
-                              value={loc.address}
-                              placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
-                              onChange={(e) => handleAddressChange(e.target.value, index)}
-                              style={{ width: '100%' }}
-                              required
-                              disabled={!isEditMode}
-                            />
-                            {aloading && <div>Loading...</div>}
-                            {suggestions.length > 0 && (
-                              <ul style={{ position: 'absolute', zIndex: 10, width: '100%', background: 'white', border: '1px solid #ccc', maxHeight: '200px', overflowY: 'auto' }}>
-                                {suggestions.map((suggestion, idx) => (
-                                  <li
-                                    key={idx}
-                                    style={{ padding: '5px', cursor: 'pointer' }}
-                                    onClick={() => handleSelectAddress(suggestion, index)}
+                {courseData.location.map((loc, index) => (
+                            <div
+                              key={index}
+                              className="time-slot"
+                              style={{
+                                width: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "1rem",
+                                alignItems: "center",
+                              }}
+                            >
+                              <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+                                <div style={{ display: "flex", flexDirection: "row", width: "100%", gap: "1rem" }}>
+                
+                                  {/* Address Field */}
+                                  <div style={{ position: "relative", flex: 1 }}>
+                                    <input
+                                      type="text"
+                                      name="address"
+                                      value={loc.address}
+                                      placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
+                                      onChange={(e) => handleAddressChange(e.target.value, index)}
+                                      style={{
+                                        width: "100%",
+                                        padding: "0.5rem",
+                                        boxSizing: "border-box",
+                                      }}
+                                      required
+                                    />
+                                    {loadingList[index] && <div>Loading...</div>} {/* Only show loading for the specific index */}
+                
+                                    {/* Address Suggestions */}
+                                    {suggestions[index] && suggestions[index].length > 0 && (
+                                      <ul
+                                        style={{
+                                          position: "absolute",
+                                          zIndex: 10,
+                                          width: "100%",
+                                          background: "white",
+                                          border: "1px solid #ccc",
+                                          maxHeight: "200px",
+                                          overflowY: "auto",
+                                        }}
+                                      >
+                                        {suggestions[index].map((suggestion, idx) => (
+                                          <li
+                                            key={idx}
+                                            style={{ padding: "5px", cursor: "pointer" }}
+                                            onClick={() => handleSelectAddress(suggestion, index)}
+                                          >
+                                            {suggestion.display_name}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    )}
+                                  </div>
+                
+                                  {/* City Dropdown */}
+                                  <div style={{ flex: 1 }}>
+                                    <select
+                                      name="city"
+                                      value={loc.city}
+                                      onChange={(e) => handleLocationChange(index, "city", e.target.value)}
+                                      style={{
+                                        width: "100%",
+                                        padding: "0.5rem",
+                                        boxSizing: "border-box",
+                                      }}
+                                    >
+                                      <option value="">Select A City</option>
+                                      <option value="Doha">Doha</option>
+                                      <option value="Al Rayyan">Al Rayyan</option>
+                                      <option value="Al Wakrah">Al Wakrah</option>
+                                      <option value="Al Shamal">Al Shamal</option>
+                                      <option value="Al Khor">Al Khor</option>
+                                      <option value="Umm Salal">Umm Salal</option>
+                                      <option value="Al Daayen">Al Daayen</option>
+                                      <option value="Al Shahaniya">Al Shahaniya</option>
+                                      <option value="Dukhan">Dukhan</option>
+                                      <option value="Mesaieed">Mesaieed</option>
+                                    </select>
+                                  </div>
+                
+                                  {/* Phone Number Field */}
+                                  <div style={{ flex: 1 }}>
+                                    <input
+                                      type="text"
+                                      name="phoneNumber"
+                                      value={loc.phoneNumber}
+                                      placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
+                                      onChange={(e) => handleLocationChange(index, "phoneNumber", e.target.value)}
+                                      style={{
+                                        width: "100%",
+                                        padding: "0.5rem",
+                                        boxSizing: "border-box",
+                                      }}
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                
+                                {/* Remove Button */}
+                                {index > 0 && (
+                                  <button
+                                    type="button"
+                                    className="rem-button"
+                                    onClick={() => removeLocation(index)}
                                   >
-                                    {suggestion.display_name}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-
-                          <select
-                            name="city"
-                            value={loc.city}
-                            onChange={(e) =>
-                              handleLocationChange(index, "city", e.target.value)
-                            }
-                            style={{ width: "33%" }}
-                          >
-                            <option value="">Select A City</option>
-                            <option value="Doha">Doha</option>
-                            <option value="Al Rayyan">Al Rayyan</option>
-                            <option value="Al Wakrah">Al Wakrah</option>
-                            <option value="Al Shamal">Al Shamal</option>
-                            <option value="Al Khor">Al Khor</option>
-                            <option value="Umm Salal">Umm Salal</option>
-                            <option value="Al Daayen">Al Daayen</option>
-                            <option value="Al Shahaniya">Al Shahaniya</option>
-                            <option value="Dukhan">Dukhan</option>
-                            <option value="Mesaieed">Mesaieed</option>
-                          </select>
-
-                          <input
-                            type="text"
-                            name="phoneNumber"
-                            value={loc.phoneNumber}
-                            placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
-                            onChange={(e) =>
-                              handleLocationChange(index, "phoneNumber", e.target.value)
-                            }
-                            style={{ width: "36%" }}
-                            required
-                            disabled={!isEditMode}
-                          />
-                        </div>
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            className="rem-button"
-                            onClick={() => removeLocation(index)}
-                          >
-                            <FaTrash />
-                          </button>
-                        )}
-                      </div>
-                      <input
-                        type="text"
-                        name="link"
-                        value={loc.link}
-                        placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
-                        onChange={(e) =>
-                          handleLocationChange(index, "link", e.target.value)
-                        }
-                        style={{ width: "100%" }}
-                        required
-                        disabled={!isEditMode}
-                      />
-                    </div>
-                  ))}
+                                    <FaTrash />
+                                  </button>
+                                )}
+                              </div>
+                
+                              {/* Map Link Field */}
+                              <input
+                                type="text"
+                                name="link"
+                                value={loc.link}
+                                placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
+                                onChange={(e) => handleLocationChange(index, "link", e.target.value)}
+                                style={{
+                                  width: "100%",
+                                  padding: "0.5rem",
+                                  boxSizing: "border-box",
+                                }}
+                                required
+                              />
+                            </div>
+                          ))}
                 </div>
 
 
 
                 <div className="form-group" >
                   <div className="btn-grpp">
-                    <label>Things to keep in mind:</label>
+                    <label>Things to keep in mind:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span></label>
                     <button className="add-time-slot-btn" onClick={handleAddThingsToMind} disabled={courseData.thingstokeepinmind.length >= MAX_FAQ_LIMIT || !isEditMode}>
                       Add
                     </button>
@@ -1275,7 +1322,7 @@ function EditCourseForm1({ courseId }) {
 
                 <div className="form-group" >
                   <div className="btn-grpp">
-                    <label>Add FAQS:</label>
+                    <label>Add FAQS:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span></label>
                     <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={courseData.faq.length >= MAX_FAQ_LIMIT || !isEditMode}>
                       Add FAQ
                     </button>
