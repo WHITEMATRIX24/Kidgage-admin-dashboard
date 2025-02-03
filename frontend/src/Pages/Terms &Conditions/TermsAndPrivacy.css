@@ -5,7 +5,8 @@
     background-color: white;
     border: 1px solid #ccc;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 800;
     border: none;
 }
 

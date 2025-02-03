@@ -115,9 +115,11 @@ router.post("/addbanner", upload.single("image"), async (req, res) => {
 // Route to update a banner
 router.put("/:id", upload.single("image"), async (req, res) => {
   try {
+  
     const { title, bookingLink } = req.body;
-    const updateData = { title, bookingLink };
-
+    // const updateData = { title, bookingLink };
+    const updateData=req.body
+  
     if (req.file) {
       const image = await uploadImageToS3(req.file);
       updateData.imageUrl = image;
