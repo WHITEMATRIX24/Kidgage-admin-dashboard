@@ -21,9 +21,7 @@ const CategoryAddModal = ({ isShow, closeHandler, setAddStatus }) => {
     }
 
     setIsLoading(true);
-
     const newCategoryFormData = new FormData();
-
     newCategoryFormData.append("name", title);
     newCategoryFormData.append("image", categoryImage);
 

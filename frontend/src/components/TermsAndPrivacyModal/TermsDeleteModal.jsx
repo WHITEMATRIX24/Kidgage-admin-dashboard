@@ -17,7 +17,7 @@ function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus 
         if (res.status === 200) {
           alert("successfully delete Terms and condition");
           setDeleteStatus(res.data)
-        handleClose()
+        handleClose();
           return;
         }
         alert(res.data.message);

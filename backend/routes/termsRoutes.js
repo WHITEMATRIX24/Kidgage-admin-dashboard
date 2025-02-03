@@ -81,6 +81,8 @@ router.get('/policy-data', async (req, res) => {
 
 router.delete("/delete/:id", async (req, res) => {
     const { id } = req.params;
+    console.log(id);
+    
   
     try {
       const deletedTerms = await TermsAndCondition.findByIdAndDelete(id);

@@ -9,8 +9,6 @@ function TermsAndPrivacyAddModal({ isShow, closeHandler, setAddStatus }) {
     terms:"",
   })
 
-console.log(newData);
-
 const handleCreate = async (e) => {
   e.preventDefault()
   const { terms } = newData; // Use newData from state to get 'terms'
@@ -42,8 +40,6 @@ const handleCreate = async (e) => {
     setIsLoading(false);
   }
 };
-
-
 
     const handleClose = () => {
         closeHandler();
@@ -83,7 +79,6 @@ const handleCreate = async (e) => {
               disabled={isLoading}
               onClick={handleCreate}
             >
-              Submit
               {isLoading ? "please wait" : "Publish"}
             </button>
             
