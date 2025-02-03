@@ -296,7 +296,7 @@ router.get("/pending", async (req, res) => {
       username: { $regex: searchKey, $options: 'i' },
       verificationStatus: "pending",
     }
-    const pendingUsers = await User.find({ verificationStatus: "pending" });
+    const pendingUsers = await User.find(query);
     console.log("Fetched Pending Users:", pendingUsers); // Debugging log
     res.status(200).json(pendingUsers);
   } catch (error) {

@@ -47,6 +47,7 @@ const InspectionApproveModal = ({ isShow, closeHandler, providerData }) => {
       );
       if (res.status === 200) {
         alert("Successfully created admin");
+        closeHandler();
       }
     } catch (error) {
       if (error.status === 400) {

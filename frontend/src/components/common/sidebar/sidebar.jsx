@@ -106,6 +106,7 @@ const Sidebar = ({
       // "advertisements",
       "categories",
       "news",
+      "privacy",
       "settings",
     ];
 
@@ -218,6 +219,7 @@ const Sidebar = ({
       "categories",
       "events",
       "news",
+      "privacy",
       "settings",
     ],
     provider: ["dashboard", "courses", "enquiries", "profile", "settings"],

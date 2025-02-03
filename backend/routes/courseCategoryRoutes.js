@@ -74,8 +74,10 @@ router.post("/add", upload.single("image"), async (req, res) => {
 });
 
 router.get("/categories", async (req, res) => {
+
   console.log("Fetching categories...");
   try {
+  
     const categories = await CourseCategory.find();
     console.log("Categories found:", categories);
     res.json(categories);
@@ -84,6 +86,28 @@ router.get("/categories", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+//for searching
+router.get("/categories-search", async (req, res) => {
+  const searchKey = req.query.search
+  console.log("searchKey:.....", searchKey);
+  console.log("Fetching categories...");
+  try {
+    const query = {
+      name: { $regex: searchKey, $options: 'i' }
+    }
+
+    const categories = await CourseCategory.find(query);
+    console.log("Categories found:", categories);
+    res.json(categories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
 
 
 //router for provider

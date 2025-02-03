@@ -15,13 +15,15 @@ function AddCourseForm({ providerId }) {
     ],
     description: "",
     thingstokeepinmind: [{
-      desc:""
+      desc: ""
     }],
     // feeAmount: "",
     // feeType: "full_course",
     days: [],
     timeSlots: [{ from: "", to: "" }],
-    location: [{ address: "", city: "", phoneNumber: "", link: "" }],
+    location: [{
+      address: "", city: "", phoneNumber: "", link: "", lat: "", lon: "",
+    }],
     courseType: "",
     images: [""],
     promoted: false,
@@ -38,6 +40,9 @@ function AddCourseForm({ providerId }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [courseTypes, setCourseTypes] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({ lat: null, lon: null }); // To store latitude and longitude
 
 
   useEffect(() => {
@@ -142,16 +147,34 @@ function AddCourseForm({ providerId }) {
   };
 
   const handleLocationChange = (index, field, value) => {
-    const updatedLocation = [...course.location];
-    updatedLocation[index] = {
-      ...updatedLocation[index],
-      [field]: value,
-    };
-    setCourse((prev) => ({ ...prev, location: updatedLocation }));
+    setCourse((prevCourse) => {
+      const updatedLocations = [...prevCourse.location];
+      updatedLocations[index] = {
+        ...updatedLocations[index], // Preserve other fields
+        [field]: value, // Update only the specific field (e.g., address, lat, lon)
+      };
+
+      // Log the updated locations to the console
+      console.log("Updated Locations:", updatedLocations);
+
+      return { ...prevCourse, location: updatedLocations };
+    });
   };
 
   const addLocation = () => {
-    setCourse((prev) => ({ ...prev, location: [...prev.location, ""] }));
+    const newLocation = {
+      address: "",
+      city: "",
+      phoneNumber: "",
+      link: "",
+      lat: "",  // Default value
+      lon: "",  // Default value
+    };
+
+    setCourse((prev) => ({
+      ...prev,
+      location: [...prev.location, newLocation],
+    }));
   };
 
   const removeLocation = (index) => {
@@ -187,6 +210,61 @@ function AddCourseForm({ providerId }) {
       images: prevCourse.images.filter((_, i) => i !== index),
     }));
   };
+
+
+  const getCoordinates = async (address) => {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=1`;
+
+    try {
+      const response = await axios.get(url);
+      if (response.data.length > 0) {
+        const location = response.data[0];
+        return {
+          lat: location.lat,
+          lon: location.lon,
+        };
+      } else {
+        throw new Error('Address not found');
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const handleAddressChange = async (value, index) => {
+    setAddress(value);
+    handleLocationChange(index, 'address', value);
+
+    if (value.length > 2) { // Start suggesting after 3 characters
+      setIsLoading(true);
+      try {
+        const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&addressdetails=1&limit=5`);
+        setSuggestions(response.data);
+      } catch (error) {
+        console.error("Error fetching address suggestions", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSelectAddress = async (selectedAddress, index) => {
+    setAddress(selectedAddress.display_name);
+    handleLocationChange(index, 'address', selectedAddress.display_name);
+
+    const coordinates = await getCoordinates(selectedAddress.display_name);
+    if (coordinates) {
+      handleLocationChange(index, 'lat', coordinates.lat);
+      handleLocationChange(index, 'lon', coordinates.lon);
+      setCoordinates({ lat: coordinates.lat, lon: coordinates.lon }); // Update state with the coordinates
+    }
+
+    setSuggestions([]); // Clear suggestions after selection
+  };
+  // console.log(coordinates);
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -262,6 +340,7 @@ function AddCourseForm({ providerId }) {
   //   }
   // };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -326,12 +405,19 @@ function AddCourseForm({ providerId }) {
       // Append days and locations as arrays
       course.days.forEach((day) => formData.append("days[]", day));
 
-      const validatedLocations = course.location.map((loc) => ({
-        address: loc.address || "",
-        city: loc.city || "",
-        phoneNumber: loc.phoneNumber || "",
-        link: loc.link || "",
-      }));
+      // Assuming you already have a coordinates state that holds lat/lng values
+      const validatedLocations = course.location.map((loc, index) => {
+        return {
+          address: loc.address || "", // Ensure address is set
+          city: loc.city || "", // Ensure city is set
+          phoneNumber: loc.phoneNumber || "", // Ensure phoneNumber is set
+          link: loc.link || "", // Ensure link is set
+          lat: loc.lat || coordinates.lat, // Default lat to coordinates if not provided
+          lon: loc.lon || coordinates.lon, // Default lon  to coordinates if not provided
+        };
+      });
+
+      console.log("Validated Locations:", validatedLocations);
 
       // Append location array as a JSON string
       formData.append("location", JSON.stringify(validatedLocations));
@@ -375,7 +461,7 @@ function AddCourseForm({ providerId }) {
       setSuccess("Course added successfully!");
       setError(""); // Clear error messages
       setIsLoading(false); // Stop loading after fetch
-      window.location.reload(); // Reload page after success
+      // window.location.reload(); // Reload page after success
     } catch (error) {
       console.error("Error adding course. Check if all fields are filled", error);
       if (error.response) {
@@ -446,59 +532,59 @@ function AddCourseForm({ providerId }) {
     }
   };
 
- // Function to handle Things to mind changes (same as before)
- const handleThingstoMindChange = (index, e) => {
-  const { name, value } = e.target;
+  // Function to handle Things to mind changes (same as before)
+  const handleThingstoMindChange = (index, e) => {
+    const { name, value } = e.target;
 
-  // Update FAQ field dynamically based on field name (question or answer)
-  const updatedList = [...course.thingstokeepinmind];
-  updatedList[index][name] = value;
-
-  // Set the updated FAQ list in state
-  setCourse({
-    ...course,
-    thingstokeepinmind: updatedList,
-  });
-
-  // Check if the current FAQ has empty fields
-  if (value.trim() === "") {
-    setError("FAQ question and answer cannot be empty.");
-  } else {
-    setError(""); // Clear any error if fields are filled
-  }
-};
-
- // Function to handle adding a new desc entry
- const handleAddThingsToMind = () => {
-  if (course.thingstokeepinmind.length < MAX_FAQ_LIMIT) {
-    // Only add a new FAQ if it's under the max limit
-    setCourse({
-      ...course,
-      thingstokeepinmind: [
-        ...course.thingstokeepinmind,
-        { desc: ""}, // Add a new  object with empty fields
-      ],
-    });
-  } else {
-    // Optional: alert or show an error message if the max FAQ limit is reached
-    alert(`You can only add up to ${MAX_FAQ_LIMIT} FAQs.`);
-  }
-};
-
-// Function to handle removing an  entry (if you want to allow removing )
-const handleRemoveThingstoMind = (index) => {
-  if (course.thingstokeepinmind.length > MIN_FAQ_LIMIT) {
+    // Update FAQ field dynamically based on field name (question or answer)
     const updatedList = [...course.thingstokeepinmind];
-    updatedList.splice(index, 1); // Remove the FAQ at the given index
+    updatedList[index][name] = value;
+
+    // Set the updated FAQ list in state
     setCourse({
       ...course,
       thingstokeepinmind: updatedList,
     });
-  } else {
-    // Optional: alert or show an error message if the min FAQ limit is reached
-    alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
-  }
-};
+
+    // Check if the current FAQ has empty fields
+    if (value.trim() === "") {
+      setError("FAQ question and answer cannot be empty.");
+    } else {
+      setError(""); // Clear any error if fields are filled
+    }
+  };
+
+  // Function to handle adding a new desc entry
+  const handleAddThingsToMind = () => {
+    if (course.thingstokeepinmind.length < MAX_FAQ_LIMIT) {
+      // Only add a new FAQ if it's under the max limit
+      setCourse({
+        ...course,
+        thingstokeepinmind: [
+          ...course.thingstokeepinmind,
+          { desc: "" }, // Add a new  object with empty fields
+        ],
+      });
+    } else {
+      // Optional: alert or show an error message if the max FAQ limit is reached
+      alert(`You can only add up to ${MAX_FAQ_LIMIT} FAQs.`);
+    }
+  };
+
+  // Function to handle removing an  entry (if you want to allow removing )
+  const handleRemoveThingstoMind = (index) => {
+    if (course.thingstokeepinmind.length > MIN_FAQ_LIMIT) {
+      const updatedList = [...course.thingstokeepinmind];
+      updatedList.splice(index, 1); // Remove the FAQ at the given index
+      setCourse({
+        ...course,
+        thingstokeepinmind: updatedList,
+      });
+    } else {
+      // Optional: alert or show an error message if the min FAQ limit is reached
+      alert(`You must have at least ${MIN_FAQ_LIMIT} FAQ.`);
+    }
+  };
 
 
   const handleAgeGroupChange = (e) => {
@@ -527,7 +613,7 @@ const handleRemoveThingstoMind = (index) => {
     }
   };
 
-  console.log(course);
+
   return (
     <div className="course-addmodal-container">
       <form className="add-course-form" onSubmit={handleSubmit}>
@@ -848,6 +934,9 @@ const handleRemoveThingstoMind = (index) => {
             <label htmlFor="ageStart">Municipality</label>
             <label htmlFor="ageEnd">Phone No.</label>
           </div>
+
+
+          {/* for checking */}
           {course.location.map((loc, index) => (
             <div
               key={index}
@@ -860,7 +949,6 @@ const handleRemoveThingstoMind = (index) => {
                 alignItems: "center",
               }}
             >
-              {/* Address input */}
               <div
                 style={{ display: "flex", flexDirection: "row", width: "100%" }}
               >
@@ -871,17 +959,32 @@ const handleRemoveThingstoMind = (index) => {
                     width: "100%",
                   }}
                 >
-                  <input
-                    type="text"
-                    name="address"
-                    value={loc.address}
-                    placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
-                    onChange={(e) =>
-                      handleLocationChange(index, "address", e.target.value)
-                    }
-                    style={{ width: "33%" }}
-                    required
-                  />
+                  <div style={{ position: 'relative', width: '33%' }}>
+                    <input
+                      type="text"
+                      name="address"
+                      value={loc.address}
+                      placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
+                      onChange={(e) => handleAddressChange(e.target.value, index)}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                    {isLoading && <div>Loading...</div>}
+                    {suggestions.length > 0 && (
+                      <ul style={{ position: 'absolute', zIndex: 10, width: '100%', background: 'white', border: '1px solid #ccc', maxHeight: '200px', overflowY: 'auto' }}>
+                        {suggestions.map((suggestion, idx) => (
+                          <li
+                            key={idx}
+                            style={{ padding: '5px', cursor: 'pointer' }}
+                            onClick={() => handleSelectAddress(suggestion, index)}
+                          >
+                            {suggestion.display_name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
                   <select
                     name="city"
                     value={loc.city}
@@ -903,14 +1006,11 @@ const handleRemoveThingstoMind = (index) => {
                     <option value="Mesaieed">Mesaieed</option>
                   </select>
 
-                  {/* Phone Number input */}
                   <input
                     type="text"
                     name="phoneNumber"
                     value={loc.phoneNumber}
-                    placeholder={
-                      index === 0 ? "Phone Number" : `Phone Number ${index + 1}`
-                    }
+                    placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
                     onChange={(e) =>
                       handleLocationChange(index, "phoneNumber", e.target.value)
                     }
@@ -918,7 +1018,6 @@ const handleRemoveThingstoMind = (index) => {
                     required
                   />
                 </div>
-                {/* Remove Location Button */}
                 {index > 0 && (
                   <button
                     type="button"
@@ -933,11 +1032,7 @@ const handleRemoveThingstoMind = (index) => {
                 type="text"
                 name="link"
                 value={loc.link}
-                placeholder={
-                  index === 0
-                    ? "Map Link to location"
-                    : `Map Link to location ${index + 1}`
-                }
+                placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
                 onChange={(e) =>
                   handleLocationChange(index, "link", e.target.value)
                 }
