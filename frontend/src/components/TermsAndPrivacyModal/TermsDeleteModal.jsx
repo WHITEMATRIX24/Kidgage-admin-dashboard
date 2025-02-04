@@ -3,55 +3,54 @@ import React, { useState } from 'react'
 
 
 function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus }) {
-  const [isLoading, setIsLoading] = useState(false);
+ const [isLoading, setIsLoading] = useState(false);
 
+ const deleteTermsHandler = async () => {
+  if (termDeleteId) {
+    setIsLoading(true);
+    try {
+      const res = await axios.delete(
+        `http://localhost:5001/api/terms-condition/delete/${termDeleteId}`
+      );
 
-  const deleteTermHandler = async () => {
-    if (termDeleteId) {
-      setIsLoading(true);
-      try {
-        const res = await axios.delete(
-          `http://localhost:5001/api/terms-condition/delete/${termDeleteId}`
-        );
-
-        if (res.status === 200) {
-          alert("successfully delete Terms and condition");
-          setDeleteStatus(res.data)
-          closeHandler();
-          return;
-        }
-        alert(res.data.message);
-      } catch (error) {
-        console.log(`error in deleting terms and conditions error: ${error}`);
-      } finally {
-        setIsLoading(false);
+      if (res.status === 200) {
+        alert("Successfully deleted news");
+        setDeleteStatus(res.data);
+        closeHandler();
+        return;
       }
+      alert(res.data.message);
+    } catch (error) {
+      console.log(`Error in deleting news: ${error}`);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
+};
 
-  
   return (
+   
     <div
       className={`category-deletemodal-wrapper ${isShow ? "category-deletemodal-show" : "category-deletemodal-hide"
         }`}
     >
       <div className="category-deletemodal-container">
-        <h2>Delete Terms and Conditions</h2>
-        <p>Are you sure you want to delete this Terms and Condition?</p>
+        <h2>Delete News</h2>
+        <p>Are you sure you want to delete this news?</p>
         <div className="category-deletemodal-btn-container">
           <button
             onClick={closeHandler}
             disabled={isLoading}
             className="category-deletemodal-btn-cancel"
           >
-            cancel
+            Cancel
           </button>
           <button
-            onClick={deleteTermHandler}
+            onClick={deleteTermsHandler}
             disabled={isLoading}
             className="category-deletemodal-btn-delete"
           >
-            {isLoading ? "please wait" : "delete"}
+            {isLoading ? "Please wait" : "Delete"}
           </button>
         </div>
       </div>

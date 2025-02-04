@@ -9,8 +9,8 @@ import axios from 'axios';
 
 
 function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
-  const maxCharLimit = 1870;
-  const minCharLimit = 1800;
+  const maxCharLimit = 550;
+  const minCharLimit = 500;
   const [newPosterFormData, setNewPosterFormData] = useState({
     posterName: posterData.name || "",
     description: posterData.description || "",
@@ -252,8 +252,8 @@ function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
               onClick={(e) => handlePublish(e)}
               disabled={isLoading}
             >
-              Update
-              {isLoading ? "please wait" : "Publish"}
+              
+              {isLoading ? "please wait" : "Update"}
             </button>
           </div>
         </form>
