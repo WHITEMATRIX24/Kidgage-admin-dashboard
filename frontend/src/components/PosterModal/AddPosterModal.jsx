@@ -248,7 +248,6 @@ function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
               onClick={(e) => handlePublish(e)}
               disabled={isLoading}
             >
-              Submit
               {isLoading ? "please wait" : "Publish"}
             </button>
           </div>
