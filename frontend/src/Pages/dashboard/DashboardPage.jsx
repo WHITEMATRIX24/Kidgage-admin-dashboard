@@ -11,6 +11,7 @@ import PosterView from "../poster/PosterView";
 import CategoryPage from "../category/categoryPage";
 import Campaigns from "../campaigns/Campaigns";
 import KidgageNews from "../kidgageNews/kidgageNews";
+import TermsAndPrivacy from "../Terms &Conditions/TermsAndPrivacy";
 const DashboardPage = () => {
   const [activeProviderCounts, setActiveProviderCounts] = useState(0);
   const [campaignsCounts, setCampaignsCounts] = useState(0);
@@ -161,7 +162,9 @@ const DashboardPage = () => {
         <PosterView searchdata={searchKey} />
       ) : searchKey === "news" ? (
         <KidgageNews searchdata={searchKey} />
-      ) : searchKey === "sett" ? (
+      ) : searchKey === "footer" ? (
+        <TermsAndPrivacy searchdata={searchKey} />
+      ): searchKey === "sett" ? (
         <Settings searchdata={searchKey} />
       )
         : (<div className="dashboard-content-wrapper">

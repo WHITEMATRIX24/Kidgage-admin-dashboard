@@ -9,6 +9,7 @@ import PolicyDeleteModal from '../../components/TermsAndPrivacyModal/PolicyDelet
 import TermsEditModal from '../../components/TermsAndPrivacyModal/TermsEditModal';
 import PolicyEditModal from '../../components/TermsAndPrivacyModal/PolicyEditModal';
 import "./TermsAndPrivacy.css";
+import Appbar from '../../components/common/appbar/Appbar';
 
 function TermsAndPrivacy() {
     const [error, setError] = useState(null);
@@ -139,7 +140,14 @@ function TermsAndPrivacy() {
     return (
         <>
             <div className="coursepage-container">
-                <h3 className="campaign-heading-h3">Footer Pages </h3>
+            {/* {
+            !searchdata ||
+              (Array.isArray(searchdata) && searchdata.length === 0) ||
+              (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+              ? <Appbar visible={currentPath} />
+              : null
+          } */}
+                <h3 className="campaign-heading" style={{fontSize:'25px',marginTop:'80px'}}>Footer Pages </h3>
                 <div className="coursepage-content-container">
                     <div className="coursepage-content-header">
                         {/* Tab Button for Programs Offered */}
