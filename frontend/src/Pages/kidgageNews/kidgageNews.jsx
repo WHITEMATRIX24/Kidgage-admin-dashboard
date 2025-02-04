@@ -5,8 +5,8 @@ import Appbar from '../../components/common/appbar/Appbar';
 import "./KidgageNews.css";
 import axios from 'axios';
 import AddNewsModal from '../../components/newsModal/AddNewsModal';
-import NewsEditModal from '../../components/newsModal/NewsEditModal';
 import DeleteNewsModal from '../../components/newsModal/DeleteNewsModal';
+import NewsEditModal1 from '../../components/newsModal/NewsEditModal1';
 
 function KidgageNews(searchdata) {
     const [newsDetails, setNewsDetails] = useState([]);
@@ -139,7 +139,7 @@ function KidgageNews(searchdata) {
                                             />
                                         </div>
                                     </td>
-                                    <td style={{width:'20%'}}>{news.title}</td>
+                                    <td style={{ width: '20%' }}>{news.title}</td>
                                     <td className='news-description'>
                                         <p>
                                             {expandedState[news._id] ? news.description : `${news.description.substring(0, 100)}...`}
@@ -198,7 +198,7 @@ function KidgageNews(searchdata) {
             )}
 
             {newsEditModalState.isShow && (
-                <NewsEditModal
+                <NewsEditModal1
                     isShow={newsEditModalState.isShow}
                     closeHandler={newsEditModalCloseHandler}
                     newsData={newsEditModalState.data}

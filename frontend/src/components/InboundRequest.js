@@ -29,12 +29,41 @@ function InboundRequest(searchdata) {
     data: null,
   });
 
+  // const fetchUsers = async () => {
+  //   try {
+  //     setLoading(true);
+  //     if(searchKey){
+  //       const response = await axios.get(
+  //         `http://localhost:5001/api/users/pending-search?search=${searchKey}`
+  //       );
+  //     }
+  //     const response = await axios.get(
+  //       `http://localhost:5001/api/users/pending`
+  //     );
+  //     setPendingUsers(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching pending users:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:5001/api/users/pending?search=${searchKey}`
-      );
+      let response;
+      if (searchKey) {
+        // If searchKey is present, perform the search query
+        response = await axios.get(
+          `http://localhost:5001/api/users/pending-search?search=${searchKey}`
+        );
+      } else {
+        // If no searchKey, fetch all pending users
+        response = await axios.get(
+          `http://localhost:5001/api/users/pending`
+        );
+      }
+      // Set the response data (pending users) to the state
       setPendingUsers(response.data);
     } catch (error) {
       console.error("Error fetching pending users:", error);
@@ -42,8 +71,7 @@ function InboundRequest(searchdata) {
       setLoading(false);
     }
   };
-
-
+  
 
   const openRequestDetails = (user) => {
     setSelectedUser(user);

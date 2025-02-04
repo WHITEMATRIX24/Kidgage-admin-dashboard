@@ -9,6 +9,8 @@ import axios from 'axios';
 
 
 function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
+  const maxCharLimit = 1870;
+  const minCharLimit = 1800;
   const [newPosterFormData, setNewPosterFormData] = useState({
     posterName: posterData.name || "",
     description: posterData.description || "",
@@ -148,7 +150,15 @@ function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
                     description: e.target.value,
                   })
                 }
+                maxLength={maxCharLimit}
+                minLength={minCharLimit}
               />
+                {/* Character count and limits display */}
+                <span style={{ color: 'red', fontSize: '12px', fontWeight: '300' }}>
+                Character Count: {newPosterFormData.description.length}
+                {/* Display minimum and maximum character limits */}
+                (Min: {minCharLimit}, Max: {maxCharLimit}) characters
+              </span>
             </div>
 
             <div className="campaign-addmodal-form-fieldcontainer">

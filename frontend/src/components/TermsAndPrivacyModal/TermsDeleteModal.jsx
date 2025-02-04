@@ -3,10 +3,10 @@ import React, { useState } from 'react'
 
 
 function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus }) {
- const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
- const deleteTermHandler = async () => {
+  const deleteTermHandler = async () => {
     if (termDeleteId) {
       setIsLoading(true);
       try {
@@ -17,7 +17,7 @@ function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus 
         if (res.status === 200) {
           alert("successfully delete Terms and condition");
           setDeleteStatus(res.data)
-        handleClose();
+          closeHandler();
           return;
         }
         alert(res.data.message);
@@ -29,10 +29,7 @@ function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus 
     }
   };
 
-  const handleClose = () => {
-    closeHandler();
-  };
-
+  
   return (
     <div
       className={`category-deletemodal-wrapper ${isShow ? "category-deletemodal-show" : "category-deletemodal-hide"
@@ -43,7 +40,7 @@ function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus 
         <p>Are you sure you want to delete this Terms and Condition?</p>
         <div className="category-deletemodal-btn-container">
           <button
-            onClick={handleClose}
+            onClick={closeHandler}
             disabled={isLoading}
             className="category-deletemodal-btn-cancel"
           >
