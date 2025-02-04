@@ -103,7 +103,7 @@ const Providerdashboard = () => {
                 <h2 className="provider-dashboardpage-textcolor">
                   {enquiryData.length}
                 </h2>
-                <h1 className="provider-dashboard-tile-text">Enquiries</h1>
+                <h1 className="provider-dashboard-tile-text">Bookings</h1>
               </div>
               <div className="provider-dashboardpage-tiles">
                 <h2 className="provider-dashboardpage-textcolor">
@@ -141,8 +141,8 @@ const Providerdashboard = () => {
                             <td>{courses.name}</td>
                             <td>{courses.courseType}</td>
                             <td>
-                            {formatDate(courses.courseDuration[0]?.startDate)} to{" "}
-                            {formatDate(courses.courseDuration[0]?.endDate)}
+                              {formatDate(courses.courseDuration[0]?.startDate)} to{" "}
+                              {formatDate(courses.courseDuration[0]?.endDate)}
                             </td>
                           </tr>
                         ))}

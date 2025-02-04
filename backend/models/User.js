@@ -16,11 +16,19 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   designation: { type: String, required: true },
   description: { type: String, required: true },
-  location: { type: String, required: true },
-  address: { type: String, required: true },
+
+  locations: [
+    {
+      locationName: { type: String, required: true }, // User-defined location name
+      latitude: { type: Number, required: true }, // Latitude coordinate
+      longitude: { type: Number, required: true }, // Longitude coordinate
+    },
+  ],
+
   website: { type: String }, // Optional field
   instaId: { type: String }, // Optional field
-  crFile: { type: String }, // Stores file path or link to the CR document
+  crFile: { type: String },
+  address: { type: String, required: true }, // Stores file path or link to the CR document
   agreeTerms: { type: Boolean, required: true, default: true },
   verificationStatus: { type: String, default: 'pending' },
   academyImg: { type: String, default: null }, // Optional, to be updated later
@@ -37,8 +45,8 @@ const userSchema = new mongoose.Schema({
     },
   },
   promoted: { type: Boolean, required: true, default: false },
-  amenities: { type: [String], default: null },
   awards: { type: [String], default: null },
+  amenities: { type: [String], default: null },
 });
 
 const User = mongoose.model("User", userSchema);

@@ -155,9 +155,9 @@ const Sidebar = ({
     campaigns: faImage,
     events: faImages,
     settings: faCog,
-    enquiries: faMessage,
+    bookings: faMessage,
     news: faAd, // or faBullseye or faMegaphone
-    footerPages:faUserLock,
+    footerPages: faUserLock,
   };
 
   const handleItemClick = (item) => {
@@ -224,7 +224,7 @@ const Sidebar = ({
       "footerPages",
       "settings",
     ],
-    provider: ["dashboard", "courses", "enquiries", "profile", "settings"],
+    provider: ["dashboard", "courses", "bookings", "profile", "settings"],
   };
   const allowedSections = allowedSectionsByRole[adminRole.toLowerCase()] || [];
 

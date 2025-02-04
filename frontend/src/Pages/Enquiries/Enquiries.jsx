@@ -4,86 +4,77 @@ import axios from "axios";
 import "./Enquiries.css";
 import Appbar from "../../components/common/appbar/Appbar";
 
-const Enquiries = (searchdata) => {
+const Enquiries = ({ searchdata }) => {
   const [enquiryData, setEnquiryData] = useState([]);
   const [error, setError] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [searchKey, setSearchKey] = useState("")
-  console.log(searchKey);
-
-  const fetchProviderAndEnquiry = async () => {
-    setError(null);
-
-    const userId = sessionStorage.getItem("userid");
-    if (!userId) {
-      setError("No user ID found in session storage.");
-      return;
-    }
-
-    try {
-      const providerResponse = await axios.get(
-        `http://localhost:5001/api/users/user/${userId}`
-      );
-      setProvider(providerResponse.data);
-
-      const enquiryResponse = await axios.get(
-        `http://localhost:5001/api/enquiries/enquiry-by-providers?search=${searchKey}`,
-        {
-          params: { providerIds: [userId] },
-        }
-      );
-      setEnquiryData(enquiryResponse.data);
-    } catch (error) {
-      console.log(`Error fetching courses: ${error}`);
-      setError("Error fetching courses");
-    }
-  };
-
-
-  const handleChildData = (data) => {
-    setSearchKey(data); // Set the received data to state
-  };
 
   useEffect(() => {
-    fetchProviderAndEnquiry();
-  }, [searchKey]);
-  // console.log(enquiryData);
-  // console.log(provider);
+    const fetchBookings = async () => {
+      try {
+        const providerId = sessionStorage.getItem("userid"); // Get provider ID from sessionStorage
+        if (!providerId) {
+          setError("Provider ID not found.");
+          return;
+        }
+
+        const response = await axios.get(`http://localhost:5001/api/customers/bookings/${providerId}`);
+        setEnquiryData(response.data);
+      } catch (err) {
+        console.error("Error fetching bookings:", err);
+        setError("Failed to load enquiries. Please try again later.");
+      }
+    };
+
+    fetchBookings();
+  }, []);
 
   return (
     <div className="enquiriesPage-container">
-      {
-        !searchdata ||
-          (Array.isArray(searchdata) && searchdata.length === 0) ||
-          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-          ? <Appbar sendDataToParent={handleChildData} />
-          : null
-      }
+      {(!searchdata ||
+        (Array.isArray(searchdata) && searchdata.length === 0) ||
+        (typeof searchdata === "object" && Object.keys(searchdata).length === 0)) && <Appbar />}
+
       <div className="enquiriesPage-content">
-        <h3 className="enquiriesPage-content-h3">Enquiries </h3>
+        <h3 className="enquiriesPage-content-h3">Enquiries</h3>
         <div className="enquiriesPage-content-container">
           <div className="enquiriesPage-table-wrapper">
             <table className="enquiriesPage-content-table">
               <thead>
                 <tr>
-                  <th>Parent Name</th>
-                  <th>Child's Age</th>
-                  <th>Parent Phone</th>
-                  <th>Parent Email</th>
+                  <th>User Email</th>
+                  <th>Course Name</th>
+                  <th>No. of Sessions</th>
+                  <th>Booked Dates</th>
+                  <th>Fee</th>
+                  <th>Payment Method</th>
                 </tr>
               </thead>
               <tbody>
                 {error ? (
                   <tr>
-                    <td colSpan="6">{error}</td>
+                    <td colSpan="5" className="error-message">{error}</td>
+                  </tr>
+                ) : enquiryData.length === 0 ? (
+                  <tr>
+                    <td colSpan="5">No enquiries found.</td>
                   </tr>
                 ) : (
                   enquiryData.map((item) => (
                     <tr key={item._id}>
-                      <td>{item.parentDetails.name}</td>
-                      <td>{item.childDetails.age}</td>
-                      <td>{item.parentDetails.phone}</td>
-                      <td>{item.parentDetails.email}</td>
+                      <td>{item.userEmail}</td>
+                      <td>{item.courseName}</td>
+                      <td>{item.noOfSessions}</td>
+                      <td>
+                        {item.bookedDates.map(date => (
+                          <div key={date}>
+                            {new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                          </div>
+                        ))}
+                      </td>
+
+
+                      <td>{item.fee}</td>
+                      <td>Cash On Pay</td>
                     </tr>
                   ))
                 )}
