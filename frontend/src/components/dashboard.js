@@ -264,7 +264,7 @@ const Dashboard = () => {
                 <Settings />
               </section>
               <section id="footerPages" className="db-section">
-                <TermsAndPrivacy/>
+                <TermsAndPrivacy />
               </section>
             </>
           )}
@@ -277,7 +277,7 @@ const Dashboard = () => {
               <section id="courses" className="db-section">
                 <CoursePage />
               </section>
-              <section id="enquiries" className="db-section">
+              <section id="bookings" className="db-section">
                 <Enquiries />
               </section>
               <section id="profile" className="db-section">

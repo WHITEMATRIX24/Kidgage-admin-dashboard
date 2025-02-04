@@ -20,7 +20,8 @@ const leadsRoutes = require("./routes/leadsRoutes");
 const desktopBannerRoutes = require("./routes/desktopBanner");
 const mobileBannerRoutes = require("./routes/mobileBanner");
 const newsRoutes = require('./routes/newsRoute');
-const termsRoutes =require('./routes/termsRoutes');
+const termsRoutes = require('./routes/termsRoutes');
+const customerRoutes = require('./routes/customerRoutes')
 
 
 const app = express();
@@ -56,7 +57,8 @@ app.use("/api/leads", leadsRoutes);
 app.use("/api/desktop-banners", desktopBannerRoutes);
 app.use("/api/mobile-banners", mobileBannerRoutes);
 app.use("/api/news", newsRoutes);
-app.use("/api/terms-condition",termsRoutes );
+app.use("/api/terms-condition", termsRoutes);
+app.use("/api/customers", customerRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

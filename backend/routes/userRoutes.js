@@ -289,15 +289,15 @@ router.post("/updateVerification", async (req, res) => {
 });
 
 router.get("/pending", async (req, res) => {
-  const searchKey = req.query.search
-  console.log("searchKey:.....", searchKey);
+
+
   try {
     const query = {
-      username: { $regex: searchKey, $options: 'i' },
+
       verificationStatus: "pending",
     }
     const pendingUsers = await User.find(query);
-    console.log("Fetched Pending Users:", pendingUsers); // Debugging log
+    // console.log("Fetched Pending Users:", pendingUsers); // Debugging log
     res.status(200).json(pendingUsers);
   } catch (error) {
     console.error("Error fetching pending users:", error.message); // Debugging log for errors
