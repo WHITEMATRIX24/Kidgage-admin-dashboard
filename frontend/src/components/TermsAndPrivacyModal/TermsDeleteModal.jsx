@@ -12,16 +12,17 @@ function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus 
       const res = await axios.delete(
         `http://localhost:5001/api/terms-condition/delete/${termDeleteId}`
       );
-
+      console.log(res.data);
+      
       if (res.status === 200) {
-        alert("Successfully deleted news");
+        alert("Successfully deleted Terms");
         setDeleteStatus(res.data);
         closeHandler();
         return;
       }
       alert(res.data.message);
     } catch (error) {
-      console.log(`Error in deleting news: ${error}`);
+      console.log(`Error in deleting terms: ${error}`);
     } finally {
       setIsLoading(false);
     }
