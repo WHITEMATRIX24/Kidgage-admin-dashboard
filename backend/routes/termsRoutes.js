@@ -77,26 +77,21 @@ router.get('/policy-data', async (req, res) => {
 });
 
 
-//delete terms and conditions and privacy
+//delete terms and policy and conditions and privacy
+router.delete('/delete/:id', async (req, res) => {
+  const { id } = req.params;
 
-router.delete("/delete/:id", async (req, res) => {
-    const { id } = req.params;
-    console.log(id);
-    
-    try {
-      const deletedTerms = await TermsAndCondition.findByIdAndDelete(id);
-      if (!deletedTerms) {
-        return res.status(404).json({ message: "no data found" });
-      }
-     console.log(deletedTerms);
-     
-    } catch (error) {
-      console.error("Error deleting data:", error);
-      res
-        .status(500)
-        .json({ message: "Internal server error. Please try again later." });
+  try {
+    const deletedTermsAndPolicy = await TermsAndCondition.findByIdAndDelete(id);
+    if (!deletedTermsAndPolicy ) {
+      return res.status(404).json({ message: 'Terms not found' });
     }
-  });
+    res.status(200).json({ message: 'Terms deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting terms:', error);
+    res.status(500).json({ message: 'Internal server error. Please try again later.' });
+  }
+});
 
 
   // Update a terms

@@ -5,27 +5,27 @@ function PolicyDeleteModal({ isShow, closeHandler, policyDeleteId, setDeleteStat
   const [isLoading, setIsLoading] = useState(false);
 
   const deletePolicyHandler = async () => {
-      if (policyDeleteId) {
-          setIsLoading(true);
-          try {
-              const res = await axios.delete(
-                  `http://localhost:5001/api/terms-condition/delete/${policyDeleteId}`
-              );
-
-              if (res.status === 200) {
-                  alert("Successfully deleted privacy and policy.");
-                  setDeleteStatus(res.data);
-                 closeHandler() // Close the modal after success
-                  return;
-              }
-              alert(res.data.message);
-          } catch (error) {
-              console.log(`Error in deleting terms and conditions: ${error}`);
-              alert('There was an error while deleting the policy.');
-          } finally {
-              setIsLoading(false);
-          }
+    if (policyDeleteId) {
+      setIsLoading(true);
+      try {
+        const res = await axios.delete(
+          `http://localhost:5001/api/terms-condition/delete/${policyDeleteId}`
+        );
+        console.log(res.data);
+        
+        if (res.status === 200) {
+          alert("Successfully deleted policy");
+          setDeleteStatus(res.data);
+          closeHandler();
+          return;
+        }
+        alert(res.data.message);
+      } catch (error) {
+        console.log(`Error in deleting policy: ${error}`);
+      } finally {
+        setIsLoading(false);
       }
+    }
   };
 
 
