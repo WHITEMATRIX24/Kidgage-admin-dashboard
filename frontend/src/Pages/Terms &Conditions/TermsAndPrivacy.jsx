@@ -119,23 +119,23 @@ function TermsAndPrivacy() {
     // console.log(policyData);
 
     const filteredPolicyData = policyData.filter(item => item.policy);  // Filter items with policy field
-    if (filteredPolicyData.length > 0) {
-        filteredPolicyData.forEach(item => {
-            console.log(item.policy);  // Log the available policy
-            console.log(item.date);    // Log the date of that policy
-        });
-    } else {
-        console.log('No available policies.');
-    }
+    // if (filteredPolicyData.length > 0) {
+    //     filteredPolicyData.forEach(item => {
+    //         console.log(item.policy);  // Log the available policy
+    //         console.log(item.date);    // Log the date of that policy
+    //     });
+    // } else {
+    //     console.log('No available policies.');
+    // }
     const filteredTermData = termData.filter(item => item.terms);  // Filter items with policy field
-    if (filteredTermData.length > 0) {
-        filteredTermData.forEach(item => {
-            console.log(item.terms);  // Log the available policy
-            console.log(item.date);    // Log the date of that policy
-        });
-    } else {
-        console.log('No available terms.');
-    }
+    // if (filteredTermData.length > 0) {
+    //     filteredTermData.forEach(item => {
+    //         console.log(item.terms);  // Log the available policy
+    //         console.log(item.date);    // Log the date of that policy
+    //     });
+    // } else {
+    //     console.log('No available terms.');
+    // }
 
     return (
         <>
@@ -178,7 +178,7 @@ function TermsAndPrivacy() {
                             >
                                 <FontAwesomeIcon
                                     icon={faPlus}
-                                    style={{ color: "#ffffff" }}
+                                    style={{ color: "#ffffff",marginRight:'10px' }}
                                 />
                                 Add Terms And Conditions
                             </button>
@@ -244,9 +244,9 @@ function TermsAndPrivacy() {
                             >
                                 <FontAwesomeIcon
                                     icon={faPlus}
-                                    style={{ color: "#ffffff" }}
+                                    style={{ color: "#ffffff" ,marginRight:'10px'}}
                                 />
-                                Add Policy
+                                Add Privacy and Policy
                             </button>
                             <table className="course-table-details">
                                 <thead className="table-head">

@@ -83,14 +83,13 @@ router.delete("/delete/:id", async (req, res) => {
     const { id } = req.params;
     console.log(id);
     
-  
     try {
       const deletedTerms = await TermsAndCondition.findByIdAndDelete(id);
-  
       if (!deletedTerms) {
         return res.status(404).json({ message: "no data found" });
       }
-  
+     console.log(deletedTerms);
+     
     } catch (error) {
       console.error("Error deleting data:", error);
       res
