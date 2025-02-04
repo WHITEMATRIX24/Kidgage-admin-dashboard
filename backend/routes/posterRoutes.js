@@ -187,6 +187,34 @@ router.put('/:id/wishlist', async (req, res) => {
   }
 });
 
+//update status
+router.put("/update-status/:id", upload.none(), async (req, res) => {
+  const { id } = req.params;
+  const { posterStatus } = req.body;
+  // console.log(posterStatus);
+  
+
+  if (!id) {
+      res
+          .status(400)
+          .json({ message: "bad request", error: "Requres poster Id" })
+  }
+  try {
+      const posterNews = await Poster.findByIdAndUpdate(
+          id,
+          {
+              activeStatus: !posterStatus,
+          },
+          { new: true }
+      );
+      res.status(200).json({ message: "toggle success" });
+  } catch (error) {
+      res.status(500).json({ message: "server Error", error });
+  }
+});
+
+
+
 // Route to fetch a specific poster by ID
 router.get('/:id', async (req, res) => {
   const { id } = req.params;

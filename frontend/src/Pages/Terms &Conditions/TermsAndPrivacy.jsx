@@ -12,7 +12,7 @@ import "./TermsAndPrivacy.css";
 import Appbar from '../../components/common/appbar/Appbar';
 
 function TermsAndPrivacy() {
-    const [error, setError] = useState(null);
+   const[error,setError]=useState("")
     const [activeTab, setActiveTab] = useState("Programs Offered");
     const [termsAddModalState, setTermsAddModalState] = useState(false);
     const [privacyAddModalState, setPrivacyAddModalState] = useState(false);
@@ -325,7 +325,7 @@ function TermsAndPrivacy() {
                 )}
 
                 {/* delete modal */}
-                {termsDeleteModalState.isShow && termsDeleteModalState.isShow && (
+                {termsDeleteModalState.isShow && (
                     <TermsDeleteModal
                         isShow={termsDeleteModalState.isShow}
                         closeHandler={deleteTermModalCloseHandler}

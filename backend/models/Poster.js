@@ -9,6 +9,7 @@
     endDate: { type: Date, required: true },
     image: { type: String, required: true }, // Base64 encoded image
     wishlist: { type: Boolean, required: false },
+    activeStatus: { type: Boolean, default: true },
     });
 
     const Poster = mongoose.model('Poster', posterSchema);

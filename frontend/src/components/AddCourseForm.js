@@ -404,7 +404,7 @@ function AddCourseForm({ providerId }) {
       setSuccess("Course added successfully!");
       setError(""); // Clear error messages
       setIsLoading(false); // Stop loading after fetch
-      // window.location.reload(); // Reload page after success
+      window.location.reload(); // Reload page after success
     } catch (error) {
       console.error("Error adding course. Check if all fields are filled", error);
       if (error.response) {

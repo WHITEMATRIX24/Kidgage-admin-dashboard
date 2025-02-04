@@ -88,6 +88,22 @@ function PosterView(searchdata) {
         setSearchKey(data); // Set the received data to state
     };
 
+    const handleToggleStatus = async (posterId, currentStatus) => {
+        try {
+            const response = await axios.put(
+                `http://localhost:5001/api/posters/update-status/${posterId}`,
+                { posterStatus: currentStatus }
+            );
+            if (response.status === 200) {
+                alert("Status updated successfully");
+                setEditStatus((prev) => !prev);
+            }
+        } catch (error) {
+            console.error("Error updating poster status:", error);
+            alert("Failed to update poster status. Please try again.");
+        }
+    };
+
 
     useEffect(() => {
         getAllPosterDetails();
@@ -125,6 +141,7 @@ function PosterView(searchdata) {
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Duration</th>
+                                <th>Active</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -154,6 +171,17 @@ function PosterView(searchdata) {
                                         {formatDate(startDate)} to {formatDate(endDate)}
                                     </td>
                                     <td>
+                                    <label className="switch">
+                                            <input
+                                             
+                                                type="checkbox"
+                                                defaultChecked={poster.activeStatus}
+                                                onChange={() => handleToggleStatus(poster._id, poster.activeStatus)}
+                                            ></input>
+                                            <span className="slider round"></span>
+                                        </label>  
+                                    </td>
+                                    <td style={{width:'120px'}}>
                                         <div className="poster-icons">
                                             {/* <FontAwesomeIcon
                                             icon={course.active === "true" ? faEye : faEyeSlash}

@@ -7,6 +7,8 @@ import axios from 'axios';
 
 
 function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
+  const maxCharLimit = 1870;
+  const minCharLimit = 1800;
   const [newPosterFormData, setNewPosterFormData] = useState({
     posterName: "",
     description: "",
@@ -137,8 +139,18 @@ function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
                     description: e.target.value,
                   })
                 }
+                maxLength={maxCharLimit}
+                minLength={minCharLimit}
               />
+
+              {/* Character count and limits display */}
+              <span style={{ color: 'red', fontSize: '12px', fontWeight: '300' }}>
+                Character Count: {newPosterFormData.description.length}
+                {/* Display minimum and maximum character limits */}
+                (Min: {minCharLimit}, Max: {maxCharLimit}) characters
+              </span>
             </div>
+
 
             <div className="campaign-addmodal-form-fieldcontainer">
               <p>Location</p>
@@ -236,7 +248,6 @@ function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
               onClick={(e) => handlePublish(e)}
               disabled={isLoading}
             >
-              Submit
               {isLoading ? "please wait" : "Publish"}
             </button>
           </div>

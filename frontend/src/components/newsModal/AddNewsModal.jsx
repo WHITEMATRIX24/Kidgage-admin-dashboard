@@ -5,6 +5,8 @@ import "./AddNewsModal.css";
 import axios from 'axios';
 
 function AddNewsModal({ isShow, closeHandler, setAddStatus }) {
+  const maxCharLimit = 1870;
+  const minCharLimit = 1800;
   const [newNewsFormData, setNewNewsFormData] = useState({
     newsTitle: "",
     description: "",
@@ -121,10 +123,17 @@ function AddNewsModal({ isShow, closeHandler, setAddStatus }) {
                     description: e.target.value,
                   })
                 }
+                maxLength={maxCharLimit}
+                minLength={minCharLimit}
               />
+              {/* Character count and limits display */}
+              <span style={{ color: 'red', fontSize: '12px', fontWeight: '300' }}>
+                Character Count: {newNewsFormData.description.length}
+                {/* Display minimum and maximum character limits */}
+                (Min: {minCharLimit}, Max: {maxCharLimit}) characters
+              </span>
+
             </div>
-
-
 
             <div className="news-addmodal-form-fieldcontainer">
               <p>Publish Date</p>
@@ -140,16 +149,14 @@ function AddNewsModal({ isShow, closeHandler, setAddStatus }) {
                 }
               />
             </div>
-
-
           </div>
 
           {/* Form right side */}
-          <div className="news-addmodal-form-right">
-            <div className="news-addmodal-form-fieldcontainer">
+          <div className="campaign-addmodal-form-right">
+            <div className="campaign-addmodal-form-fieldcontainer">
               <label
-                htmlFor="news-addmodal-form-imageuploder"
-                className="news-addmodal-form-imageuploder-container"
+                htmlFor="campaign-addmodal-form-imageuploder"
+                className="news-addmodal-form-imageuploder-container "
               >
                 <img
                   src={
@@ -162,7 +169,7 @@ function AddNewsModal({ isShow, closeHandler, setAddStatus }) {
                 />
               </label>
               <input
-                id="news-addmodal-form-imageuploder"
+                id="campaign-addmodal-form-imageuploder"
                 type="file"
                 accept="image/*"
                 style={{ display: "none" }}
