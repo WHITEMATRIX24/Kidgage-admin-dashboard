@@ -8,8 +8,6 @@ router.post('/add', async (req, res) => {
     const { terms } = req.body;
     console.log(terms);
     // const policy=""
-  
-
     // Get the current date in YYYY-MM-DD format
     const currentDate = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
     console.log("Current Date:", currentDate);

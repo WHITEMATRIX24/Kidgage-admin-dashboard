@@ -95,71 +95,6 @@ async function deleteImageFromS3(imageUrl) {
 }
 
 // Add a new course
-// router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
-//   try {
-//     const {
-//       providerId,
-//       name,
-//       duration,
-//       durationUnit,
-//       startDate,
-//       endDate,
-//       description,
-//       feeAmount,
-//       feeType,
-//       days,
-//       timeSlots,
-//       location,
-//       ageGroup,
-//       courseType,
-//       promoted,
-//       preferredGender,
-//     } = req.body;
-
-//     // Ensure the timeSlots are parsed correctly
-//     const parsedTimeSlots =
-//       typeof timeSlots === "string" ? JSON.parse(timeSlots) : timeSlots;
-//     const parsedLocation =
-//       typeof location === "string" ? JSON.parse(location) : location;
-//     const parsedAge =
-//       typeof ageGroup === "string" ? JSON.parse(ageGroup) : ageGroup;
-
-//     // Handle the images
-//     const images = req.files ? await uploadImagesToS3(req.files) : [];
-
-//     const newCourse = new Course({
-//       providerId,
-//       name,
-//       duration,
-//       durationUnit,
-//       startDate,
-//       endDate,
-//       description,
-//       feeAmount,
-//       feeType,
-//       days,
-//       timeSlots: parsedTimeSlots,
-//       location: parsedLocation,
-//       ageGroup: parsedAge,
-//       courseType,
-//       images, // Base64 encoded images
-//       promoted,
-//       preferredGender,
-//     });
-
-//     const savedCourse = await newCourse.save();
-//     res.status(201).json(savedCourse);
-//   } catch (error) {
-//     console.error("Error adding course:", error);
-//     res
-//       .status(500)
-//       .json({ message: "Error adding course", error: error.message });
-//   }
-// });
-
-// Add a new course
-// Backend: Ensure the parsedCourseDurations is handled properly
-
 // //original code 
 router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
   try {
@@ -182,8 +117,8 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
     console.log("Received courseDurations:", courseDuration);  // Check raw value
     console.log("Received ageGroup:", ageGroup);  // Check raw value
     console.log("faq:", faq);  // Check raw value
-    console.log(" thingstokeepinmind:",  thingstokeepinmind);  // Check raw value
-    console.log(" location:",  location);  // Check raw value
+    console.log(" thingstokeepinmind:", thingstokeepinmind);  // Check raw value
+    console.log(" location:", location);  // Check raw value
 
 
     // Ensure courseDurations is parsed correctly if it's a string
@@ -194,9 +129,9 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
     const parsedFaq = typeof faq === "string" ? JSON.parse(faq) : faq;
     console.log("Parsed faq:", parsedFaq);  // Log the parsed faq value
 
-     // Ensure faq is parsed correctly if it's a string
-     const parsedthingstokeepinmind = typeof  thingstokeepinmind === "string" ? JSON.parse( thingstokeepinmind) :  thingstokeepinmind;
-     console.log("parsedthingstokeepinmind", parsedthingstokeepinmind);  // Log the parsed faq value
+    // Ensure faq is parsed correctly if it's a string
+    const parsedthingstokeepinmind = typeof thingstokeepinmind === "string" ? JSON.parse(thingstokeepinmind) : thingstokeepinmind;
+    console.log("parsedthingstokeepinmind", parsedthingstokeepinmind);  // Log the parsed faq value
 
     //  location.forEach(location => {
     //   if (location.coordinates.lat === null || location.coordinates.lng === null) {
@@ -220,7 +155,7 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
       active: true,
       courseDuration: parsedCourseDurations,  // Save the courseDurations properly
       faq: parsedFaq, // Correctly pass the parsed FAQ array, not a string
-      thingstokeepinmind:parsedthingstokeepinmind,
+      thingstokeepinmind: parsedthingstokeepinmind,
     });
 
     const savedCourse = await newCourse.save();
@@ -233,8 +168,6 @@ router.post("/addcourse", upload.array("academyImg", 10), async (req, res) => {
     res.status(500).json({ message: "Error adding course", error: error.message });
   }
 });
-
-//for checking
 
 router.get("/course/:id", async (req, res) => {
   try {
@@ -275,6 +208,7 @@ router.get("/search", async (req, res) => {
   }
 });
 
+//for update course form
 router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
   try {
     // Destructure request body
@@ -282,8 +216,6 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
       providerId,
       name,
       description,
-      // feeAmount,
-      // feeType,
       days,
       timeSlots,
       location,
@@ -299,7 +231,7 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
 
     // Log the received fields for debugging
     console.log("Received data:", {
-      name, courseDuration, ageGroup, timeSlots, location, removedImages,thingstokeepinmind,faq
+      name, courseDuration, ageGroup, timeSlots, location, removedImages, thingstokeepinmind, faq
     });
 
     // Parse courseDuration, timeSlots, location, ageGroup safely
@@ -309,36 +241,47 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
     const parsedAgeGroup = ageGroup ? JSON.parse(ageGroup) : [];
 
     // Ensure data is parsed correctly if it's a string
-    const parsedthingstokeepinmind = typeof  thingstokeepinmind === "string" ? JSON.parse( thingstokeepinmind) :  thingstokeepinmind;
-    console.log("Parsed faq:", parsedthingstokeepinmind);  // Log the parsed faq value
-
-
-    // Ensure data is parsed correctly if it's a string
-    const parsedfaq = typeof  faq === "string" ? JSON.parse(faq) :  faq;
-    console.log("Parsed faq:", faq);  // Log the parsed faq value
+    const parsedthingstokeepinmind = typeof thingstokeepinmind === "string" ? JSON.parse(thingstokeepinmind) : thingstokeepinmind;
+    const parsedfaq = typeof faq === "string" ? JSON.parse(faq) : faq;
 
     // Prepare file upload if any
     const uploadedImages = req.files ? await uploadImagesToS3(req.files) : [];
 
     // Fetch the current course to retain existing images and other data
     const currentCourse = await Course.findById(req.params.id);
-
     if (!currentCourse) {
       return res.status(404).json({ error: "Course not found" });
     }
 
+    // Ensure removedImages is an array, even if it's a single string
+    const imagesToRemove = Array.isArray(removedImages) ? removedImages : [removedImages];
+
+    // Normalize the URLs to avoid issues with trailing slashes or extra spaces
+    const normalizeImage = (image) => {
+      if (typeof image !== 'string') return '';  // Return empty string if the image is not a valid string
+      return image.trim().replace(/\/$/, '');    // Remove trailing slashes
+    };
+
     // Handle removed images (if any) and retain existing images
     let remainingImages = currentCourse.images;
-    if (removedImages && Array.isArray(removedImages)) {
-      remainingImages = currentCourse.images.filter(image => !removedImages.includes(image));
+
+    if (imagesToRemove && imagesToRemove.length > 0) {
+      // Normalize both the existing images and the images to be removed
+      remainingImages = currentCourse.images.filter(image =>
+        !imagesToRemove.some(removedImage => normalizeImage(removedImage) === normalizeImage(image))
+      );
+
       // Optionally delete removed images from cloud storage here
-      // for (const image of removedImages) {
-      //   await deleteImageFromS3(image); // Replace with your S3 deletion logic
+      // for (const image of imagesToRemove) {
+      //   await deleteImageFromS3(image);  // Ensure this function is implemented correctly
       // }
     }
 
-    // Combine the remaining images with the newly uploaded ones
-    const combinedImages = remainingImages.concat(uploadedImages);
+    console.log("Remaining images after filtering:", remainingImages);
+
+    // If there are new images uploaded, combine them with the remaining images
+    const combinedImages = uploadedImages.length > 0 ? remainingImages.concat(uploadedImages) : remainingImages;
+    console.log("Combined images (remaining + new):", combinedImages);
 
     // Update the course with all the fields (including the combined images)
     const updatedCourse = await Course.findByIdAndUpdate(
@@ -357,20 +300,19 @@ router.put("/update/:id", upload.array("academyImg", 10), async (req, res) => {
         preferredGender,
         active: false,  // Ensure the course is inactive
         courseDuration: parsedCourseDurations,  // Update course duration
-        thingstokeepinmind:parsedthingstokeepinmind,
-        faq:parsedfaq,
+        thingstokeepinmind: parsedthingstokeepinmind,
+        faq: parsedfaq,
       },
       { new: true }  // Return the updated document
     );
+
     // Return the updated course as a response
     res.status(200).json(updatedCourse);
-
   } catch (error) {
     console.error("Error updating course:", error);
     res.status(500).json({ error: "Something went wrong during the update." });
   }
 });
-
 //delete course
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
