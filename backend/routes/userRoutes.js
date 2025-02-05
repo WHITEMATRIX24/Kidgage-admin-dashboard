@@ -328,7 +328,7 @@ router.get("/pending-search", async (req, res) => {
 router.get("/accepted", async (req, res) => {
   try {
     const acceptedUsers = await User.find({ verificationStatus: "accepted" });
-    console.log("Fetched Accepted Users:", acceptedUsers); // Debugging log
+    // console.log("Fetched Accepted Users:", acceptedUsers); // Debugging log
     res.status(200).json(acceptedUsers);
   } catch (error) {
     console.error("Error fetching accepted users:", error.message); // Debugging log for errors
@@ -517,7 +517,7 @@ router.get("/all", async (req, res) => {
       { verificationStatus: "verified" },
       "username logo email"
     );
-    console.log("Fetched Users:", users); // Debugging log
+    // console.log("Fetched Users:", users); // Debugging log
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error.message); // Debugging log for errors
@@ -863,7 +863,7 @@ router.post(
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      console.log(req.files.logo);
+      // console.log(req.files.logo);
       // Update the license number and verification status
       user.licenseNo = licenseNo;
       user.fullName = fullName;
@@ -999,7 +999,7 @@ router.get("/allUser", async (req, res) => {
 
     // Fetch users with the specified filter
     const users = await User.find(query);
-    console.log("Fetched Users:", users); // Debugging log to check filtered users
+    // console.log("Fetched Users:", users); // Debugging log to check filtered users
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error.message); // Debugging log for errors

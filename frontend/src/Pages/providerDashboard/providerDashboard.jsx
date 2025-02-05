@@ -49,13 +49,10 @@ const Providerdashboard = () => {
       setCourseData(coursesResponse.data);
 
       const enquiryResponse = await axios.get(
-        `http://localhost:5001/api/enquiries/enquiry-by-providers`,
-        {
-          params: { providerIds: [userId] },
-        }
+        `http://localhost:5001/api/customers/bookings/${userId}`,
+
       );
       setEnquiryData(enquiryResponse.data);
-
       console.log(courseData);
     } catch (error) {
       console.log(`Error fetching courses: ${error}`);
@@ -160,18 +157,18 @@ const Providerdashboard = () => {
                   <table className="provider-dashboardpage-table">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Date of Birth</th>
-                        <th>Contact</th>
+                        <th>User Email</th>
+                        <th>Course Name</th>
+                        <th>No. Of Sessions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {enquiryData &&
                         enquiryData.map((item) => (
                           <tr key={item._id}>
-                            <td>{item.parentDetails.name}</td>
-                            <td>{item.childDetails.age}</td>
-                            <td>{item.parentDetails.phone}</td>
+                            <td>{item.userEmail}</td>
+                            <td>{item.courseName}</td>
+                            <td>{item.noOfSessions}</td>
                           </tr>
                         ))}
                     </tbody>
