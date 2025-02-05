@@ -17,7 +17,7 @@ router.get("/bookings/:providerId", async (req, res) => {
 
             .select("email name bookings");
 
-        console.log("Customers found:", JSON.stringify(customers, null, 2));
+
 
         const filteredBookings = customers.flatMap((customer) =>
             customer.bookings
@@ -33,10 +33,54 @@ router.get("/bookings/:providerId", async (req, res) => {
                 }))
         );
 
-        console.log("Final extracted bookings:", JSON.stringify(filteredBookings, null, 2));
+
         res.status(200).json(filteredBookings);
     } catch (error) {
         console.error("Error:", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+router.get("/bookings/count", async (req, res) => {
+    try {
+        const totalBookingCount = await Customer.aggregate([
+            { $unwind: "$bookings" },
+            { $count: "totalBookings" }
+        ]);
+
+        const bookingCount = totalBookingCount[0].totalBookings;
+
+        console.log("Total Bookings:", bookingCount);
+        res.status(200).json({ bookingsCount: bookingCount });
+    } catch (error) {
+        console.error(" Error fetching booking count:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+router.get("/bookings", async (req, res) => {
+    try {
+        // Fetch all customers with their bookings
+        const customers = await Customer.find({})
+            .populate({ path: "bookings.courseId", select: "name" })
+            .select("email name bookings");
+
+        // Extract all bookings from all customers
+        const allBookings = customers.flatMap((customer) =>
+            customer.bookings.map((booking) => ({
+                userEmail: customer.email,
+                courseName: booking.courseId?.name || "N/A",
+                bookedDates: booking.courseDuration?.bookedDates || [],
+                fee: booking.courseDuration?.fee || "N/A",
+                noOfSessions: booking.courseDuration?.noOfSessions || "N/A",
+                timeSlot: booking.bookingDate || "N/A",
+                paymentMethod: booking.paymentDetails?.paymentMethod || "N/A",
+            }))
+        );
+
+        res.status(200).json(allBookings);
+    } catch (error) {
+        console.error("Error fetching all bookings:", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
     }
 });
