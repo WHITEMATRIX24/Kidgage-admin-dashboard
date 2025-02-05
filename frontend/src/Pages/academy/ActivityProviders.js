@@ -95,7 +95,6 @@ function ActivityProviders(searchdata) {
       );
     }
   };
-
   const handleChildData = (data) => {
     setSearchKey(data); // Set the received data to state
   };
