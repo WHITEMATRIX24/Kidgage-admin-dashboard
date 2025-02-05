@@ -164,7 +164,7 @@ function ActivityProviders(searchdata) {
                         <span id="activity-profile-name">{item?.username}</span>
                       </div>
                     </td>
-                    <td>{item.requestFiledDate}</td>
+                    <td>{new Date(item.requestFiledDate).toLocaleDateString('en-US')}</td>
                     <td className="activity-address">{item.location}</td>
                     <td>{item?.phoneNumber}</td>
                     <td>

@@ -66,17 +66,29 @@ function Campaigns(searchdata) {
   };
 
   const fetchBanners = async (searchTerm = "") => {
-    setLoading(true);
+    setLoading(true);  // Start loading before making the request
     try {
-      const response = await axios.get(`http://localhost:5001/api/banners?search=${searchTerm}`);
-      //   console.log(response.data);
+      let response;
+
+      // If there is a searchTerm, make the search request
+      if (searchTerm) {
+        response = await axios.get(`http://localhost:5001/api/banners/banner-search?search=${searchTerm}`);
+      } else {
+        // Otherwise, make the normal request to fetch all banners
+        response = await axios.get(`http://localhost:5001/api/banners`);
+      }
+
+      // After getting the response, set the banners data
       setBanners(response.data);
-      setLoading(false);
+
     } catch (error) {
       console.error("Error fetching banners:", error);
-      setLoading(false);
+    } finally {
+      setLoading(false);  // Set loading state to false once the request is finished
     }
   };
+
+  
   const fetchDesktopBanners = async (searchTerm = "") => {
     setLoading(true);
     try {
