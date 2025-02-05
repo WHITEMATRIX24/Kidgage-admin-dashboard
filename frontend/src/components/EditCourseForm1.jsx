@@ -23,7 +23,7 @@ function EditCourseForm1({ courseId }) {
   const [suggestions, setSuggestions] = useState([]);
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({ lat: null, lon: null }); // To store latitude and longitude
-   const [loadingList, setLoadingList] = useState([]);
+  const [loadingList, setLoadingList] = useState([]);
   const [formData, setFormData] = useState({
     providerId: "",
     name: "",
@@ -504,8 +504,6 @@ function EditCourseForm1({ courseId }) {
           });
         }
 
-        // console.log('Course Durations before submitting: ', courseData.courseDuration);
-
         // Append other course data
         formData.append("description", courseData.description);
         formData.append("promoted", courseData.promoted);
@@ -554,7 +552,7 @@ function EditCourseForm1({ courseId }) {
         })
 
 
-        // 1. Append new images (if any new images are added in courseData.images)
+        // Append new images
         if (Array.isArray(courseData.images)) {
           courseData.images.forEach((image) => {
             if (image) {
@@ -563,9 +561,9 @@ function EditCourseForm1({ courseId }) {
           });
         }
 
-        // 2. Send removed images as a separate field (check for empty or undefined removedImages)
-        const removedImages = Array.isArray(courseData.removedImages) ? courseData.removedImages : []; // Default to empty array if removedImages is undefined
-        console.log("Final removed images:", removedImages); // Debug log to check if removedImages is correctly handled
+        // Append removed images
+        const removedImages = Array.isArray(courseData.removedImages) ? courseData.removedImages : [];
+        console.log("Final removed images:", removedImages);
 
         removedImages.forEach((image) => {
           formData.append("removedImages", image); // Send removed images to the backend
@@ -585,7 +583,7 @@ function EditCourseForm1({ courseId }) {
         setSuccess("Course updated successfully!");
         setError(""); // Clear error messages
         asetLoading(false); // Stop loading after fetch
-        window.location.reload(); // Reload page after success
+        // window.location.reload(); // Reload page after success
       } catch (error) {
         console.error("Error updating course. Check if all fields are filled", error);
 
@@ -741,24 +739,21 @@ function EditCourseForm1({ courseId }) {
   // Function to remove image and store removed image locally
   const removeImage = (index) => {
     setCourseData((prevState) => {
-      // Ensure removedImages is always an array
       const updatedRemovedImages = Array.isArray(prevState.removedImages)
         ? prevState.removedImages
-        : []; // Fallback to empty array if not iterable
+        : [];
 
-      // Add the image to the removedImages list (if not already there)
       const imageToRemove = prevState.images[index];
       if (imageToRemove && !updatedRemovedImages.includes(imageToRemove)) {
         updatedRemovedImages.push(imageToRemove);
       }
 
-      // Remove image from the images list
       const updatedImages = prevState.images.filter((_, imgIndex) => imgIndex !== index);
 
       return {
         ...prevState,
-        images: updatedImages, // Update images without the removed one
-        removedImages: updatedRemovedImages, // Update removedImages array
+        images: updatedImages, // Update images list after removal
+        removedImages: updatedRemovedImages, // Update removedImages list
       };
     });
   };
@@ -1162,143 +1157,143 @@ function EditCourseForm1({ courseId }) {
                     <label htmlFor="ageStart">Municipality</label>
                     <label htmlFor="ageEnd">Phone No.</label>
                   </div>
-                {courseData.location.map((loc, index) => (
-                            <div
-                              key={index}
-                              className="time-slot"
+                  {courseData.location.map((loc, index) => (
+                    <div
+                      key={index}
+                      className="time-slot"
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+                        <div style={{ display: "flex", flexDirection: "row", width: "100%", gap: "1rem" }}>
+
+                          {/* Address Field */}
+                          <div style={{ position: "relative", flex: 1 }}>
+                            <input
+                              type="text"
+                              name="address"
+                              value={loc.address}
+                              placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
+                              onChange={(e) => handleAddressChange(e.target.value, index)}
                               style={{
                                 width: "100%",
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "1rem",
-                                alignItems: "center",
+                                padding: "0.5rem",
+                                boxSizing: "border-box",
+                              }}
+                              required
+                            />
+                            {loadingList[index] && <div>Loading...</div>} {/* Only show loading for the specific index */}
+
+                            {/* Address Suggestions */}
+                            {suggestions[index] && suggestions[index].length > 0 && (
+                              <ul
+                                style={{
+                                  position: "absolute",
+                                  zIndex: 10,
+                                  width: "100%",
+                                  background: "white",
+                                  border: "1px solid #ccc",
+                                  maxHeight: "200px",
+                                  overflowY: "auto",
+                                }}
+                              >
+                                {suggestions[index].map((suggestion, idx) => (
+                                  <li
+                                    key={idx}
+                                    style={{ padding: "5px", cursor: "pointer" }}
+                                    onClick={() => handleSelectAddress(suggestion, index)}
+                                  >
+                                    {suggestion.display_name}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+
+                          {/* City Dropdown */}
+                          <div style={{ flex: 1 }}>
+                            <select
+                              name="city"
+                              value={loc.city}
+                              onChange={(e) => handleLocationChange(index, "city", e.target.value)}
+                              style={{
+                                width: "100%",
+                                padding: "0.5rem",
+                                boxSizing: "border-box",
                               }}
                             >
-                              <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
-                                <div style={{ display: "flex", flexDirection: "row", width: "100%", gap: "1rem" }}>
-                
-                                  {/* Address Field */}
-                                  <div style={{ position: "relative", flex: 1 }}>
-                                    <input
-                                      type="text"
-                                      name="address"
-                                      value={loc.address}
-                                      placeholder={index === 0 ? "Area" : `Area ${index + 1}`}
-                                      onChange={(e) => handleAddressChange(e.target.value, index)}
-                                      style={{
-                                        width: "100%",
-                                        padding: "0.5rem",
-                                        boxSizing: "border-box",
-                                      }}
-                                      required
-                                    />
-                                    {loadingList[index] && <div>Loading...</div>} {/* Only show loading for the specific index */}
-                
-                                    {/* Address Suggestions */}
-                                    {suggestions[index] && suggestions[index].length > 0 && (
-                                      <ul
-                                        style={{
-                                          position: "absolute",
-                                          zIndex: 10,
-                                          width: "100%",
-                                          background: "white",
-                                          border: "1px solid #ccc",
-                                          maxHeight: "200px",
-                                          overflowY: "auto",
-                                        }}
-                                      >
-                                        {suggestions[index].map((suggestion, idx) => (
-                                          <li
-                                            key={idx}
-                                            style={{ padding: "5px", cursor: "pointer" }}
-                                            onClick={() => handleSelectAddress(suggestion, index)}
-                                          >
-                                            {suggestion.display_name}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    )}
-                                  </div>
-                
-                                  {/* City Dropdown */}
-                                  <div style={{ flex: 1 }}>
-                                    <select
-                                      name="city"
-                                      value={loc.city}
-                                      onChange={(e) => handleLocationChange(index, "city", e.target.value)}
-                                      style={{
-                                        width: "100%",
-                                        padding: "0.5rem",
-                                        boxSizing: "border-box",
-                                      }}
-                                    >
-                                      <option value="">Select A City</option>
-                                      <option value="Doha">Doha</option>
-                                      <option value="Al Rayyan">Al Rayyan</option>
-                                      <option value="Al Wakrah">Al Wakrah</option>
-                                      <option value="Al Shamal">Al Shamal</option>
-                                      <option value="Al Khor">Al Khor</option>
-                                      <option value="Umm Salal">Umm Salal</option>
-                                      <option value="Al Daayen">Al Daayen</option>
-                                      <option value="Al Shahaniya">Al Shahaniya</option>
-                                      <option value="Dukhan">Dukhan</option>
-                                      <option value="Mesaieed">Mesaieed</option>
-                                    </select>
-                                  </div>
-                
-                                  {/* Phone Number Field */}
-                                  <div style={{ flex: 1 }}>
-                                    <input
-                                      type="text"
-                                      name="phoneNumber"
-                                      value={loc.phoneNumber}
-                                      placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
-                                      onChange={(e) => handleLocationChange(index, "phoneNumber", e.target.value)}
-                                      style={{
-                                        width: "100%",
-                                        padding: "0.5rem",
-                                        boxSizing: "border-box",
-                                      }}
-                                      required
-                                    />
-                                  </div>
-                                </div>
-                
-                                {/* Remove Button */}
-                                {index > 0 && (
-                                  <button
-                                    type="button"
-                                    className="rem-button"
-                                    onClick={() => removeLocation(index)}
-                                  >
-                                    <FaTrash />
-                                  </button>
-                                )}
-                              </div>
-                
-                              {/* Map Link Field */}
-                              <input
-                                type="text"
-                                name="link"
-                                value={loc.link}
-                                placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
-                                onChange={(e) => handleLocationChange(index, "link", e.target.value)}
-                                style={{
-                                  width: "100%",
-                                  padding: "0.5rem",
-                                  boxSizing: "border-box",
-                                }}
-                                required
-                              />
-                            </div>
-                          ))}
+                              <option value="">Select A City</option>
+                              <option value="Doha">Doha</option>
+                              <option value="Al Rayyan">Al Rayyan</option>
+                              <option value="Al Wakrah">Al Wakrah</option>
+                              <option value="Al Shamal">Al Shamal</option>
+                              <option value="Al Khor">Al Khor</option>
+                              <option value="Umm Salal">Umm Salal</option>
+                              <option value="Al Daayen">Al Daayen</option>
+                              <option value="Al Shahaniya">Al Shahaniya</option>
+                              <option value="Dukhan">Dukhan</option>
+                              <option value="Mesaieed">Mesaieed</option>
+                            </select>
+                          </div>
+
+                          {/* Phone Number Field */}
+                          <div style={{ flex: 1 }}>
+                            <input
+                              type="text"
+                              name="phoneNumber"
+                              value={loc.phoneNumber}
+                              placeholder={index === 0 ? "Phone Number" : `Phone Number ${index + 1}`}
+                              onChange={(e) => handleLocationChange(index, "phoneNumber", e.target.value)}
+                              style={{
+                                width: "100%",
+                                padding: "0.5rem",
+                                boxSizing: "border-box",
+                              }}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        {/* Remove Button */}
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            className="rem-button"
+                            onClick={() => removeLocation(index)}
+                          >
+                            <FaTrash />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Map Link Field */}
+                      <input
+                        type="text"
+                        name="link"
+                        value={loc.link}
+                        placeholder={index === 0 ? "Map Link to location" : `Map Link to location ${index + 1}`}
+                        onChange={(e) => handleLocationChange(index, "link", e.target.value)}
+                        style={{
+                          width: "100%",
+                          padding: "0.5rem",
+                          boxSizing: "border-box",
+                        }}
+                        required
+                      />
+                    </div>
+                  ))}
                 </div>
 
 
 
                 <div className="form-group" >
                   <div className="btn-grpp">
-                    <label>Things to keep in mind:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span></label>
+                    <label>Things to keep in mind:<span style={{ color: 'gray', fontSize: '12px' }}> [Required minimum 4]</span></label>
                     <button className="add-time-slot-btn" onClick={handleAddThingsToMind} disabled={courseData.thingstokeepinmind.length >= MAX_FAQ_LIMIT || !isEditMode}>
                       Add
                     </button>
@@ -1322,7 +1317,7 @@ function EditCourseForm1({ courseId }) {
 
                 <div className="form-group" >
                   <div className="btn-grpp">
-                    <label>Add FAQS:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span></label>
+                    <label>Add FAQS:<span style={{ color: 'gray', fontSize: '12px' }}> [Required minimum 4]</span></label>
                     <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={courseData.faq.length >= MAX_FAQ_LIMIT || !isEditMode}>
                       Add FAQ
                     </button>
