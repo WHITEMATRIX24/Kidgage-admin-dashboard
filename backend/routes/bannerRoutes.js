@@ -61,7 +61,6 @@ async function deleteImageFromS3(imageUrl) {
 }
 // Route to get all banners
 router.get("/", async (req, res) => {
-
   try {
     const banners = await Banner.find();
     res.json(banners);
@@ -75,10 +74,11 @@ router.get("/", async (req, res) => {
 router.get("/banner-search", async (req, res) => {
   const searchKey=req.query.search
   console.log("searchKey:.....",searchKey);
-
   try {
-
-    const banners = await Banner.find();
+    const query ={
+      title:{$regex:searchKey,$options:'i'}
+  }
+    const banners = await Banner.find(query);
     res.json(banners);
   } catch (error) {
     console.error("Error fetching banners:", error);
@@ -127,7 +127,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
   try {
     const { title, bookingLink } = req.body;
     // const updateData = { title, bookingLink };
-    const updateData = req.body
+    const updateData=req.body
 
     if (req.file) {
       const image = await uploadImageToS3(req.file);
