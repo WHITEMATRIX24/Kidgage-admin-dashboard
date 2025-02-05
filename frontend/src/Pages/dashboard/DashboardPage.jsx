@@ -63,13 +63,11 @@ const DashboardPage = () => {
   // Leads genetaed initial data Handler
   const leadsGeneratedinitialDataHandler = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/api/leads/get-all-leads-count"
-      );
-      const count = res.data.leadsCount;
+      const res = await axios.get("http://localhost:5001/api/customers/bookings");
+      const count = res.data.length; // Correct key from API response
       setLeadsGeneratedCount(count);
     } catch (error) {
-      console.log("Error in fetching leads data", error);
+      console.log("Error in fetching booking count", error);
     }
   };
 
@@ -164,7 +162,7 @@ const DashboardPage = () => {
         <KidgageNews searchdata={searchKey} />
       ) : searchKey === "footer" ? (
         <TermsAndPrivacy searchdata={searchKey} />
-      ): searchKey === "sett" ? (
+      ) : searchKey === "sett" ? (
         <Settings searchdata={searchKey} />
       )
         : (<div className="dashboard-content-wrapper">
