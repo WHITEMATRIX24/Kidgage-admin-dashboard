@@ -22,8 +22,7 @@ async function uploadImageToS3(file) {
     // Generate a unique name for the image
     const rawBytes = await randomBytes(16);
     const imageName =
-      rawBytes.toString("hex") + path.extname(file.originalname);
-
+     rawBytes.toString("hex") + path.extname(file.originalname);
     const params = {
       Bucket: "kidgage", // The bucket name from .env
       Key: imageName, // The unique file name
@@ -53,7 +52,6 @@ async function deleteImageFromS3(imageUrl) {
       Bucket: "kidgage",
       Key: key,
     };
-
     const command = new DeleteObjectCommand(params); // Create DeleteObjectCommand
     await s3.send(command); // Send the command to S3 to delete the file
   } catch (error) {
@@ -63,6 +61,17 @@ async function deleteImageFromS3(imageUrl) {
 }
 // Route to get all banners
 router.get("/", async (req, res) => {
+  try {
+    const banners = await Banner.find();
+    res.json(banners);
+  } catch (error) {
+    console.error("Error fetching banners:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+//for search
+router.get("/banner-search", async (req, res) => {
   const searchKey=req.query.search
   console.log("searchKey:.....",searchKey);
   try {
@@ -149,9 +158,7 @@ router.delete("/:id", async (req, res) => {
     if (!banner) {
       return res.status(404).json({ message: "Banner not found" });
     }
-
     // Delete the image from S3
-
     // Delete the banner from the database
     await Banner.findByIdAndDelete(id);
 
@@ -172,7 +179,6 @@ router.put("/update-status/:id", upload.none(), async (req, res) => {
       .status(400)
       .json({ message: "bad request", error: "Requires banner id" });
   }
-
   try {
     const updateExistingBanner = await Banner.findByIdAndUpdate(
       id,
