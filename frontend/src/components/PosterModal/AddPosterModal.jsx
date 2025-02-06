@@ -7,7 +7,7 @@ import axios from 'axios';
 
 
 function AddPosterModal({ isShow, closeHandler, setAddStatus }) {
-  const maxCharLimit = 550;
+  const maxCharLimit = 750;
   const minCharLimit = 500;
   const [newPosterFormData, setNewPosterFormData] = useState({
     posterName: "",
