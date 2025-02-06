@@ -82,7 +82,7 @@ const Appbar = ({ sendDataToParent, visible }) => {
   return (
     <div className="appbar-container">
       {/* search bar */}
-      {visible === '#settings' || visible === '#profile' ? null : <div className="appbar-serarch-container">
+      {visible === '#settings' || visible === '#profile' || visible==='#footerPages' ? null : <div className="appbar-serarch-container">
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           className="searchbar-magnifyglass"

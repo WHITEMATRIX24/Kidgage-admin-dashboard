@@ -10,8 +10,10 @@ import TermsEditModal from '../../components/TermsAndPrivacyModal/TermsEditModal
 import PolicyEditModal from '../../components/TermsAndPrivacyModal/PolicyEditModal';
 import "./TermsAndPrivacy.css";
 import Appbar from '../../components/common/appbar/Appbar';
+import { useLocation } from 'react-router-dom';
 
-function TermsAndPrivacy() {
+
+function TermsAndPrivacy(searchdata) {
     const [error,setError] = useState("")
     const [activeTab, setActiveTab] = useState("Programs Offered");
     const [termsAddModalState, setTermsAddModalState] = useState(false);
@@ -35,6 +37,11 @@ function TermsAndPrivacy() {
     const [addstatus, setAddStatus] = useState([]);
     const [deleteStatus, setDeleteStatus] = useState([]);
     const [editStatus, setEditStatus] = useState([]);
+     const location = useLocation();
+      // Access the current pathname (URL path)
+      const currentPath = location.hash;
+      console.log(currentPath);
+      
 
     // Add terms modal handler
     const termsAddModalOpenHandler = () => setTermsAddModalState(true);
@@ -140,14 +147,14 @@ function TermsAndPrivacy() {
     return (
         <>
             <div className="coursepage-container">
-                {/* {
-            !searchdata ||
-              (Array.isArray(searchdata) && searchdata.length === 0) ||
-              (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-              ? <Appbar visible={currentPath} />
-              : null
-          } */}
-                <h3 className="campaign-heading" style={{ fontSize: '25px', marginTop: '80px' }}>Footer Pages </h3>
+            {
+        !searchdata ||
+          (Array.isArray(searchdata) && searchdata.length === 0) ||
+          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+          ? <Appbar visible={currentPath} />
+          : null
+      }
+                <h3 className="campaign-heading" style={{ fontSize: '25px', marginTop: '45px' }}>Footer Pages </h3>
                 <div className="coursepage-content-container">
                     <div className="coursepage-content-header">
                         {/* Tab Button for Programs Offered */}
