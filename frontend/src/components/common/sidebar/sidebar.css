@@ -23,7 +23,7 @@
 
 /* menus */
 .sidebar-nav-menus {
-  margin-top: 35%;
+  margin-top: 25%;
 }
 
 .sidebar-nav-menus ul {
@@ -66,6 +66,7 @@
   align-items: center;
   gap: 1rem;
   cursor: pointer;
+  margin-bottom: 50px;
 }
 
 .sidebar-logout-icon {
