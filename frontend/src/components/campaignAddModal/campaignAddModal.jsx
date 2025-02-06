@@ -20,11 +20,11 @@ const CampaignAddModal = ({ isShow, closeHandler, tab, setAddStatus }) => {
   const apiBasedOnTab = () => {
     switch (tab) {
       case "home":
-        return "http://localhost:5001/api/banners/addbanner";
+        return "https://admin.kidgage.com/api/banners/addbanner";
       case "desktop":
-        return "http://localhost:5001/api/desktop-banners/addbanner";
+        return "https://admin.kidgage.com/api/desktop-banners/addbanner";
       case "mobile":
-        return "http://localhost:5001/api/mobile-banners/addbanner";
+        return "https://admin.kidgage.com/api/mobile-banners/addbanner";
       default:
         return "";
     }

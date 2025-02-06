@@ -34,11 +34,11 @@ function InboundRequest(searchdata) {
   //     setLoading(true);
   //     if(searchKey){
   //       const response = await axios.get(
-  //         `http://localhost:5001/api/users/pending-search?search=${searchKey}`
+  //         `https://admin.kidgage.com/api/users/pending-search?search=${searchKey}`
   //       );
   //     }
   //     const response = await axios.get(
-  //       `http://localhost:5001/api/users/pending`
+  //       `https://admin.kidgage.com/api/users/pending`
   //     );
   //     setPendingUsers(response.data);
   //   } catch (error) {
@@ -55,12 +55,12 @@ function InboundRequest(searchdata) {
       if (searchKey) {
         // If searchKey is present, perform the search query
         response = await axios.get(
-          `http://localhost:5001/api/users/pending-search?search=${searchKey}`
+          `https://admin.kidgage.com/api/users/pending-search?search=${searchKey}`
         );
       } else {
         // If no searchKey, fetch all pending users
         response = await axios.get(
-          `http://localhost:5001/api/users/pending`
+          `https://admin.kidgage.com/api/users/pending`
         );
       }
       // Set the response data (pending users) to the state
@@ -71,7 +71,7 @@ function InboundRequest(searchdata) {
       setLoading(false);
     }
   };
-  
+
 
   const openRequestDetails = (user) => {
     setSelectedUser(user);
@@ -101,17 +101,17 @@ function InboundRequest(searchdata) {
       console.error("No user or date selected for scheduling a meeting.");
       return;
     }
-    
+
     try {
       setIsLoading(true); // Step 2: Set loading state to true
       await axios.post(
-        "http://localhost:5001/api/users/updateVerification",
+        "https://admin.kidgage.com/api/users/updateVerification",
         {
           userId: selectedUser._id,
           date: selectedDate.toISOString(),
         }
       );
-      await axios.post("http://localhost:5001/api/users/send-email", {
+      await axios.post("https://admin.kidgage.com/api/users/send-email", {
         email: selectedUser.email,
         date: selectedDate.toISOString(),
       });
@@ -123,7 +123,7 @@ function InboundRequest(searchdata) {
       console.error("Error scheduling meeting:", error);
       console.log("Selected User:", selectedUser);
       console.log("Selected Date:", selectedDate);
-    }finally {
+    } finally {
       setIsLoading(false);  // Step 3: Set loading state to false after process finishes
     }
   };
@@ -250,7 +250,7 @@ function InboundRequest(searchdata) {
             />
             <button
               className="inbound-schedule-button"
-              onClick={handleConfirmDate} 
+              onClick={handleConfirmDate}
               disabled={isLoading}
             >
               Schedule Meeting

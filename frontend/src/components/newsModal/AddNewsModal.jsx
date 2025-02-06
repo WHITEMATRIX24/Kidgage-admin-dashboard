@@ -53,7 +53,7 @@ function AddNewsModal({ isShow, closeHandler, setAddStatus }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/news/add",
+        "https://admin.kidgage.com/api/news/add",
         formData
       );
 

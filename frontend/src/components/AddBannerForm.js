@@ -42,7 +42,7 @@ function AddBannerForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/banners/addbanner",
+        "https://admin.kidgage.com/api/banners/addbanner",
         formData,
         {
           headers: {

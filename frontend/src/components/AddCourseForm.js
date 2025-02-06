@@ -48,7 +48,7 @@ function AddCourseForm({ providerId }) {
     const fetchCourseTypes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/course-category/categories"
+          "https://admin.kidgage.com/api/course-category/categories"
         );
         setCourseTypes(response.data);
       } catch (error) {
@@ -392,7 +392,7 @@ function AddCourseForm({ providerId }) {
 
       // Make the POST request
       const response = await axios.post(
-        "http://localhost:5001/api/courses/addcourse",
+        "https://admin.kidgage.com/api/courses/addcourse",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -534,7 +534,7 @@ function AddCourseForm({ providerId }) {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/users/search?query=${searchQuery}`
+        `https://admin.kidgage.com/api/users/search?query=${searchQuery}`
       );
       setSearchResult(response.data);
       setSearchError("");
@@ -870,7 +870,7 @@ function AddCourseForm({ providerId }) {
             <label htmlFor="ageEnd">Phone No.</label>
           </div>
 
-         
+
           {course.location.map((loc, index) => (
             <div
               key={index}
@@ -1005,7 +1005,7 @@ function AddCourseForm({ providerId }) {
 
         <div className="form-group" >
           <div className="btn-grpp">
-            <label>Things to keep in mind:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span></label>
+            <label>Things to keep in mind:<span style={{ color: 'gray', fontSize: '12px' }}> [Required minimum 4]</span></label>
             <button className="add-time-slot-btn" onClick={handleAddThingsToMind} disabled={course.thingstokeepinmind.length >= MAX_FAQ_LIMIT}>
               Add
             </button>
@@ -1031,7 +1031,7 @@ function AddCourseForm({ providerId }) {
 
         <div className="form-group" >
           <div className="btn-grpp">
-            <label>Add FAQS:<span style={{color:'gray',fontSize:'12px'}}> [Required minimum 4]</span> </label>
+            <label>Add FAQS:<span style={{ color: 'gray', fontSize: '12px' }}> [Required minimum 4]</span> </label>
             <button className="add-time-slot-btn" onClick={handleAddFaq} disabled={course.faq.length >= MAX_FAQ_LIMIT}>
               Add FAQ
             </button>

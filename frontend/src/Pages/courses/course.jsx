@@ -26,7 +26,7 @@ const CoursePage = (searchdata) => {
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [courseId, setCourseId] = useState(null); // Store the course id
   const [searchKey, setSearchKey] = useState("")
-   const [deleteStatus, setDeleteStatus] = useState([]);
+  const [deleteStatus, setDeleteStatus] = useState([]);
   // const [isActive, setIsActive] = useState(null);
   // console.log(searchKey);
 
@@ -41,12 +41,12 @@ const CoursePage = (searchdata) => {
 
     try {
       const providerResponse = await axios.get(
-        `http://localhost:5001/api/users/user/${userId}`
+        `https://admin.kidgage.com/api/users/user/${userId}`
       );
       setProvider(providerResponse.data);
 
       const coursesResponse = await axios.get(
-        `http://localhost:5001/api/courses/by-providers?search=${searchKey}`,
+        `https://admin.kidgage.com/api/courses/by-providers?search=${searchKey}`,
         {
           params: { providerIds: [userId] },
         }
@@ -72,7 +72,7 @@ const CoursePage = (searchdata) => {
   // const deleteCourse = async (id) => {
   //   try {
   //     const res = await axios.delete(
-  //       `http://localhost:5001/api/courses/delete/${id}`
+  //       `https://admin.kidgage.com/api/courses/delete/${id}`
   //     );
   //     if (res.status === 200) {
   //       setCourseData((prevData) =>
@@ -95,7 +95,7 @@ const CoursePage = (searchdata) => {
 
   useEffect(() => {
     fetchProviderAndCourses();
-  }, [searchKey,deleteStatus]);
+  }, [searchKey, deleteStatus]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -110,7 +110,7 @@ const CoursePage = (searchdata) => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [courseData,deleteStatus]);
+  }, [courseData, deleteStatus]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -133,14 +133,14 @@ const CoursePage = (searchdata) => {
 
   const handleStatusToggle = async (activeStatus, id) => {
     try {
-       console.log(activeStatus);
-       
+      console.log(activeStatus);
+
       const currentStatus = activeStatus === "true" || activeStatus === true;
       const updatedStatus = currentStatus ? "false" : "true"; // Toggle the status 
       console.log(updatedStatus);
-      
+
       const res = await axios.put(
-        `http://localhost:5001/api/courses/update-active-status/${id}`,
+        `https://admin.kidgage.com/api/courses/update-active-status/${id}`,
         {
           active: updatedStatus, // Send the updated status
         }
@@ -309,10 +309,10 @@ const CoursePage = (searchdata) => {
           closeHandler={() => setShowDeleteModal(false)}
           courseDeleteId={deleteCourseId}
           setDeleteStatus={setDeleteStatus}
-          // onConfirmDelete={() => {
-          //   deleteCourse(deleteCourseId);
-          //   setShowDeleteModal(false);
-          // }}
+        // onConfirmDelete={() => {
+        //   deleteCourse(deleteCourseId);
+        //   setShowDeleteModal(false);
+        // }}
         />
       )}
     </div>

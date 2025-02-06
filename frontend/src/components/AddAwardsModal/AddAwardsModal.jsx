@@ -19,7 +19,7 @@ function AddAwardsModal({ isShow, closeHandler }) {
 
     const fetchAwards = async () => {
         try {
-            const response = await axios.get(`http://localhost:5001/api/users/${userId}/awards`);
+            const response = await axios.get(`https://admin.kidgage.com/api/users/${userId}/awards`);
             if (response.data.awards) {
                 setAwards(response.data.awards.concat([null, null, null]).slice(0, 3));
             }
@@ -44,7 +44,7 @@ function AddAwardsModal({ isShow, closeHandler }) {
 
     const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:5001/api/users/${userId}/awards/${deleteIndex}`);
+            await axios.delete(`https://admin.kidgage.com/api/users/${userId}/awards/${deleteIndex}`);
             const newAwards = [...awards];
             newAwards[deleteIndex] = null;
             setAwards(newAwards);
@@ -56,7 +56,7 @@ function AddAwardsModal({ isShow, closeHandler }) {
 
     const deleteAward = async () => {
         try {
-            await axios.delete(`http://localhost:5001/api/users/${userId}/awards/${deleteIndex}`);
+            await axios.delete(`https://admin.kidgage.com/api/users/${userId}/awards/${deleteIndex}`);
             const newAwards = [...awards];
             newAwards[deleteIndex] = null;
             setAwards(newAwards);
@@ -76,7 +76,7 @@ function AddAwardsModal({ isShow, closeHandler }) {
 
         try {
             const response = await axios.post(
-                `http://localhost:5001/api/users/upload-awards/${userId}`,
+                `https://admin.kidgage.com/api/users/upload-awards/${userId}`,
                 formData,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );

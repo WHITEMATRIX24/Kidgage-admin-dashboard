@@ -26,7 +26,7 @@ function KidgageNews(searchdata) {
     const [expandedState, setExpandedState] = useState({});
 
     const getAllNewsDetails = async () => {
-        const result = await axios.get(`http://localhost:5001/api/news?search=${searchKey}`);
+        const result = await axios.get(`https://admin.kidgage.com/api/news?search=${searchKey}`);
         if (result.status === 200) {
             setNewsDetails(result.data);
         }
@@ -74,7 +74,7 @@ function KidgageNews(searchdata) {
     const handleToggleStatus = async (newsId, currentStatus) => {
         try {
             const response = await axios.put(
-                `http://localhost:5001/api/news/update-status/${newsId}`,
+                `https://admin.kidgage.com/api/news/update-status/${newsId}`,
                 { newsStatus: currentStatus }
             );
             if (response.status === 200) {

@@ -43,7 +43,7 @@ function AddCourseCategoryForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/course-category/add",
+        "https://admin.kidgage.com/api/course-category/add",
         formData,
         {
           headers: {

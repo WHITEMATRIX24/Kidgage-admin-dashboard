@@ -11,7 +11,7 @@ const CategoryDeleteModal = ({ isShow, closeHandler, categoryDeleteId, setDelete
       setIsLoading(true);
       try {
         const res = await axios.delete(
-          `http://localhost:5001/api/course-category/delete/${categoryDeleteId}`
+          `https://admin.kidgage.com/api/course-category/delete/${categoryDeleteId}`
         );
 
         if (res.status === 200) {

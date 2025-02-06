@@ -92,7 +92,7 @@ const Dashboard = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/users/pending"
+          "https://admin.kidgage.com/api/users/pending"
         );
         setPendingCount(response.data.length); // Set pending count based on API response
       } catch (error) {
@@ -120,11 +120,11 @@ const Dashboard = () => {
       try {
         if (deleteType === "poster") {
           await axios.delete(
-            `http://localhost:5001/api/posters/${itemToDelete._id}`
+            `https://admin.kidgage.com/api/posters/${itemToDelete._id}`
           );
         } else if (deleteType === "student") {
           await axios.delete(
-            `http://localhost:5001/api/student/delete/${itemToDelete._id}`
+            `https://admin.kidgage.com/api/student/delete/${itemToDelete._id}`
           );
         }
         setItemToDelete(null);

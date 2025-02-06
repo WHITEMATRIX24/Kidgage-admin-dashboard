@@ -37,7 +37,7 @@ function ActivityEditModal({
     } else {
       try {
         const res = await axios.put(
-          `http://localhost:5001/api/users/update-activity/${id}`,
+          `https://admin.kidgage.com/api/users/update-activity/${id}`,
           newActivityData
         );
 

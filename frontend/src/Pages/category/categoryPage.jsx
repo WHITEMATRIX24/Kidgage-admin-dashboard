@@ -59,7 +59,7 @@ const CategoryPage = (searchdata) => {
   const SearchDataHandler = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/api/course-category/categories-search?search=${searchKey}`
+        `https://admin.kidgage.com/api/course-category/categories-search?search=${searchKey}`
       );
       setCategoryData(res.data);
     } catch (error) {
@@ -74,7 +74,7 @@ const CategoryPage = (searchdata) => {
   const initialCategoryDataHandler = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/api/course-category/categories?search=${searchKey}`
+        `https://admin.kidgage.com/api/course-category/categories?search=${searchKey}`
       );
       setCategoryData(res.data);
     } catch (error) {

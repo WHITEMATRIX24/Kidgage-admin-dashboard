@@ -23,7 +23,7 @@ const EditAdvertisementForm = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:5001/api/advertisement"
+        "https://admin.kidgage.com/api/advertisement"
       );
       setAdvertisements(response.data);
       if (response.data.length > 0) {
@@ -80,7 +80,7 @@ const EditAdvertisementForm = () => {
       }
 
       await axios.put(
-        `http://localhost:5001/api/advertisement/${editingAdvertisement._id}`,
+        `https://admin.kidgage.com/api/advertisement/${editingAdvertisement._id}`,
         formData,
         {
           headers: {
@@ -105,7 +105,7 @@ const EditAdvertisementForm = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `http://localhost:5001/api/advertisement/${deletingAdvertisementId}`
+        `https://admin.kidgage.com/api/advertisement/${deletingAdvertisementId}`
       );
       fetchAdvertisements();
       setShowDeleteModal(false);

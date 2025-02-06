@@ -79,7 +79,7 @@ function EditCourseForm1({ courseId }) {
 
     try {
       // Fetch the course data from the server
-      const response = await axios.get(`http://localhost:5001/api/courses/course/${courseId}`);
+      const response = await axios.get(`https://admin.kidgage.com/api/courses/course/${courseId}`);
 
       if (response.data) {
         // Assuming response.data contains course data and courseDuration
@@ -571,7 +571,7 @@ function EditCourseForm1({ courseId }) {
 
         // Make the POST request
         const response = await axios.put(
-          `http://localhost:5001/api/courses/update/${courseData._id}`,
+          `https://admin.kidgage.com/api/courses/update/${courseData._id}`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -609,7 +609,7 @@ function EditCourseForm1({ courseId }) {
     asetLoading(true);
     try {
       await axios.delete(
-        `http://localhost:5001/api/courses/delete/${courseData._id}`
+        `https://admin.kidgage.com/api/courses/delete/${courseData._id}`
       );
       setCourseData(null);
       setFormData({
@@ -657,7 +657,7 @@ function EditCourseForm1({ courseId }) {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/course-category/categories"
+          "https://admin.kidgage.com/api/course-category/categories"
         );
         setCourseTypes(response.data);
       } catch (error) {
