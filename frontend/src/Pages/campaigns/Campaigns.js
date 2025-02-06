@@ -72,10 +72,10 @@ function Campaigns(searchdata) {
 
       // If there is a searchTerm, make the search request
       if (searchTerm) {
-        response = await axios.get(`http://localhost:5001/api/banners/banner-search?search=${searchTerm}`);
+        response = await axios.get(`https://admin.kidgage.com/api/banners/banner-search?search=${searchTerm}`);
       } else {
         // Otherwise, make the normal request to fetch all banners
-        response = await axios.get(`http://localhost:5001/api/banners`);
+        response = await axios.get(`https://admin.kidgage.com/api/banners`);
       }
 
       // After getting the response, set the banners data
@@ -88,12 +88,12 @@ function Campaigns(searchdata) {
     }
   };
 
-  
+
   const fetchDesktopBanners = async (searchTerm = "") => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/desktop-banners/?search=${searchTerm}`
+        `https://admin.kidgage.com/api/desktop-banners/?search=${searchTerm}`
       );
       console.log(response.data);
       setDesktopBanners(response.data);
@@ -107,7 +107,7 @@ function Campaigns(searchdata) {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/mobile-banners/?search=${searchTerm}`
+        `https://admin.kidgage.com/api/mobile-banners/?search=${searchTerm}`
       );
       // console.log(response.data);
       setMobileBanners(response.data);
@@ -124,11 +124,11 @@ function Campaigns(searchdata) {
     const toggleApiBasedOnTab = () => {
       switch (tab) {
         case "home":
-          return `http://localhost:5001/api/banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/banners/update-status/${bannerId}`;
         case "desktop":
-          return `http://localhost:5001/api/desktop-banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/desktop-banners/update-status/${bannerId}`;
         case "mobile":
-          return `http://localhost:5001/api/mobile-banners/update-status/${bannerId}`;
+          return `https://admin.kidgage.com/api/mobile-banners/update-status/${bannerId}`;
         default:
           return "";
       }

@@ -22,7 +22,7 @@ const Appbar = ({ sendDataToParent, visible }) => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5001/api/users/pending"
+          "https://admin.kidgage.com/api/users/pending"
         ); // Adjust the URL as needed
         const data = await response.json();
         setPendingRequests(data);
@@ -43,7 +43,7 @@ const Appbar = ({ sendDataToParent, visible }) => {
 
       try {
         const providerResponse = await axios.get(
-          `http://localhost:5001/api/users/user/${userId}`
+          `https://admin.kidgage.com/api/users/user/${userId}`
         );
         const providerData = providerResponse.data;
         // console.log(providerData);
@@ -82,7 +82,7 @@ const Appbar = ({ sendDataToParent, visible }) => {
   return (
     <div className="appbar-container">
       {/* search bar */}
-      {visible === '#settings' || visible === '#profile' || visible==='#footerPages' ? null : <div className="appbar-serarch-container">
+      {visible === '#settings' || visible === '#profile' || visible === '#footerPages' ? null : <div className="appbar-serarch-container">
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           className="searchbar-magnifyglass"

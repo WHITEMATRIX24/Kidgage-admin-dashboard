@@ -27,7 +27,7 @@ const CategoryAddModal = ({ isShow, closeHandler, setAddStatus }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/course-category/add",
+        "https://admin.kidgage.com/api/course-category/add",
         newCategoryFormData
       );
 

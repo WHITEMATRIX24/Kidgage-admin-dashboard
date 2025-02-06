@@ -9,7 +9,7 @@ function DeleteNewsModal({ isShow, closeHandler, newsDeleteId, setDeleteStatus }
       setIsLoading(true);
       try {
         const res = await axios.delete(
-          `http://localhost:5001/api/news/${newsDeleteId}`
+          `https://admin.kidgage.com/api/news/${newsDeleteId}`
         );
 
         if (res.status === 200) {

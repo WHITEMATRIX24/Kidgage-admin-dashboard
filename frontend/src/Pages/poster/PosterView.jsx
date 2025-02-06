@@ -27,7 +27,7 @@ function PosterView(searchdata) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [expandedState, setExpandedState] = useState({});
     const getAllPosterDetails = async () => {
-        const result = await axios.get(`http://localhost:5001/api/posters?search=${searchKey}`
+        const result = await axios.get(`https://admin.kidgage.com/api/posters?search=${searchKey}`
         );
         if (result.status == 200) {
             setPosterDetails(result.data)
@@ -91,7 +91,7 @@ function PosterView(searchdata) {
     const handleToggleStatus = async (posterId, currentStatus) => {
         try {
             const response = await axios.put(
-                `http://localhost:5001/api/posters/update-status/${posterId}`,
+                `https://admin.kidgage.com/api/posters/update-status/${posterId}`,
                 { posterStatus: currentStatus }
             );
             if (response.status === 200) {
@@ -171,17 +171,17 @@ function PosterView(searchdata) {
                                         {formatDate(startDate)} to {formatDate(endDate)}
                                     </td>
                                     <td>
-                                    <label className="switch">
+                                        <label className="switch">
                                             <input
-                                             
+
                                                 type="checkbox"
                                                 defaultChecked={poster.activeStatus}
                                                 onChange={() => handleToggleStatus(poster._id, poster.activeStatus)}
                                             ></input>
                                             <span className="slider round"></span>
-                                        </label>  
+                                        </label>
                                     </td>
-                                    <td style={{width:'120px'}}>
+                                    <td style={{ width: '120px' }}>
                                         <div className="poster-icons">
                                             {/* <FontAwesomeIcon
                                             icon={course.active === "true" ? faEye : faEyeSlash}

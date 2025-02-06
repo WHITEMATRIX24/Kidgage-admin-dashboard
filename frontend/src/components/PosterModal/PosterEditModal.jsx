@@ -67,7 +67,7 @@ function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
     formData.append("image", imageUploded);
 
     try {
-      const res = await axios.put(`http://localhost:5001/api/posters/${posterData._id}`,
+      const res = await axios.put(`https://admin.kidgage.com/api/posters/${posterData._id}`,
         formData);
 
       if (res.status == 200) {
@@ -153,8 +153,8 @@ function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
                 maxLength={maxCharLimit}
                 minLength={minCharLimit}
               />
-                {/* Character count and limits display */}
-                <span style={{ color: 'red', fontSize: '12px', fontWeight: '300' }}>
+              {/* Character count and limits display */}
+              <span style={{ color: 'red', fontSize: '12px', fontWeight: '300' }}>
                 Character Count: {newPosterFormData.description.length}
                 {/* Display minimum and maximum character limits */}
                 (Min: {minCharLimit}, Max: {maxCharLimit}) characters
@@ -252,7 +252,7 @@ function PosterEditModal({ isShow, closeHandler, posterData, setEditStatus }) {
               onClick={(e) => handlePublish(e)}
               disabled={isLoading}
             >
-              
+
               {isLoading ? "please wait" : "Update"}
             </button>
           </div>

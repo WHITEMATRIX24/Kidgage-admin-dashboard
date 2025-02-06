@@ -3,34 +3,34 @@ import React, { useState } from 'react'
 
 
 function TermsDeleteModal({ isShow, closeHandler, termDeleteId, setDeleteStatus }) {
- const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
- const deleteTermsHandler = async () => {
-  if (termDeleteId) {
-    setIsLoading(true);
-    try {
-      const res = await axios.delete(
-        `http://localhost:5001/api/terms-condition/delete/${termDeleteId}`
-      );
-      console.log(res.data);
-      
-      if (res.status === 200) {
-        alert("Successfully deleted Terms");
-        setDeleteStatus(res.data);
-        closeHandler();
-        return;
+  const deleteTermsHandler = async () => {
+    if (termDeleteId) {
+      setIsLoading(true);
+      try {
+        const res = await axios.delete(
+          `https://admin.kidgage.com/api/terms-condition/delete/${termDeleteId}`
+        );
+        console.log(res.data);
+
+        if (res.status === 200) {
+          alert("Successfully deleted Terms");
+          setDeleteStatus(res.data);
+          closeHandler();
+          return;
+        }
+        alert(res.data.message);
+      } catch (error) {
+        console.log(`Error in deleting terms: ${error}`);
+      } finally {
+        setIsLoading(false);
       }
-      alert(res.data.message);
-    } catch (error) {
-      console.log(`Error in deleting terms: ${error}`);
-    } finally {
-      setIsLoading(false);
     }
-  }
-};
+  };
 
   return (
-   
+
     <div
       className={`category-deletemodal-wrapper ${isShow ? "category-deletemodal-show" : "category-deletemodal-hide"
         }`}

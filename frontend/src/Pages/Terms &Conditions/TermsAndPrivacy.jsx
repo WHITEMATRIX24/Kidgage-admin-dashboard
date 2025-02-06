@@ -14,7 +14,7 @@ import { useLocation } from 'react-router-dom';
 
 
 function TermsAndPrivacy(searchdata) {
-    const [error,setError] = useState("")
+    const [error, setError] = useState("")
     const [activeTab, setActiveTab] = useState("Programs Offered");
     const [termsAddModalState, setTermsAddModalState] = useState(false);
     const [privacyAddModalState, setPrivacyAddModalState] = useState(false);
@@ -37,11 +37,11 @@ function TermsAndPrivacy(searchdata) {
     const [addstatus, setAddStatus] = useState([]);
     const [deleteStatus, setDeleteStatus] = useState([]);
     const [editStatus, setEditStatus] = useState([]);
-     const location = useLocation();
-      // Access the current pathname (URL path)
-      const currentPath = location.hash;
-      console.log(currentPath);
-      
+    const location = useLocation();
+    // Access the current pathname (URL path)
+    const currentPath = location.hash;
+    console.log(currentPath);
+
 
     // Add terms modal handler
     const termsAddModalOpenHandler = () => setTermsAddModalState(true);
@@ -90,7 +90,7 @@ function TermsAndPrivacy(searchdata) {
     const fetchTermData = async () => {
         try {
             const result = await axios.get(
-                `http://localhost:5001/api/terms-condition/term-data`
+                `https://admin.kidgage.com/api/terms-condition/term-data`
             );
             console.log(result.data);
             if (result.status == 200) {
@@ -106,7 +106,7 @@ function TermsAndPrivacy(searchdata) {
     const fetchPolicyData = async () => {
         try {
             const result = await axios.get(
-                `http://localhost:5001/api/terms-condition/policy-data`
+                `https://admin.kidgage.com/api/terms-condition/policy-data`
             );
             console.log(result.data);
             if (result.status == 200) {
@@ -147,13 +147,13 @@ function TermsAndPrivacy(searchdata) {
     return (
         <>
             <div className="coursepage-container">
-            {
-        !searchdata ||
-          (Array.isArray(searchdata) && searchdata.length === 0) ||
-          (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
-          ? <Appbar visible={currentPath} />
-          : null
-      }
+                {
+                    !searchdata ||
+                        (Array.isArray(searchdata) && searchdata.length === 0) ||
+                        (typeof searchdata === 'object' && Object.keys(searchdata).length === 0)
+                        ? <Appbar visible={currentPath} />
+                        : null
+                }
                 <h3 className="campaign-heading" style={{ fontSize: '25px', marginTop: '45px' }}>Footer Pages </h3>
                 <div className="coursepage-content-container">
                     <div className="coursepage-content-header">

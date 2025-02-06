@@ -37,7 +37,7 @@ const CategoryEditModal = ({ isShow, closeHandler, categoryData, setEditStatus }
 
     try {
       const res = await axios.put(
-        `http://localhost:5001/api/course-category/update/${categoryId}`,
+        `https://admin.kidgage.com/api/course-category/update/${categoryId}`,
         newCategoryFormData
       );
 

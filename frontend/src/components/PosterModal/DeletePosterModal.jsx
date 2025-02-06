@@ -11,7 +11,7 @@ function DeletePosterModal({ isShow, closeHandler, posterDeleteId, setDeleteStat
       setIsLoading(true);
       try {
         const res = await axios.delete(
-          `http://localhost:5001/api/posters/${posterDeleteId}`
+          `https://admin.kidgage.com/api/posters/${posterDeleteId}`
         );
 
         if (res.status === 200) {

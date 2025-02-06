@@ -39,7 +39,7 @@ function NewsEditModal({ isShow, closeHandler, newsData, setEditStatus }) {
     formData.append("image", imageUploaded);
 
     try {
-      const res = await axios.put(`http://localhost:5001/api/news/${newsData._id}`, formData);
+      const res = await axios.put(`https://admin.kidgage.com/api/news/${newsData._id}`, formData);
 
       if (res.status === 200) {
         alert("News successfully updated.");

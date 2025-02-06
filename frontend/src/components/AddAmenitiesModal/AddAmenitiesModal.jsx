@@ -23,7 +23,7 @@ function AddAmenitiesModal({ isShow, closeHandler }) {
         // Fetch existing amenities from the backend
         const fetchAmenities = async () => {
             try {
-                const response = await axios.get(`http://localhost:5001/api/users/${userId}/amenities`);
+                const response = await axios.get(`https://admin.kidgage.com/api/users/${userId}/amenities`);
                 if (response.status === 200) {
                     setAmenities(response.data.amenities || []); // Set user's existing amenities
                 }
@@ -53,7 +53,7 @@ function AddAmenitiesModal({ isShow, closeHandler }) {
     const handleSubmit = async () => {
         try {
             const result = await axios.post(
-                "http://localhost:5001/api/users/add-amenities",
+                "https://admin.kidgage.com/api/users/add-amenities",
                 { newData: amenities, userId }
             );
 

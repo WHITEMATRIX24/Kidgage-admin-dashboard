@@ -14,9 +14,9 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId, setDeleteStat
   //     setIsLoading(true);
   //     try {
   //       const res = await axios.delete(
-  //         `http://localhost:5001/api/courses/delete/${courseDeleteId}`
+  //         `https://admin.kidgage.com/api/courses/delete/${courseDeleteId}`
   //       );
-  
+
   //       if (res.status === 200 || res.status === 204) { // Handle both 200 and 204 status codes
   //         alert("Successfully deleted course");
   //         setDeleteStatus(res.data); // Assuming res.data has the updated status or course info
@@ -35,30 +35,30 @@ const CourseDeleteModal = ({ isShow, closeHandler, courseDeleteId, setDeleteStat
   //     }
   //   }
   // };
-  
 
-const deleteCourseHandler=async()=>{
-  if (courseDeleteId) {
-    setIsLoading(true);
-    try {
-      const res = await axios.delete(
-        `http://localhost:5001/api/courses/delete/${courseDeleteId}`
-      );
 
-      if (res.status === 200) {
-        alert("successfully delete couses");
-        setDeleteStatus(res.data)
-        closeHandler()
-        return;
+  const deleteCourseHandler = async () => {
+    if (courseDeleteId) {
+      setIsLoading(true);
+      try {
+        const res = await axios.delete(
+          `https://admin.kidgage.com/api/courses/delete/${courseDeleteId}`
+        );
+
+        if (res.status === 200) {
+          alert("successfully delete couses");
+          setDeleteStatus(res.data)
+          closeHandler()
+          return;
+        }
+        alert(res.data.message);
+      } catch (error) {
+        console.log(`error in deleting category error: ${error}`);
+      } finally {
+        setIsLoading(false);
       }
-      alert(res.data.message);
-    } catch (error) {
-      console.log(`error in deleting category error: ${error}`);
-    } finally {
-      setIsLoading(false);
     }
   }
-}
 
   return (
     <div

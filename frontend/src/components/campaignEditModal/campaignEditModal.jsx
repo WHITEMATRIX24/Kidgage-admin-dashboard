@@ -23,11 +23,11 @@ const CampaignEditModal = ({ isShow, closeHandler, tab, modalData, setEditStatus
   const apiBasedOnTab = () => {
     switch (tab) {
       case "home":
-        return `http://localhost:5001/api/banners/${modalData._id}`;
+        return `https://admin.kidgage.com/api/banners/${modalData._id}`;
       case "desktop":
-        return `http://localhost:5001/api/desktop-banners/${modalData._id}`;
+        return `https://admin.kidgage.com/api/desktop-banners/${modalData._id}`;
       case "mobile":
-        return `http://localhost:5001/api/mobile-banners/${modalData._id}`;
+        return `https://admin.kidgage.com/api/mobile-banners/${modalData._id}`;
       default:
         return "";
     }

@@ -17,7 +17,7 @@ const Enquiries = ({ searchdata }) => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:5001/api/customers/bookings/${providerId}`);
+        const response = await axios.get(`https://admin.kidgage.com/api/customers/bookings/${providerId}`);
         setEnquiryData(response.data);
       } catch (err) {
         console.error("Error fetching bookings:", err);
