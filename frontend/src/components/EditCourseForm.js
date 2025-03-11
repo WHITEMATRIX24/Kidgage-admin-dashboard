@@ -430,8 +430,8 @@ const EditCourseForm = ({ id }) => {
                     disabled={!isEditMode}
                   >
                     <option value="Any">Any</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="Boy">Boy</option>
+                    <option value="Girl">Girl</option>
                   </select>
                   <select
                     id="courseType"

@@ -38,18 +38,18 @@ const courseDurationSchema = new mongoose.Schema({
   },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-  noOfSessions:{ type: Number, required: true },
-  fee:{type: Number, required: true }
+  noOfSessions: { type: Number, required: true },
+  fee: { type: Number, required: true }
 });
 
 
 const faqSchema = new mongoose.Schema({
- question: { type: String, required: true },
-answer: { type: String, required: true }
+  question: { type: String, required: true },
+  answer: { type: String, required: true }
 })
 
-const keepinmindSchema=new mongoose.Schema({
-  desc:{type: String, required: true}
+const keepinmindSchema = new mongoose.Schema({
+  desc: { type: String, required: true }
 })
 
 const courseSchema = new mongoose.Schema({
@@ -77,12 +77,12 @@ const courseSchema = new mongoose.Schema({
   active: { type: Boolean, default: true },  // Set the default value for 'active' field
   preferredGender: {
     type: String,
-    enum: ["Male", "Female", "Any"],
+    enum: ["Boy", "Girl", "Any"],
     default: "Any", // You can set a default value if desired
   },
 
-  faq:{ type: [faqSchema], required:true},
-  thingstokeepinmind:{type: [keepinmindSchema], required: true}
+  faq: { type: [faqSchema], required: true },
+  thingstokeepinmind: { type: [keepinmindSchema], required: true }
 });
 
 const Course = mongoose.model("Course", courseSchema);
