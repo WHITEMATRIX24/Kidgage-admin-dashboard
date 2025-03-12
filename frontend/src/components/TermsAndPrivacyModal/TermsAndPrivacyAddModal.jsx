@@ -60,10 +60,9 @@ function TermsAndPrivacyAddModal({ isShow, closeHandler, setAddStatus }) {
             <p>Terms And Conditions</p>
             <div className="campaign-addmodal-form-fieldcontainer">
               <textarea
-                type="text"
                 className="campaign-addmodal-form-input"
                 value={newData.terms}
-                style={{ height: '200px' }}
+                style={{ height: '200px', whiteSpace: "pre-wrap" }}
                 onChange={(e) =>
                   setNewData({
                     ...newData,
@@ -71,6 +70,7 @@ function TermsAndPrivacyAddModal({ isShow, closeHandler, setAddStatus }) {
                   })
                 }
               />
+
             </div>
           </div>
           <button

@@ -178,17 +178,16 @@ function TermsAndPrivacy(searchdata) {
                     {activeTab === "Programs Offered" && (
 
                         <div>
-                            <button style={{ float: 'right', cursor: 'pointer' }}
+                            <button
+                                style={{ float: 'right', cursor: filteredTermData.length > 0 ? 'not-allowed' : 'pointer' }}
                                 className="add-campaign-button"
                                 onClick={termsAddModalOpenHandler}
-
+                                disabled={filteredTermData.length > 0}
                             >
-                                <FontAwesomeIcon
-                                    icon={faPlus}
-                                    style={{ color: "#ffffff", marginRight: '10px' }}
-                                />
+                                <FontAwesomeIcon icon={faPlus} style={{ color: "#ffffff", marginRight: '10px' }} />
                                 Add Terms And Conditions
                             </button>
+
                             <table className="course-table-details">
                                 <thead className="table-head">
                                     <tr>
@@ -206,7 +205,7 @@ function TermsAndPrivacy(searchdata) {
                                         filteredTermData.length > 0 ? (
                                             filteredTermData.map((item, index) => (
                                                 <tr key={item._id || index}>  {/* Use _id or index as key */}
-                                                    <td style={{ width: '60%', textAlign: 'justify' }}>
+                                                    <td style={{ width: '60%', textAlign: 'justify', whiteSpace: "pre-line" }}>
                                                         {item.terms} {/* Display policy */}
                                                     </td>
                                                     <td>{new Date(item.date).toLocaleDateString('en-US', {
@@ -245,16 +244,16 @@ function TermsAndPrivacy(searchdata) {
 
                     {activeTab === "Add Course" && (
                         <div>
-                            <button style={{ float: 'right', cursor: 'pointer' }}
+                            <button
+                                style={{ float: 'right', cursor: filteredPolicyData.length > 0 ? 'not-allowed' : 'pointer' }}
                                 className="add-campaign-button"
                                 onClick={privacyAddModalOpenHandler}
+                                disabled={filteredPolicyData.length > 0}
                             >
-                                <FontAwesomeIcon
-                                    icon={faPlus}
-                                    style={{ color: "#ffffff", marginRight: '10px' }}
-                                />
+                                <FontAwesomeIcon icon={faPlus} style={{ color: "#ffffff", marginRight: '10px' }} />
                                 Add Privacy and Policy
                             </button>
+
                             <table className="course-table-details">
                                 <thead className="table-head">
                                     <tr>
@@ -272,7 +271,7 @@ function TermsAndPrivacy(searchdata) {
                                         filteredPolicyData.length > 0 ? (
                                             filteredPolicyData.map((item, index) => (
                                                 <tr key={item._id || index}>  {/* Use _id or index as key */}
-                                                    <td style={{ width: '60%', textAlign: 'justify' }}>
+                                                    <td style={{ width: '60%', textAlign: 'justify', whiteSpace: "pre-line" }}>
                                                         {item.policy} {/* Display policy */}
                                                     </td>
                                                     <td>{new Date(item.date).toLocaleDateString('en-US', {
